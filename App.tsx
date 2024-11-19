@@ -3,6 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Chat } from "./src/screens/Chat";
 import { PrivateChat } from "./src/screens/PrivateChat";
+import { StatusBar } from 'expo-status-bar';
+import {Text, View } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -21,3 +23,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
