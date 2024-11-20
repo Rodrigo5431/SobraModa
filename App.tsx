@@ -7,6 +7,7 @@ import { PrivateChat } from "./src/screens/PrivateChat";
 import { EditProfile } from "./src/screens/EditProfile";
 import { NoImplements } from "./src/screens/NoImplements";
 import { Navigator } from "./src/navigation";
+import Home from "./src/screens/Home";
 
 const Stack = createStackNavigator();
 

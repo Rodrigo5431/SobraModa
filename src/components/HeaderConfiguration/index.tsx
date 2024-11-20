@@ -4,6 +4,7 @@ import { useState } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from "../../services/api";
+import React from "react";
 
 export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState<boolean>(false);
