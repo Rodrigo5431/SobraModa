@@ -1,3 +1,4 @@
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
@@ -19,7 +20,6 @@ export default function App() {
         {/* <Stack.Screen name="PrivateChat" component={PrivateChat}/> */}
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 
