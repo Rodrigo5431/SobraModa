@@ -15,6 +15,7 @@ import api from "../../services/api";
 import { DataAPI } from "../../Mock/data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
+import React from "react";
 
 export const Configuration = () => {
   const [user, setUser] = useState<any>();
