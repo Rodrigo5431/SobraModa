@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
 import { styles } from "./style";
 import { HeaderConfiguration } from "../../components/HeaderConfiguration";
 import configurationIcon from "../../assets/configurationIcon.png";

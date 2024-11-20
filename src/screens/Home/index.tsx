@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import React from "react";
 import {
   View,
   Image,
   FlatList,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -88,20 +88,18 @@ const produtosHorizontal: Produto[] = [
   },
 ];
 
-const Home = () => {
+export const Home = () => {
+
+  const [expand, setExpand] = useState<boolean>(true);
+  
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={style.produtoContainer}>
       <Image source={item.image} style={style.produtoImage} />
       <Text style={style.produtoTitle}>{item.title}</Text>
     </View>
   );
-  const [expand, setExpand] = useState<boolean>(true);
-      <View style={style.produtoContainer}>
-        <Image source={item.image} style={style.produtoImage} />
-        <Text style={style.produtoTitle}>{item.title}</Text>
-   
-      </View>
-    );
+
+
   return (
     <ScrollView style={style.container}>
       <View>
@@ -141,6 +139,3 @@ const Home = () => {
     </ScrollView>
   );
 };
-
-export default Home;
-

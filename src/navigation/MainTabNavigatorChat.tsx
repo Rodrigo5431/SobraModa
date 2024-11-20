@@ -15,21 +15,20 @@ import { NoImplements } from '../screens/NoImplements';
 
 
 
-export function MainTabNavigator() {
+export function MainTabNavigatorChat() {
 
     const Tab = createBottomTabNavigator();
     const navigation = useNavigation();
 
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Chat"
             screenOptions={{
                 headerShown: false,
                 headerTitleAlign: "center",
                 headerTintColor: colors.basic.preto,
                 tabBarActiveTintColor: colors.basic.branco,
                 tabBarStyle: {
-                    justifyContent: "space-evenly",
                     height: Platform.OS === "android" ? 60 : 80,
                     paddingBottom: Platform.OS === "android" ? 10 : 25,
                     backgroundColor: colors.purple.cor2,
@@ -47,26 +46,6 @@ export function MainTabNavigator() {
                         <Feather name="home" size={size} color={color} />
                     ),
                 }}
-            />
-
-            <Tab.Screen
-                name="Chat"
-                component={Chat}
-                options={({ navigation }) => ({
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="chatbubbles-outline" size={size} color={color} />
-                    ),
-                })}
-            />
-
-            <Tab.Screen
-                name="Add"
-                component={NoImplements}
-                options={({ navigation }) => ({
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="add-circle-outline" size={size} color={color} />
-                    ),
-                })}
             />
 
             <Tab.Screen
