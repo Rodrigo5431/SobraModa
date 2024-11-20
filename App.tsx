@@ -6,6 +6,7 @@ import { Chat } from "./src/screens/Chat";
 import { PrivateChat } from "./src/screens/PrivateChat";
 import { NoImplements } from "./src/screens/NoImplements";
 import { Navigator } from "./src/navigation";
+import Home from "./src/screens/Home";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,9 @@ export default function App() {
     // </NavigationContainer>
 
     // <NoImplements/>
+    // 
+    // <Home/>
+
     <Navigator/>
   );
 }

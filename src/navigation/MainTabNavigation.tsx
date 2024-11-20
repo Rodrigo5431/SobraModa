@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NoImplements } from '../../src/screens/NoImplements';
 
 import { colors } from '../styles/colors';
+import Home from '../screens/Home';
+import  UserConfig  from "../screens/UserConfig";
 
 
 
@@ -20,6 +22,7 @@ export function MainTabNavigator() {
     return (
         <Tab.Navigator
             initialRouteName="Home"
+            
             screenOptions={{
                 headerTitleAlign: "center",
                 headerTintColor: colors.basic.preto,
@@ -37,10 +40,10 @@ export function MainTabNavigator() {
 
 
             <Tab.Screen
-                name="Home"
-                component={NoImplements}
+                name="Home" 
+                component={Home}
                 options={({ navigation }) => ({
-                    // headerTitle: "Status",
+                    // headerTitle: "Home",
                     // tabBarLabel: "Status",
                     tabBarIcon: ({ color, size }) => (
                         <Feather
@@ -52,7 +55,7 @@ export function MainTabNavigator() {
                 })} />
 
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Call"
                 component={NoImplements}
                 options={({ navigation }) => ({
@@ -65,19 +68,19 @@ export function MainTabNavigator() {
                             color={color}
                         />
                     )
-                })} />
+                })} /> */}
 
 
 
             <Tab.Screen
-                name="Camera"
-                component={NoImplements}
+                name="Perfil"
+                component={UserConfig}
                 options={({ navigation }) => ({
-                    headerTitle: "Camera",
-                    tabBarLabel: "Camera",
+                    // headerTitle: "Camera",
+                    // tabBarLabel: "Camera",
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons
-                            name='camera-outline'
+                        <Feather
+                            name='user'
                             size={size}
                             color={color}
                         />
