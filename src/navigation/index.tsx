@@ -1,10 +1,13 @@
 import React from "react";
+import { MainTabNavigator } from "./MainTabNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import {colors} from "../styles/colors";
-import { Chat } from "../screens/Chat";
-import { MainTabNavigator } from "./MainTabNavigation";
+// import { Chat } from "../screens/Chat";
+
+import Home from "../screens/Home";
+
 
 
 
@@ -21,26 +24,26 @@ export const Navigator = ()=>{
                     },
                 }}
             >
-                <Stack.Screen
-                    name="Home"
+                {/* <Stack.Screen
+                    name="Chat"
                     component={MainTabNavigator}
                     options={{
                         title: "Bem-vindo",
-                      /*   headerShadowVisible: false, */
+                      /*   headerShadowVisible: false, 
                         headerShown: false,
-                        /* fullScreenGestureShadowEnabled: false, */
+                        /* fullScreenGestureShadowEnabled: false, 
 
                     }}
 
-                />
+                /> */}
 
-                {/* <Stack.Screen
+                 <Stack.Screen
                     name="Home"
                     component={MainTabNavigator}
                     options={{ headerShown: false }}
-                />
+                /> 
 
-                <Stack.Screen
+                {/* <Stack.Screen
                     name="Chat"
                     component={ChatScreen}
                     options={({navigation}) => ({
@@ -62,7 +65,7 @@ export const Navigator = ()=>{
                     name="Login"
                     component={Login}
                     options={{ title: "Login", headerShown: false }}
-                /> */}
+                />  */}
             </Stack.Navigator>
         </NavigationContainer>
     );

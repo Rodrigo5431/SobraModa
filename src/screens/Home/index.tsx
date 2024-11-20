@@ -62,6 +62,7 @@ const produtosvertical: Produto[] = [
   },
 ];
 
+
 const produtosHorizontal: Produto[] = [
   {
     id: "5",
@@ -95,7 +96,12 @@ const Home = () => {
     </View>
   );
   const [expand, setExpand] = useState<boolean>(true);
-
+      <View style={style.produtoContainer}>
+        <Image source={item.image} style={style.produtoImage} />
+        <Text style={style.produtoTitle}>{item.title}</Text>
+   
+      </View>
+    );
   return (
     <ScrollView style={style.container}>
       <View>
@@ -137,3 +143,4 @@ const Home = () => {
 };
 
 export default Home;
+
