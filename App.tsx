@@ -1,16 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import {Text, View } from 'react-native';
-import Home from './src/screens/Home';
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { Chat } from "./src/screens/Chat";
+import { PrivateChat } from "./src/screens/PrivateChat";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View >
-      <StatusBar style="auto" />
-      <Home />
-      {/* <Text>Inicio da SOBRA MODA</Text> */}
-      
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Chat"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Chat" component={Chat} />
+        {/* <Stack.Screen name="PrivateChat" component={PrivateChat}/> */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
 
