@@ -11,6 +11,7 @@ import { Home } from '../screens/Home';
 import UserConfig from "../screens/UserConfig";
 import { Chat } from '../screens/Chat';
 import { NoImplements } from '../screens/NoImplements';
+import { MainTabNavigatorChat } from './MainTabNavigatorChat';
 
 
 
@@ -52,11 +53,14 @@ export function MainTabNavigator() {
             <Tab.Screen
                 name="Chat"
                 component={Chat}
-                options={({ navigation }) => ({
-                    tabBarIcon: ({ color, size }) => (
+                options={({ navigation }) => {
+                    return {
+                      tabBarIcon: ({ color, size }) => (
                         <Ionicons name="chatbubbles-outline" size={size} color={color} />
-                    ),
-                })}
+                      ),
+                      onPress: () => navigation.navigate("Chat"),
+                    };
+                  }}
             />
 
             <Tab.Screen

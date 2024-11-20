@@ -58,6 +58,16 @@ export function MainTabNavigatorChat() {
                 }}
             />
 
+<Tab.Screen
+                name="Chat"
+                component={Chat}
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Feather name="home" size={size} color={color} />
+                    ),
+                }}
+            />
+
         </Tab.Navigator>
  
     );

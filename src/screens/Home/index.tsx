@@ -8,10 +8,12 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import style from "./style";
 import { StatusBar } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 interface Produto {
   id: string;
@@ -89,6 +91,14 @@ const produtosHorizontal: Produto[] = [
 ];
 
 export const Home = () => {
+
+  // const navigation = useNavigation();
+
+  // const handleChats = () => {
+
+  //   Alert.alert('Vamos para a Chats');
+  //   navigation.navigate('Chat');
+  // };
 
   const [expand, setExpand] = useState<boolean>(true);
   
