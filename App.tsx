@@ -29,7 +29,9 @@ export default function App() {
 
     // <NoImplements/>
 
-    <Navigator/>
+  <Navigator/>
+
+
   )
 }
 
