@@ -3,12 +3,14 @@ import { View, Image, FlatList, StyleSheet, Text, TextInput, TouchableOpacity } 
 import style from './style';
 import { StatusBar } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
+const Home = () => {
 
- interface Produto {
+  interface Produto {
     id: string;
     image: any;
     title: string;
@@ -34,10 +36,6 @@ const produtosHorizontal: Produto[] = [
     { id: '7', image: require('../../../assets/tricole.jpg') ,title: 'tricoline\nR$ 19,99 por 15cm'},
     { id: '8', image: require('../../../assets/tricoline.jpg') ,title: 'tricoline\nR$ 15,50 por 40cm'},
 ];
-
-  
-
-const Home = () => {
     const renderItem = ({ item }: { item: Produto }) => (
       <View style={style.produtoContainer}>
         <Image source={item.image} style={style.produtoImage} />
@@ -96,7 +94,8 @@ const Home = () => {
   );
 };
 
+export default Home;
 
-export default Home; 
+
 
 
