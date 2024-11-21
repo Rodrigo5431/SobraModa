@@ -1,4 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
+// import { useFonts,ComicNeue_400Regular,
+//   ComicNeue_700Bold } from '@expo-google-fonts/comic-neue';
+//   import AppLoading from "expo-app-loading";
+// import { EditProfile } from "./src/screens/EditProfile";
+// import { NoImplements } from "./src/screens/NoImplements";
 import { Login } from './src/screens/Login';
 import { AuthProvider } from './src/hooks/useAuth';
 import { Register } from './src/screens/Register';
@@ -18,6 +22,8 @@ import { Navigator } from "./src/navigation";
 //import { Configuration } from "./src/screens/UserConfig";
 
 //const Stack = createStackNavigator();
+
+import  Add  from "./src/screens/Add";
 
 export default function App() {
 
@@ -58,8 +64,9 @@ export default function App() {
 
     // <NoImplements/>
 
- 
- );
+  <Navigator/>
+
+  // <Add/>
 
 }
 

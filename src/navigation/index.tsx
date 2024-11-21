@@ -2,6 +2,7 @@ import React from "react";
 import { MainTabNavigator } from "./MainTabNavigation";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Alert, Touchable, TouchableOpacity } from "react-native";
 
 import { colors } from "../styles/colors";
 // import { Chat } from "../screens/Chat";
@@ -10,12 +11,10 @@ import { Home } from "../screens/Home";
 import { Chat } from "../screens/Chat";
 import { NoImplements } from "../screens/NoImplements";
 import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
-import { Alert, Touchable, TouchableOpacity } from "react-native";
 import { EditProfile } from "../screens/EditProfile";
 import { PrivateChat } from "../screens/PrivateChat";
-
-
-
+import Add from "../screens/Add";
+import UserConfig from "../screens/UserConfig";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +45,19 @@ export const Navigator = () => {
                     component={MainTabNavigator}
                     options={{ headerShown: false }}
                 />
+
+                <Stack.Screen
+                    name="AdicaoProduto"
+                    component={Add}
+                    options={{ title: "Adicionar novo Produto", headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name="Cadastrar"
+                    component={NoImplements}
+                    options={{ title: "Cadastro", headerShown: false }}
+                />
+
                 {/* <TouchableOpacity onPress={handleChats}> */}
                 <Stack.Screen
                     name="Chat"
@@ -56,7 +68,6 @@ export const Navigator = () => {
                         headerTitle: "Mensagens",
                         headerTitleAlign: "center",
                     })}
-
                 />
                 {/* </TouchableOpacity> */}
 
@@ -65,17 +76,6 @@ export const Navigator = () => {
                     component={NoImplements}
                     options={{ title: "Login", headerShown: false }}
                 />
-                <Stack.Screen
-                    name="Cadastrar"
-                    component={NoImplements}
-                    options={{ title: "Cadastro", headerShown: false }}
-                />
-
-                <Stack.Screen
-                    name="EditProfile"
-                    component={EditProfile}
-                    options={{ title: "Editar Perfil", headerShown: false }}
-                />
 
                 <Stack.Screen
                     name="PrivateChat"
@@ -83,7 +83,23 @@ export const Navigator = () => {
                     options={{ title: "Conversa Privada", headerShown: false }}
                 />
 
+                <Stack.Screen
+                    name="EditarProfile"
+                    component={EditProfile}
+                    options={{ title: "Conversa Privada", headerShown: false }}
+                />
 
+                <Stack.Screen
+                    name="NoImplements"
+                    component={NoImplements}
+                    options={{ title: "Conversa Privada", headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name="UserConfig"
+                    component={UserConfig}
+                    options={{ title: "Configurações de Perfil", headerShown: false }}
+                />
 
             </Stack.Navigator>
         </NavigationContainer>
