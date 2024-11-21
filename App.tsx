@@ -9,7 +9,7 @@ import { NoImplements } from "./src/screens/NoImplements";
 import { Navigator } from "./src/navigation";
 // import Home from "./src/screens/Home";
 
-const Stack = createStackNavigator();
+//const Stack = createStackNavigator();
 
 export default function App() {
   return (
