@@ -11,6 +11,8 @@ import { Chat } from "../screens/Chat";
 import { NoImplements } from "../screens/NoImplements";
 import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
 import { Alert, Touchable, TouchableOpacity } from "react-native";
+import { EditProfile } from "../screens/EditProfile";
+import { PrivateChat } from "../screens/PrivateChat";
 
 
 
@@ -22,7 +24,7 @@ export const Navigator = () => {
     // const navigation = useNavigation();
 
     // const handleChats = () => {
-  
+
     //   Alert.alert('Vamos para a Chats');
     //   navigation.navigate('Chat');
     // };
@@ -49,7 +51,7 @@ export const Navigator = () => {
                     name="Chat"
                     // onPress={() => handleChats()}
                     component={Chat}
-                        options={({ navigation }) => ({
+                    options={({ navigation }) => ({
                         headerShown: false,
                         headerTitle: "Mensagens",
                         headerTitleAlign: "center",
@@ -63,6 +65,25 @@ export const Navigator = () => {
                     component={NoImplements}
                     options={{ title: "Login", headerShown: false }}
                 />
+                <Stack.Screen
+                    name="Cadastrar"
+                    component={NoImplements}
+                    options={{ title: "Cadastro", headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name="EditProfile"
+                    component={EditProfile}
+                    options={{ title: "Editar Perfil", headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name="PrivateChat"
+                    component={PrivateChat}
+                    options={{ title: "Conversa Privada", headerShown: false }}
+                />
+
+
 
             </Stack.Navigator>
         </NavigationContainer>
