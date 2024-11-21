@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { styles } from "./style";
+import React from "react";
 
 interface PropsInteput {
   placeHolder: string;

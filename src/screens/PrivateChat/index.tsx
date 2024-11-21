@@ -25,7 +25,7 @@ export const PrivateChat = ({ route }: PrivateChatProps) => {
 
   // Estado para gerenciar a lista de mensagens e o campo de entrada
   const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState<string>("");
 
   // Função para enviar mensagem
   const sendMessage = () => {
