@@ -1,5 +1,4 @@
-import { Dimensions, StyleSheet,StatusBar } from 'react-native';
-
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 
 const style = StyleSheet.create({
@@ -25,10 +24,10 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   produtoContainer: {
-    flex: 1,
+    height:200, 
     margin: 5,
     marginVertical: 35, 
-    overflow: 'hidden',
+    // overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
     // height: 180, 
@@ -45,7 +44,7 @@ const style = StyleSheet.create({
   },
  
   ProdutoContainer: {
-    // flex: 1,
+    flex: 1,
     margin: 5,
     overflow: 'hidden',
     alignItems: 'center',

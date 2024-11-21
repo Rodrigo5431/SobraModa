@@ -23,6 +23,9 @@
     },
     "web": {
       "favicon": "./assets/iconeSM 2.png"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

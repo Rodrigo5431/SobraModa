@@ -4,6 +4,8 @@ import { useState } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from "../../services/api";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState<boolean>(false);
@@ -27,6 +29,13 @@ export const HeaderConfiguration = () => {
     }
   }
 
+  
+  const navigation = useNavigation();
+
+  const handleEditProfile = () => {
+    navigation.navigate("EditProfile");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.navBar}>
@@ -42,7 +51,7 @@ export const HeaderConfiguration = () => {
       {configuration && (
         <View style={styles.configMenu}>
           <Text style={styles.userEmail}>rodrigo@email.com</Text>
-          <TouchableOpacity style ={styles.editProfileButton}>
+          <TouchableOpacity onPress={handleEditProfile} style ={styles.editProfileButton}>
             <Text style={styles.editProfile}>Editar Perfil</Text>
           </TouchableOpacity>
 
