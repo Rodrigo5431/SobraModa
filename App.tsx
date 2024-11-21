@@ -1,13 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import {Text, View } from 'react-native';
+import { Login } from './src/screens/Login';
+import { AuthProvider } from './src/hooks/useAuth';
+import { Register } from './src/screens/Register';
+import { Cadastro } from './src/screens/Cadastro';
 
 export default function App() {
   return (
-    <View >
+    <>
       <StatusBar style="auto" />
-      <Text>Inicio da SOBRA MODA</Text>
-      
-    </View>
+      <AuthProvider>
+        {/* <Cadastro /> */}
+      {/* <Register /> */}
+      <Login />
+      </AuthProvider>
+    </>
   );
 }
 
