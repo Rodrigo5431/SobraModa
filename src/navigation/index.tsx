@@ -1,13 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MainTabNavigator } from "./MainTabNavigation";
-import { colors } from "../styles/colors";
-import Add from "../screens/Add";
+import React from "react";
 import { Chat } from "../screens/Chat";
 import { EditProfile } from "../screens/EditProfile";
 import { NoImplements } from "../screens/NoImplements";
-import UserConfig from "../screens/UserConfig";
-import React = require("react");
+import { colors } from "../styles/colors";
+import { MainTabNavigator } from "./MainTabNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +19,7 @@ export const Navigator = () => {
     //   navigation.navigate('Chat');
     // };
 
+
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -30,8 +29,8 @@ export const Navigator = () => {
                     headerStyle: {
                         backgroundColor: colors.purple.cor5,
                     },
-                }}
-            >
+                }}>
+
 
                 <Stack.Screen
                     name="Home"
