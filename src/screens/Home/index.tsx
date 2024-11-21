@@ -12,6 +12,7 @@ import {
 import style from "./style";
 import { StatusBar } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Navigator } from "../../navigation";
 
 interface Produto {
   id: string;
@@ -97,42 +98,45 @@ const Home = () => {
   const [expand, setExpand] = useState<boolean>(true);
 
   return (
-    <ScrollView style={style.container}>
-      <View>
-        <View style={style.profileContainer}>
-          <Image
-            source={require("../../../assets/perfil.jpg")}
-            style={style.profileImage}
-          />
+    <>
+      <ScrollView style={style.container}>
+        <View>
+          <View style={style.profileContainer}>
+            <Image
+              source={require("../../../assets/perfil.jpg")}
+              style={style.profileImage}
+            />
+          </View>
+
+          <TouchableOpacity style={style.button}>
+            <FontAwesome name="search" size={20} color="black" />
+            <Text style={style.buttonText}>Pesquise aqui</Text>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={style.button}>
-          <FontAwesome name="search" size={20} color="black" />
-          <Text style={style.buttonText}>Pesquise aqui</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={style.container2}>
+          <Text onPress={() => setExpand(!expand)} style={style.buttonText2}>
+            Favoritos{""}
+          </Text>
+          <FlatList
+            data={produtosHorizontal}
+            horizontal={expand}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
+            />
+           
+        </View>
 
-      <View style={style.container2}>
-        <Text onPress={()=> setExpand(!expand)}  style={style.buttonText2}>Favoritos </Text>
         <FlatList
-          data={produtosHorizontal}
-          horizontal={expand}
+          data={produtosvertical}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
+          numColumns={2}
         />
-      </View>
-
-      <FlatList
-        data={produtosvertical}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        numColumns={2}
-      />
-
-      
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 

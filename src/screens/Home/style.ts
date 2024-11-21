@@ -10,11 +10,9 @@ const style = StyleSheet.create({
      paddingBottom: 60, 
    },
    container2: {
-     flex: 0,
-  //  paddingTop: -20, 
-   paddingBottom: 80, 
-   alignItems:'flex-start',
-      marginTop: 30, 
+    paddingBottom: 80, 
+    alignItems:'center',
+    marginTop: 30, 
     
    },
 
@@ -28,14 +26,11 @@ const style = StyleSheet.create({
     flex: 1,
     margin: 5,
     marginVertical: 35, 
-    overflow: 'hidden',
-    alignItems: 'center',
     justifyContent: 'center',
-    // height: 180, 
-    
+    alignContent: 'center',
   },
   produtoImage: {
-    width: (screenWidth / 2) - 20,
+    width: 200,
     height: 180,
     borderRadius: 15,
     margin: 0,
