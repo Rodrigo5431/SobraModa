@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContext, createContext, useState, useEffect } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 
 type PropsContext = {
   email: string;
@@ -15,13 +15,9 @@ const AuthContext = createContext<PropsContext>({
   isLoading: false,
 });
 
-
-
 export const AuthProvider = ({ children }: any) => {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-
 
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);
@@ -66,13 +62,6 @@ export const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     getData();
   }, []);
-
-
-
-
-
-
-
 
   return (
     <AuthContext.Provider

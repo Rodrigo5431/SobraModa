@@ -17,7 +17,7 @@ export const EditProfile = () => {
   const handlesubmitPassword = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/usuarios${id}`,
+        `http://localhost:8080/usuarios/${id}`,
 
         { password, newPassword, confirmPassword },
 
