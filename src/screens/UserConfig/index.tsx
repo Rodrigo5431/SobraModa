@@ -11,7 +11,7 @@ import { HeaderConfiguration } from "../../components/HeaderConfiguration";
 import configurationIcon from "../../assets/configurationIcon.png";
 import whatsappIcon from "../../assets/whatsapp.png";
 import { useState } from "react";
-import api from "../../services/api";
+import apis from "../../services/apis";
 import { DataAPI } from "../../Mock/data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
@@ -56,7 +56,7 @@ export default function Configuration() {
       const userId = decodedToken.id;
       setId(userId);
 
-      const response = await api.get(`/usuarios/${userId}`, {
+      const response = await apis.get(`/usuarios/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
