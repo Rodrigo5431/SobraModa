@@ -103,3 +103,4 @@ export const Cadastro = () => {
     </TouchableWithoutFeedback>
   );
 };
+
