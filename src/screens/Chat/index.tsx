@@ -25,7 +25,7 @@ type ChatProps = {
 export const Chat: React.FC<ChatProps> = ({ navigation }) => {
   const [dados, setDados] = useState<UsuarioData[]>([]);
   const [dadosFiltrados, setDadosFiltrados] = useState<UsuarioData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const listaDados = async () => {
     try {

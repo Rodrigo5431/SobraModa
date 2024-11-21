@@ -1,19 +1,14 @@
-import { useState } from "react";
-import React from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import React, { useState } from "react";
 import {
-  View,
-  Image,
   FlatList,
-  Text,
-  TextInput,
-  TouchableOpacity,
+  Image,
   ScrollView,
-  Alert,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import style from "./style";
-import { StatusBar } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
 
 interface Produto {
   id: string;
@@ -64,7 +59,6 @@ const produtosvertical: Produto[] = [
   },
 ];
 
-
 const produtosHorizontal: Produto[] = [
   {
     id: "5",
@@ -91,7 +85,6 @@ const produtosHorizontal: Produto[] = [
 ];
 
 export const Home = () => {
-
   // const navigation = useNavigation();
 
   // const handleChats = () => {
@@ -101,7 +94,7 @@ export const Home = () => {
   // };
 
   const [expand, setExpand] = useState<boolean>(true);
-  
+
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={style.produtoContainer}>
       <Image source={item.image} style={style.produtoImage} />
@@ -109,43 +102,43 @@ export const Home = () => {
     </View>
   );
 
-
   return (
-    <ScrollView style={style.container}>
-      <View>
-        <View style={style.profileContainer}>
-          <Image
-            source={require("../../../assets/perfil.jpg")}
-            style={style.profileImage}
-          />
+    <>
+      <ScrollView style={style.container}>
+        <View>
+          <View style={style.profileContainer}>
+            <Image
+              source={require("../../../assets/perfil.jpg")}
+              style={style.profileImage}
+            />
+          </View>
+
+          <TouchableOpacity style={style.button}>
+            <FontAwesome name="search" size={20} color="black" />
+            <Text style={style.buttonText}>Pesquise aqui</Text>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={style.button}>
-          <FontAwesome name="search" size={20} color="black" />
-          <Text style={style.buttonText}>Pesquise aqui</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={style.container2}>
-        <Text onPress={()=> setExpand(!expand)}  style={style.buttonText2}>Favoritos </Text>
+        <View style={style.container2}>
+          <Text onPress={() => setExpand(!expand)} style={style.buttonText2}>
+            Favoritos{""}
+          </Text>
+          <FlatList
+            data={produtosHorizontal}
+            horizontal={expand}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
         <FlatList
-          data={produtosHorizontal}
-          horizontal={expand}
+          data={produtosvertical}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
+          numColumns={2}
         />
-      </View>
-
-      <FlatList
-        data={produtosvertical}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        numColumns={2}
-      />
-
-      
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };

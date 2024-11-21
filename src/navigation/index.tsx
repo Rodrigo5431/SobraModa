@@ -1,21 +1,11 @@
-import React from "react";
-import { MainTabNavigator } from "./MainTabNavigation";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import { colors } from "../styles/colors";
-// import { Chat } from "../screens/Chat";
-
-import { Home } from "../screens/Home";
+import React from "react";
 import { Chat } from "../screens/Chat";
-import { NoImplements } from "../screens/NoImplements";
-import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
-import { Alert, Touchable, TouchableOpacity } from "react-native";
 import { EditProfile } from "../screens/EditProfile";
-import { PrivateChat } from "../screens/PrivateChat";
-
-
-
+import { NoImplements } from "../screens/NoImplements";
+import { colors } from "../styles/colors";
+import { MainTabNavigator } from "./MainTabNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +19,7 @@ export const Navigator = () => {
     //   navigation.navigate('Chat');
     // };
 
+
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -38,8 +29,8 @@ export const Navigator = () => {
                     headerStyle: {
                         backgroundColor: colors.purple.cor5,
                     },
-                }}
-            >
+                }}>
+
 
                 <Stack.Screen
                     name="Home"
@@ -76,12 +67,12 @@ export const Navigator = () => {
                     component={EditProfile}
                     options={{ title: "Editar Perfil", headerShown: false }}
                 />
-
+{/* 
                 <Stack.Screen
                     name="PrivateChat"
                     component={PrivateChat}
                     options={{ title: "Conversa Privada", headerShown: false }}
-                />
+                /> */}
 
 
 
