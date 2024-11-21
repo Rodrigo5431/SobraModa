@@ -1,8 +1,8 @@
 
 import React from "react";
-import { useFonts,ComicNeue_400Regular,
-  ComicNeue_700Bold } from '@expo-google-fonts/comic-neue';
-  import AppLoading from "expo-app-loading";
+// import { useFonts,ComicNeue_400Regular,
+//   ComicNeue_700Bold } from '@expo-google-fonts/comic-neue';
+//   import AppLoading from "expo-app-loading";
 // import { EditProfile } from "./src/screens/EditProfile";
 // import { NoImplements } from "./src/screens/NoImplements";
 import { Navigator } from "./src/navigation";
@@ -14,11 +14,11 @@ import  Add  from "./src/screens/Add";
 
 export default function App() {
 
-const[FontsLoaded]= useFonts({ComicNeue_400Regular,
-  ComicNeue_700Bold })
+// const[FontsLoaded]= useFonts({ComicNeue_400Regular,
+//   ComicNeue_700Bold })
 
-  if(!FontsLoaded)
-    <AppLoading />
+//   if(!FontsLoaded)
+//     <AppLoading />
 
 
   return (
@@ -38,9 +38,9 @@ const[FontsLoaded]= useFonts({ComicNeue_400Regular,
 
     // <NoImplements/>
 
-  // <Navigator/>
+  <Navigator/>
 
-  <Add/>
+  // <Add/>
 
 
   )
