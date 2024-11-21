@@ -14,6 +14,7 @@ import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
+import React from "react";
 
 export const Login = () => {
 
