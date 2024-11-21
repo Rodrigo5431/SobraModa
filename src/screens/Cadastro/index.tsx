@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Keyboard,
@@ -12,7 +12,6 @@ import {
 import * as yup from "yup";
 import { saveUser } from "./functions/saveUser";
 import { styles } from "./style";
-import React from "react";
 
 export const Cadastro = () => {
   const [loading, setLoading] = useState<any>();
