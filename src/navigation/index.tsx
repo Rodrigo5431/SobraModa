@@ -6,6 +6,7 @@ import { EditProfile } from "../screens/EditProfile";
 import { NoImplements } from "../screens/NoImplements";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
+import { PrivateChat } from "../screens/PrivateChat";
 
 const Stack = createNativeStackNavigator();
 
@@ -67,12 +68,12 @@ export const Navigator = () => {
                     component={EditProfile}
                     options={{ title: "Editar Perfil", headerShown: false }}
                 />
-{/* 
+
                 <Stack.Screen
                     name="PrivateChat"
                     component={PrivateChat}
                     options={{ title: "Conversa Privada", headerShown: false }}
-                /> */}
+                />
 
 
 
