@@ -1,4 +1,8 @@
-
+import { StatusBar } from 'expo-status-bar';
+import { Login } from './src/screens/Login';
+import { AuthProvider } from './src/hooks/useAuth';
+import { Register } from './src/screens/Register';
+import { Cadastro } from './src/screens/Cadastro';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
@@ -25,6 +29,18 @@ export default function App() {
 
 
   return (
+    <>
+      <StatusBar style="auto" />
+      <AuthProvider>
+        {/* <Cadastro /> */}
+      {/* <Register /> */}
+      <Login />
+        
+      </AuthProvider>
+    </>
+        
+         <Navigator/>
+
     // <NavigationContainer>
     //   <Stack.Navigator
     //     initialRouteName="Chat"
@@ -36,19 +52,14 @@ export default function App() {
     //     {/* <Stack.Screen name="PrivateChat" component={PrivateChat}/> */}
     //   </Stack.Navigator>
     // </NavigationContainer>
-    <>
-    <EditProfile/>
-    </>
-    //<NoImplements/>
-
-  );
+ 
     
     // <EditProfile/>
 
     // <NoImplements/>
 
- // <Navigator/>
-
+ 
+ );
 
 }
 
