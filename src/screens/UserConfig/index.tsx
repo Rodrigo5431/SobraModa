@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import React from "react";
 
-export const Configuration = () => {
+export default function Configuration() {
   const [user, setUser] = useState<any>();
   const [id, setId] = useState<number>();
   const [nome, setNome] = useState<string>();
@@ -82,7 +82,7 @@ export const Configuration = () => {
         <Image source={configurationIcon} style={styles.userImage}></Image>
         {/* <Image source={foto} style={styles.userImage}></Image> */}
 
-        <Text>Costureira em ascensao</Text>
+        <Text>Costureira em ascensão</Text>
         {/* <Text>{descricao}</Text> */}
       </View>
       <View style={styles.talk}>

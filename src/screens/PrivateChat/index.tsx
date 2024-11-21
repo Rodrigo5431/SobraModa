@@ -20,7 +20,7 @@ type PrivateChatProps = {
   route: RouteProp<{ params: PrivateChatRouteParams }, "params">;
 };
 
-export const PrivateChat: React.FC<PrivateChatProps> = ({ route }) => {
+export const PrivateChat = ({ route }: PrivateChatProps) => {
   const { Usuario, Mensagem } = route.params;
 
   // Estado para gerenciar a lista de mensagens e o campo de entrada

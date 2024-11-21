@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import React from "react";
 import {
   View,
   Image,
   FlatList,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import style from "./style";
 import { StatusBar } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Navigator } from "../../navigation";
+import { useNavigation } from "@react-navigation/native";
 
 interface Produto {
   id: string;
@@ -63,6 +65,7 @@ const produtosvertical: Produto[] = [
   },
 ];
 
+
 const produtosHorizontal: Produto[] = [
   {
     id: "5",
@@ -88,14 +91,25 @@ const produtosHorizontal: Produto[] = [
   },
 ];
 
-const Home = () => {
+export const Home = () => {
+
+  // const navigation = useNavigation();
+
+  // const handleChats = () => {
+
+  //   Alert.alert('Vamos para a Chats');
+  //   navigation.navigate('Chat');
+  // };
+
+  const [expand, setExpand] = useState<boolean>(true);
+  
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={style.produtoContainer}>
       <Image source={item.image} style={style.produtoImage} />
       <Text style={style.produtoTitle}>{item.title}</Text>
     </View>
   );
-  const [expand, setExpand] = useState<boolean>(true);
+
 
   return (
     <>
@@ -139,5 +153,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;
