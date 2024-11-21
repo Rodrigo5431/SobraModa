@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Image,
@@ -6,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
@@ -14,10 +13,10 @@ import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
+import React from "react";
 
 export const Login = () => {
-
-  const {email, setEmail, checkAuthentication, isLoading} =useAuth();
+  const { email, setEmail, checkAuthentication, isLoading } = useAuth();
   const [password, setPassword] = useState<string>("");
 
   const handleEmail = (value: string) => {
@@ -29,12 +28,11 @@ export const Login = () => {
   };
 
   const handleLogin = () => {
-   checkAuthentication(email, password);
-    
+    checkAuthentication(email, password);
   };
 
   return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Image style={styles.logo} source={logo} />
         <Text style={styles.tituloPrincipal}>Seja Bem-Vindo</Text>
@@ -61,7 +59,6 @@ export const Login = () => {
             propsBackgroundColor="#342142"
           />
 
-
           <View style={styles.linha} />
 
           <ButtonSocial
@@ -86,7 +83,8 @@ export const Login = () => {
             <Text>Não tem conta?</Text>
             <TouchableOpacity>
               <Text
-                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
+                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+              >
                 Cadastre-se
               </Text>
             </TouchableOpacity>

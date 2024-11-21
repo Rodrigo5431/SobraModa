@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContext, createContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type PropsContext = {
   email: string;
@@ -66,13 +66,6 @@ export const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     getData();
   }, []);
-
-
-
-
-
-
-
 
   return (
     <AuthContext.Provider

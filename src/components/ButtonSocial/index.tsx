@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { styles } from "./style";
+import React from "react";
 
 interface PropsButton {
   title: string;

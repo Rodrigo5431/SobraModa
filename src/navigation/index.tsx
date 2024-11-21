@@ -76,12 +76,12 @@ export const Navigator = () => {
                     component={EditProfile}
                     options={{ title: "Editar Perfil", headerShown: false }}
                 />
-
+{/* 
                 <Stack.Screen
                     name="PrivateChat"
                     component={PrivateChat}
                     options={{ title: "Conversa Privada", headerShown: false }}
-                />
+                /> */}
 
 
 

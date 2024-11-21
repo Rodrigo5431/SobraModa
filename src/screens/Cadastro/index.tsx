@@ -5,6 +5,7 @@ import { Keyboard, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, 
 import * as yup from "yup";
 import { saveUser } from "./functions/saveUser";
 import { styles } from "./style";
+import React from "react";
 
 export const Cadastro = () => {
 
