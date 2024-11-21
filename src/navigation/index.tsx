@@ -1,21 +1,13 @@
-import React from "react";
-import { MainTabNavigator } from "./MainTabNavigation";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { MainTabNavigator } from "./MainTabNavigation";
 import { colors } from "../styles/colors";
-// import { Chat } from "../screens/Chat";
-
-import { Home } from "../screens/Home";
+import Add from "../screens/Add";
 import { Chat } from "../screens/Chat";
-import { NoImplements } from "../screens/NoImplements";
-import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
-import { Alert, Touchable, TouchableOpacity } from "react-native";
 import { EditProfile } from "../screens/EditProfile";
-import { PrivateChat } from "../screens/PrivateChat";
-
-
-
+import { NoImplements } from "../screens/NoImplements";
+import UserConfig from "../screens/UserConfig";
+import React = require("react");
 
 const Stack = createNativeStackNavigator();
 

@@ -3,7 +3,7 @@ import { styles } from "./style";
 import { useState } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Api from "../../services/api";
+import Apis from "../../services/apis";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -16,7 +16,7 @@ export const HeaderConfiguration = () => {
   async function searchUser() {
     try {
       const token = await AsyncStorage.getItem("userToken");
-      const response = await Api.get(`/usuarios/me`, {
+      const response = await Apis.get(`/usuarios/me`, {
         headers: {
           Authorization: `Bearer ${token}`, 
         },

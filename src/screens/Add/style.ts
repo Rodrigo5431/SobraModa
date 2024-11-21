@@ -1,19 +1,23 @@
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
+import { useFonts, ComicNeue_700Bold } from '@expo-google-fonts/comic-neue';
 
-const style = StyleSheet.create({
+
+const [isLoaded, error] = useFonts({ ComicNeue_700Bold });
+
+export const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: '#342142',
     padding: 40,
   },
   textheader:{
+    fontFamily: isLoaded ? 'ComicNeue_700Bold' : 'default-font',
 
     color: '#fff',
   },
 
   header: {
-    // fontFamily: 
     fontSize: 40,
     textAlign: 'center',
     marginTop: 20,
@@ -83,25 +87,27 @@ fontFamily: "ComicNeue_700Bold",
   button:{
    
     backgroundColor: '#D0B9F0',
-    padding: 14,
-    marginBottom: 50,
-    // height: ,
-    alignItems: 'center',
+    padding: 12,
+    alignItems:"center", 
+    justifyContent: "center", 
     borderRadius: 50,
     marginTop: 20,
     marginLeft: 250,
     width: 100,
-    // padding: '50' ,
-  },
+    height: 50,
+    position:"absolute",
+      },
 
   textbutton: {
- fontFamily: "ComicNeue_400Regular",
+    fontFamily: "ComicNeue_700Bold",
     color: '#333F',
-    fontSize: 10,
+    fontSize: 20,
     fontWeight: 'bold',
-    width: 50,
-    alignItems:"flex-end",
+    width: 60,
+    alignItems:"center",
+  
+    
   },
 });
 
-export default style;
+
