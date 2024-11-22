@@ -1,8 +1,9 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
-const screenWidth = Dimensions.get('window').width;
+import { Dimensions, Platform, StyleSheet } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 
 const style = StyleSheet.create({
   container: {
+
      flex: 1,
      backgroundColor: '#E3D5F6' ,
      paddingBottom: 60,
@@ -23,13 +24,14 @@ const style = StyleSheet.create({
     top: 0,
    },
 
+
   produtoContainer: {
-    height:200, 
+    height: 200,
     margin: 5,
-    marginVertical: 35, 
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+    marginVertical: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
   
   produtoImage: {
@@ -94,9 +96,6 @@ const style = StyleSheet.create({
       marginTop: -30,
       marginBottom: 50,
     },
-    
-    
- 
 });
 
 export default style;

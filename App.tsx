@@ -1,6 +1,6 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Navigator } from "./src/navigation";
-import { StatusBar } from "expo-status-bar";
 import { ProductAdd } from "./src/screens/ProductAdd";
 import { ProductList } from "./src/screens/Test";
 import { 
@@ -11,6 +11,7 @@ import {
 import { IslandMoments_400Regular } from "@expo-google-fonts/island-moments";
 import AppLoading from "expo-app-loading";
 import { Home } from "./src/screens/Home";
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,6 +32,7 @@ export default function App() {
       {/* <Navigator /> */}
       <Home />
       {/* <ProductList /> */}
+
     </>
   );
 }

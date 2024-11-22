@@ -6,22 +6,70 @@ import { EditProfile } from "../screens/EditProfile";
 import { NoImplements } from "../screens/NoImplements";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
+<<<<<<< HEAD
 import { PrivateChat } from "../screens/PrivateChat";
 import { Login } from "../screens/Login";
+=======
+import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
+import Configuration from "../screens/UserConfig";
+import { HeaderConfiguration } from "../components/HeaderConfiguration";
+import { Login } from "../screens/Login";
+import { Cadastro } from "../screens/Cadastro";
+>>>>>>> 5e3503454a32eae2fba8cdab18a3b011c6aa8639
 
 const Stack = createNativeStackNavigator();
 
 export const Navigator = () => {
+  // const navigation = useNavigation();
 
-    // const navigation = useNavigation();
+  // const handleChats = () => {
 
-    // const handleChats = () => {
+  //   Alert.alert('Vamos para a Chats');
+  //   navigation.navigate('Chat');
+  // };
 
-    //   Alert.alert('Vamos para a Chats');
-    //   navigation.navigate('Chat');
-    // };
+  return (
+    <NavigationContainer>
+      <ProvedorPropriedadeAplicacao>
+        <Stack.Navigator
+          initialRouteName="Login" //depois que terminar colocar a Login para ser a principal
+          screenOptions={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: colors.purple.cor5,
+            },
+          }}
+        >
+          <Stack.Screen
+            name="Home"
+            component={MainTabNavigator}
+            options={{ headerShown: false }}
+          />
+          {/* <TouchableOpacity onPress={handleChats}> */}
+          <Stack.Screen
+            name="Chat"
+            // onPress={() => handleChats()}
+            component={Chat}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: "Mensagens",
+              headerTitleAlign: "center",
+            })}
+          />
+          {/* </TouchableOpacity> */}
 
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: "Login", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cadastrar"
+            component={Cadastro}
+            options={{ title: "Cadastro", headerShown: false }}
+          />
 
+<<<<<<< HEAD
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -32,6 +80,18 @@ export const Navigator = () => {
                         backgroundColor: colors.purple.cor5,
                     },
                 }}>
+=======
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ title: "Editar Perfil", headerShown: false }}
+          />
+          <Stack.Screen
+            name="UserConfig"
+            component={Configuration}
+            options={{ title: "Configuraçoes Usuario", headerShown: false }}
+          />
+>>>>>>> 5e3503454a32eae2fba8cdab18a3b011c6aa8639
 
 
                 <Stack.Screen
@@ -74,11 +134,11 @@ export const Navigator = () => {
                     name="PrivateChat"
                     component={PrivateChat}
                     options={{ title: "Conversa Privada", headerShown: false }}
-                />
+                /> */}
+        </Stack.Navigator>
+      </ProvedorPropriedadeAplicacao>
+    </NavigationContainer>
+  );
+};
 
 
-
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-}
