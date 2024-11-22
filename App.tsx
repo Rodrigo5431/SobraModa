@@ -30,6 +30,7 @@ export default function App() {
       {/* <ProductAdd /> */}
       {/* <Navigator /> */}
       <Home />
+      {/* <ProductList /> */}
     </>
   );
 }

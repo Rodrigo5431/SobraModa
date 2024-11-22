@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -24,7 +24,28 @@ export const ProductAdd = () => {
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState("");
-  
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Busca o ID do usuário ao carregar o componente
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get(
+          "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
+        );
+        if (response.data && response.data[0]?.id) {
+          setUserId(response.data[0].id); // Obtém o primeiro usuário
+        } else {
+          Alert.alert("Erro", "Não foi possível obter o ID do usuário.");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar o ID do usuário:", error);
+        Alert.alert("Erro", "Não foi possível buscar o ID do usuário.");
+      }
+    };
+
+    fetchUserId();
+  }, []);
 
   const pickImage = async () => {
     const permissionResult =
@@ -57,12 +78,18 @@ export const ProductAdd = () => {
       return;
     }
 
+    if (!userId) {
+      Alert.alert("Erro", "ID do usuário não encontrado.");
+      return;
+    }
+
     try {
       const newProduct = {
         titulo,
         descricao,
         preco: parseFloat(preco),
         foto: imageUri,
+        idUser: userId, // Inclui o ID do usuário no produto
       };
 
       const response = await axios.post(
