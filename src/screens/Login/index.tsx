@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,69 +13,79 @@ import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface PropsInf {
   id: number;
+  foto: string;
   nome: string;
   email: string;
   password: string;
 }
 
 export const Login = () => {
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-
-  const [users, setUsers] = useState<PropsInf[]>([]);
-  const [user, setUser] = useState<PropsInf>();
-  const [id, setId] = useState<number>();
-  const [email, setEmail] = useState<string>();
-
   const navigation = useNavigation();
 
-  const handleCadastro = () => {
-    navigation.navigate("Cadastrar");
-  };
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [users, setUsers] = useState<PropsInf[]>([]);
+
+  const { id, setId, foto, setFoto, email, setEmail, password, setPassword, nome, setNome } = useAuth();
+    const [senha, setSenha] = useState<string>("")
 
   const handleEmail = (value: string) => {
     setEmail(value);
   };
 
   const handlePassword = (value: string) => {
-    setPassword(value);
+    setSenha(value);
   };
 
-  async function handleLogin() {
+  const handleLogin = () => {
     const resultado = users.find(
-      (user) => user.email === email && user.password === password
+      (user) => user.email.toLowerCase() === email.toLowerCase() && user.password === senha
     );
-
+    
     if (resultado) {
-      setUser(resultado);
-      console.log("achei," + resultado.email);
+      // setId(resultado.id);
+      // setFoto(resultado.foto);
+      // setNome(resultado.nome);
+      // setPassword(resultado.password);
+      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setSuccess(true);
+      setError("");
+      console.log("resultado: " + resultado);
+      console.log(`nome: ${nome}`);
+      
+      
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+
     } else {
-      console.log("USUARIO NAO ENCONTRADO");
+      setError("Usuário ou senha inválidos!");
+      setSuccess(false);
     }
-  }
+  };
 
-  async function searchUser() {
-    // console.log("aquiiiiii");
-
+  const searchUser = async () => {
     try {
       const response = await axios.get(
         "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
       );
 
-      // console.log('aqui 2 vezes');
-
       if (response.status === 200) {
         setUsers(response.data);
         console.log(response.data);
+        
       }
     } catch (error) {
-      console.log("erro ");
+      console.error("Erro ao carregar usuários:", error);
     }
-  }
+  };
+
   useEffect(() => {
     searchUser();
   }, []);
@@ -98,7 +107,7 @@ export const Login = () => {
           <TextInputField
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
-            valueInput={password}
+            valueInput={senha}
             typeInput={true}
             typeIcon="password"
           />
@@ -118,7 +127,7 @@ export const Login = () => {
           />
 
           <ButtonSocial
-            title="Entrar com o google"
+            title="Entrar com o Google"
             icon="logo-google"
             propsType="ionicon"
           />
@@ -131,7 +140,7 @@ export const Login = () => {
 
           <View style={styles.cadastro}>
             <Text>Não tem conta?</Text>
-            <TouchableOpacity onPress={handleCadastro}>
+            <TouchableOpacity>
               <Text
                 style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
               >
@@ -139,9 +148,10 @@ export const Login = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          {error && <Text style={{ fontSize: 35 }}>{error}</Text>}
+
+          {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35 }}>Login realizado com sucesso!</Text>
+            <Text style={{ fontSize: 35, color: "green" }}>Login realizado com sucesso!</Text>
           )}
         </View>
       </View>

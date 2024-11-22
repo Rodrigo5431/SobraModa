@@ -11,10 +11,11 @@ export const styles = StyleSheet.create({
         gap:15,
       },
       userImage:{
-        backgroundColor: 'black',
         width:130,
         height:130,
         borderRadius: 60,
+        borderWidth: 1,
+        borderColor:'black'
       },
       talk:{
         justifyContent: 'center',

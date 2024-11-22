@@ -22,7 +22,7 @@ type ChatProps = {
   navigation: ChatScreenNavigationProp;
 };
 
-export const Chat: React.FC<ChatProps> = ({ navigation }) => {
+export const Chat = ({ navigation }:ChatProps) => {
   const [dados, setDados] = useState<UsuarioData[]>([]);
   const [dadosFiltrados, setDadosFiltrados] = useState<UsuarioData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -58,7 +58,7 @@ export const Chat: React.FC<ChatProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <HeaderChat />
+      <HeaderChat texto="Mensagens" />
       <View style={styles.card}>
         <SearchInput placeHolder="Pesquisar" onSearch={filtrarUsuarios} />
         {loading ? (

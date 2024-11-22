@@ -9,7 +9,7 @@ interface PropsInteput {
   typeInput?: boolean;
   valueInput?: string;
   typeIcon?: string;
-  onChangeText?: string;
+  onChangeText?: any;
   handleFunctionInput?: (value: string) => void;
 }
 
@@ -34,9 +34,6 @@ export const TextInputField = ({
         secureTextEntry={typeIcon === "password" ? viewPassword : typeInput}
         value={valueInput}
       />
-
-
-
       <View style={styles.boxIcon}>
         {typeIcon === "person" && <Icon name="person" />}
       </View>

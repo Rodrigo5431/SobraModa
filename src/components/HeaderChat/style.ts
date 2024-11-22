@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
     top: 0,
     position: "absolute",
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
     paddingTop: 0,
     paddingBottom: 10,
+    zIndex: 10
   },
   
   invertedCorner: {
@@ -27,7 +28,6 @@ export const styles = StyleSheet.create({
   msg: {
     color: "#fff",
     fontSize: 24,
-    marginLeft: 20,
     marginBottom: 10,
   },
 });
