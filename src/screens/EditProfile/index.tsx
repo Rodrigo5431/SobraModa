@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -15,6 +15,7 @@ import axios from "axios";
 import { KeyboardAvoidingView } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import { HeaderConfiguration } from "../../components/HeaderConfiguration";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const EditProfile = () => {
   const { email, setEmail } = useAuth();
@@ -27,22 +28,23 @@ export const EditProfile = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const id = useState<string>("");
+  const [userData, setUserData] = useState<any>(null);
 
-  const handlesubmitPassword = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/usuarios/${id}`,
 
-        { password, newPassword, confirmPassword },
-
-        {
-          headers: {
-            //   Authorization: `Bearer ${token}`,
-          },
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await AsyncStorage.getItem("resultado");
+        if (data) {
+          setUserData(JSON.parse(data));
         }
-      );
-    } catch (error) {}
-  };
+      } catch (error) {
+        console.error("Erro ao buscar dados do AsyncStorage:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -59,11 +61,11 @@ export const EditProfile = () => {
               setShowPassword(false);
             }}
           >
-            <Text style={styles.title}>{savedName}</Text>
+            <Text style={styles.title}>{userData?.nome}</Text>
             <View style={styles.editItem}>
               <Image
                 style={styles.userImg}
-                source={require("../../assets/configurationIcon.png")}
+                source={{uri : userData?.Foto}}
               />
               <View style={styles.name}>
                 <TouchableOpacity

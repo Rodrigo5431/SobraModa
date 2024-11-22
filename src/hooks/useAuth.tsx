@@ -2,22 +2,40 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
 type PropriedadeIniciadaOuObrigatoria = {
+  checkAuthentication: (email: string, password: string) => void;
+  id: number;
+  setId: (value: number) => void;
+  foto: string;
+  setFoto: (value: string) => void;
   email: string;
   setEmail: (value: string) => void;
-  checkAuthentication: (email: string, password: string) => void;
+  nome: string;
+  setNome: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
   isLoading: boolean;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
+  checkAuthentication: () => {},
+  id: 0,
+  setId: (value: number) => {},
+  foto: "",
+  setFoto: (value: string) => {},
   email: "",
   setEmail: () => {},
-  checkAuthentication: () => {},
+  nome: "Rodrigo",
+  setNome: () => {},
+  password: "",
+  setPassword: () => {},
   isLoading: false,
-
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
+  const [id, setId] = useState<number>();
   const [email, setEmail] = useState<string>("");
+  const [nome, setNome] = useState<string>("rodrigo");
+  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const checkAuthentication = (email: string, password: string) => {
@@ -66,7 +84,21 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   return (
     <Propriedade.Provider
-      value={{ email, setEmail, checkAuthentication, isLoading }}>
+      value={{
+        checkAuthentication,
+        id: 0,
+        setId: () => {},
+        foto: "",
+        setFoto: () => {},
+        email,
+        setEmail,
+        nome: "",
+        setNome: () => {},
+        password: "",
+        setPassword,
+        isLoading,
+      }}
+    >
       {children}
     </Propriedade.Provider>
   );

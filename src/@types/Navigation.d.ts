@@ -2,6 +2,8 @@ export type PropsStack = {
     Cadastrar: undefined;
     StackHome: undefined
     EditProfile:undefined
+    Configuration:undefined
+    Home:undefined
 }
 
 export type PropsTabs = {

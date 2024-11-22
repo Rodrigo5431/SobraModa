@@ -34,9 +34,6 @@ export const TextInputField = ({
         secureTextEntry={typeIcon === "password" ? viewPassword : typeInput}
         value={valueInput}
       />
-
-
-
       <View style={styles.boxIcon}>
         {typeIcon === "person" && <Icon name="person" />}
       </View>
