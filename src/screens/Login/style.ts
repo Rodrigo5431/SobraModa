@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     },
 
     tituloPrincipal:{
-       fontFamily: "Island Moments",
+       fontFamily: "IslandMoments_400Regular",
        fontSize: 36,
        color: "#342142",
        marginBottom: 30

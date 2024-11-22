@@ -1,3 +1,4 @@
+import { ComicNeue_300Light, ComicNeue_700Bold, ComicNeue_700Bold_Italic } from "@expo-google-fonts/comic-neue";
 import { Dimensions, StyleSheet } from "react-native";
 const { width } = Dimensions.get("window");
 
@@ -28,6 +29,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: "#333",
     marginBottom: 10,
+    fontFamily: "ComicNeue_700Bold"
   },
 
   info: {
@@ -60,6 +62,7 @@ export const styles = StyleSheet.create({
 
   btnText: {
     fontSize: 16,
+    fontFamily: "ComicNeue_700Bold",
   },
 
   image: {
@@ -71,13 +74,13 @@ export const styles = StyleSheet.create({
   },
 
   imageBoxWithImage: {
-    justifyContent: 'flex-start',  // Ajuste para alinhar a imagem de forma adequada
+    justifyContent: 'flex-start',
   },
   imageInsideBox: {
     width: '100%',
     height: '100%',
     borderRadius: 8,
-    resizeMode: 'cover',  // Faz a imagem se ajustar à caixa sem distorção
+    resizeMode: 'cover',
   },
   
 });

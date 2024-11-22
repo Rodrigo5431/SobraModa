@@ -7,6 +7,7 @@ import { NoImplements } from "../screens/NoImplements";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
 import { PrivateChat } from "../screens/PrivateChat";
+import { Login } from "../screens/Login";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ export const Navigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Home" //depois que terminar colocar a Login para ser a principal
+                initialRouteName="Login" //depois que terminar colocar a Login para ser a principal
                 screenOptions={{
                     headerShown: false,
                     headerStyle: {
@@ -54,7 +55,7 @@ export const Navigator = () => {
 
                 <Stack.Screen
                     name="Login"
-                    component={NoImplements}
+                    component={Login}
                     options={{ title: "Login", headerShown: false }}
                 />
                 <Stack.Screen
