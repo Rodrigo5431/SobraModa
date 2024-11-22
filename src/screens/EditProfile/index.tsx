@@ -13,8 +13,12 @@ import {
 import { styles } from "./style";
 import axios from "axios";
 import { KeyboardAvoidingView } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
+import { HeaderConfiguration } from "../../components/HeaderConfiguration";
 
 export const EditProfile = () => {
+  const { email, setEmail } = useAuth();
+
   const [showName, setShowName] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [savedName, setSavedName] = useState<string>("");
@@ -23,7 +27,7 @@ export const EditProfile = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const id = useState<string>("");
-  //const token = localStorage.getItem("token");
+
   const handlesubmitPassword = async () => {
     try {
       const response = await axios.put(
@@ -104,6 +108,7 @@ export const EditProfile = () => {
                 </View>
               </View>
             )}
+
             {showPassword && (
               <View style={styles.changeInformation}>
                 <View style={styles.titleAreaPassword}>

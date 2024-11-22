@@ -1,21 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
-type PropsContext = {
+type PropriedadeIniciadaOuObrigatoria = {
   email: string;
   setEmail: (value: string) => void;
   checkAuthentication: (email: string, password: string) => void;
   isLoading: boolean;
 };
 
-const AuthContext = createContext<PropsContext>({
+const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   email: "",
   setEmail: () => {},
   checkAuthentication: () => {},
   isLoading: false,
+
 });
 
-export const AuthProvider = ({ children }: any) => {
+export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -64,12 +65,11 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ email, setEmail, checkAuthentication, isLoading }}
-    >
+    <Propriedade.Provider
+      value={{ email, setEmail, checkAuthentication, isLoading }}>
       {children}
-    </AuthContext.Provider>
+    </Propriedade.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(Propriedade);

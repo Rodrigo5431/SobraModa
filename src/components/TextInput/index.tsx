@@ -9,7 +9,7 @@ interface PropsInteput {
   typeInput?: boolean;
   valueInput?: string;
   typeIcon?: string;
-  onChangeText?: string;
+  onChangeText?: any;
   handleFunctionInput?: (value: string) => void;
 }
 

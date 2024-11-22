@@ -1,32 +1,13 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import Apis from "../../services/apis";
 import { styles } from "./style";
 
 export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState<boolean>(false);
   const [user, setUser] = useState<any>();
   const [nome, setNome] = useState<string>('');
-  
-
-  async function searchUser() {
-    try {
-      const token = await AsyncStorage.getItem("userToken");
-      const response = await Apis.get(`/usuarios/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      });
-      setUser(response.data);
-      setNome(response.data.nome);
-
-    } catch (error) {
-      console.error("Erro ao buscar dados do usuário:", error);
-    }
-  }
 
   
   const navigation = useNavigation();
@@ -59,6 +40,6 @@ export const HeaderConfiguration = () => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
-  );
+   </View>
+);
 };

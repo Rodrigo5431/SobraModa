@@ -6,6 +6,9 @@ import { EditProfile } from "../screens/EditProfile";
 import { NoImplements } from "../screens/NoImplements";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
+import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
+import Configuration from "../screens/UserConfig";
+import { HeaderConfiguration } from "../components/HeaderConfiguration";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,7 @@ export const Navigator = () => {
 
     return (
         <NavigationContainer>
+            <ProvedorPropriedadeAplicacao>
             <Stack.Navigator
                 initialRouteName="Home" //depois que terminar colocar a Login para ser a principal
                 screenOptions={{
@@ -30,7 +34,6 @@ export const Navigator = () => {
                         backgroundColor: colors.purple.cor5,
                     },
                 }}>
-
 
                 <Stack.Screen
                     name="Home"
@@ -67,6 +70,12 @@ export const Navigator = () => {
                     component={EditProfile}
                     options={{ title: "Editar Perfil", headerShown: false }}
                 />
+                <Stack.Screen
+                    name="UserConfig"
+                    component={Configuration}
+                    options={{ title: "Configuraçoes Usuario", headerShown: false }}
+                />
+              
 {/* 
                 <Stack.Screen
                     name="PrivateChat"
@@ -77,6 +86,7 @@ export const Navigator = () => {
 
 
             </Stack.Navigator>
+            </ProvedorPropriedadeAplicacao>
         </NavigationContainer>
     );
 }
