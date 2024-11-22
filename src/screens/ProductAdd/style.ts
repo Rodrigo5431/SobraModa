@@ -20,7 +20,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 180,
     backgroundColor: "#D0B9F0",
-    marginBottom: 30
+    marginBottom: 30,
+    position: 'relative',
   },
 
   msg: {
@@ -59,5 +60,24 @@ export const styles = StyleSheet.create({
 
   btnText: {
     fontSize: 16,
-  }
+  },
+
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
+    borderRadius: 8,
+    alignSelf: 'center',
+  },
+
+  imageBoxWithImage: {
+    justifyContent: 'flex-start',  // Ajuste para alinhar a imagem de forma adequada
+  },
+  imageInsideBox: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+    resizeMode: 'cover',  // Faz a imagem se ajustar à caixa sem distorção
+  },
+  
 });
