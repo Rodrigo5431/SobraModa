@@ -85,6 +85,7 @@ const produtosHorizontal: Produto[] = [
 ];
 
 export const Home = () => {
+
   // const navigation = useNavigation();
 
   // const handleChats = () => {
@@ -94,6 +95,7 @@ export const Home = () => {
   // };
 
   const [expand, setExpand] = useState<boolean>(true);
+  const [foto, setFoto] = useState<boolean>(false);
 
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={style.produtoContainer}>
@@ -105,10 +107,10 @@ export const Home = () => {
   return (
     <>
       <ScrollView style={style.container}>
-        <View>
+        <View style={style.perfil}>
           <View style={style.profileContainer}>
             <Image
-              source={require("../../../assets/perfil.jpg")}
+              source={require("../../assets/configurationIcon.png")}
               style={style.profileImage}
             />
           </View>
