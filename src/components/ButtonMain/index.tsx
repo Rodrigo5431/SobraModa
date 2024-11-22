@@ -5,7 +5,7 @@ import React from "react";
 interface PropsButton {
   title: string;
   propsBackgroundColor: string;
-  handleFunction?: () => void;
+  handleFunction: () => void;
 }
 
 export const ButtonMain = ({
@@ -15,7 +15,8 @@ export const ButtonMain = ({
 }: PropsButton) => {
   return (
     <TouchableOpacity
-      onPress={handleFunction}
+
+      onPress={ handleFunction}
       activeOpacity={0.2}
       style={[ styles.styleButton,{ backgroundColor: propsBackgroundColor ? propsBackgroundColor : "Blue",},]}
     >
