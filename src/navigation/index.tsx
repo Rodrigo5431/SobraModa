@@ -75,7 +75,43 @@ export const Navigator = () => {
             options={{ title: "Configuraçoes Usuario", headerShown: false }}
           />
 
-          {/* 
+
+                <Stack.Screen
+                    name="Home"
+                    component={MainTabNavigator}
+                    options={{ headerShown: false }}
+                />
+                {/* <TouchableOpacity onPress={handleChats}> */}
+                <Stack.Screen
+                    name="Chat"
+                    // onPress={() => handleChats()}
+                    component={Chat}
+                    options={({ navigation }) => ({
+                        headerShown: false,
+                        headerTitle: "Mensagens",
+                        headerTitleAlign: "center",
+                    })}
+
+                />
+                {/* </TouchableOpacity> */}
+
+                <Stack.Screen
+                    name="Login"
+                    component={NoImplements}
+                    options={{ title: "Login", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Cadastrar"
+                    component={NoImplements}
+                    options={{ title: "Cadastro", headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name="EditProfile"
+                    component={EditProfile}
+                    options={{ title: "Editar Perfil", headerShown: false }}
+                />
+
                 <Stack.Screen
                     name="PrivateChat"
                     component={PrivateChat}
@@ -86,3 +122,5 @@ export const Navigator = () => {
     </NavigationContainer>
   );
 };
+
+
