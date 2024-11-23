@@ -30,6 +30,30 @@ export const EditProfile = () => {
   const id = useState<string>("");
   const [userData, setUserData] = useState<any>(null);
 
+  const atualizaNome = async () => {
+    try {
+      axios.put(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
+        {
+          nome: savedName,
+        }
+      );
+    } catch (error) {
+      console.log("nao foi possivel atualizar o nome");
+    }
+  };
+  const atualizaSenha = async () => {
+    try {
+      axios.put(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
+        {
+          password: newPassword,
+        }
+      );
+    } catch (error) {
+      console.log("nao foi possivel atualizar o nome");
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -63,10 +87,7 @@ export const EditProfile = () => {
           >
             <Text style={styles.title}>{userData?.nome}</Text>
             <View style={styles.editItem}>
-              <Image
-                style={styles.userImg}
-                source={{uri : userData?.Foto}}
-              />
+              <Image style={styles.userImg} source={{ uri: userData?.Foto }} />
               <View style={styles.name}>
                 <TouchableOpacity
                   style={styles.buttonChange}
@@ -103,6 +124,7 @@ export const EditProfile = () => {
                     onPress={() => {
                       setSavedName(name);
                       setName("");
+                      atualizaNome()
                     }}
                   >
                     <Text style={styles.saveButtonText}>Salvar</Text>
@@ -139,14 +161,16 @@ export const EditProfile = () => {
                 />
                 <View>
                   <TouchableOpacity style={styles.saveButtonPassword}>
-                    <Text style={styles.saveButtonText}>Salvar</Text>
+                    <Text style={styles.saveButtonText}
+                    onPress={atualizaSenha}
+                    >Salvar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             )}
             <View style={styles.logoutArea}>
               <TouchableOpacity activeOpacity={0.6} style={styles.logoutButton}>
-                <Text style={styles.alter}>Sair</Text>
+                <Text style={styles.alter}>Voltar</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>

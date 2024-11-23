@@ -15,12 +15,12 @@ import { ButtonMain } from "../../components/ButtonMain";
 import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
 
-interface PropsUser{
-  id:number
+interface PropsUser {
+  id: number;
   nome: string;
   email: string;
   password: string;
-  Foto: string ;
+  Foto: string;
 }
 
 export const Cadastro = () => {
@@ -30,10 +30,8 @@ export const Cadastro = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [erro, setErro] = useState<string>("");
+  const [erroSenha, setErroSenha] = useState<string>("");
   const [users, setUsers] = useState<PropsUser[]>([]);
-  
-
-
 
   const createUsers = async () => {
     if (
@@ -76,7 +74,7 @@ export const Cadastro = () => {
         Alert.alert("Erro", "Erro ao cadastrar usuario");
       }
     } else {
-      Alert.alert("As senhas não são iguais!");
+      setErroSenha("As senhas não coincidem")
     }
   };
 
@@ -105,28 +103,27 @@ export const Cadastro = () => {
   const handleEmailVerification = () => {
     const resultado = users.find(
       (user) => user.email.toLowerCase() === email.toLowerCase()
-    )
-    if(resultado){
-      setErro("email ja existente")
-      console.log("email ja existente");
-      
+    );
+    if (resultado) {
+      setErro("email ja existente");
+    } else {
+      createUsers();
     }
-    else{
-      createUsers()
-    }
-  }
+  };
 
   const handleSearchUsers = async () => {
     try {
-      const response = await axios.get("https://673e81080118dbfe860b784d.mockapi.io/cadastrar");
-      setUsers(response.data)
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
+      );
+      setUsers(response.data);
     } catch (error) {
-    console.log("nao foi possivel achar usuarios");
+      console.log("nao foi possivel achar usuarios");
     }
-  }
+  };
   useEffect(() => {
-    handleSearchUsers()
-  },[])
+    handleSearchUsers();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -167,6 +164,11 @@ export const Cadastro = () => {
               handleFunctionInput={setEmail}
               valueInput={email}
             />
+            {erro && (
+              <View>
+                <Text style={{ color: "red" }}>{erro}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.input}>
@@ -175,7 +177,12 @@ export const Cadastro = () => {
               placeHolder="Digite sua senha"
               handleFunctionInput={setPassword}
               valueInput={password}
-            />
+              />
+              {erroSenha && (
+                <View>
+                  <Text style={{ color: "red" }}>{erroSenha}</Text>
+                </View>
+              )}
           </View>
 
           <View style={styles.input}>
