@@ -76,5 +76,10 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
- 
+  arrowLogin:{
+    right: 150,
+    bottom: 60
+  },
+
 });
+0

@@ -4,17 +4,20 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/useAuth";
 
 export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState(false);
   const navigation = useNavigation();
+
+  const {handleLogOut} = useAuth();
+
   const {fetchUserData , handleLogin , handleLogout , userData} = useAuth()
 
   // const getInfAsyncStorage = async () => { //vai pro contexto
   //   fetchUserData()
-    
-
+   
 
 
     // try {
@@ -33,10 +36,12 @@ export const HeaderConfiguration = () => {
   const handleEditProfile = () => {
     navigation.navigate("EditProfile");
   };
+
   // const handleLogout = () => { //vai pro contexto
   //   AsyncStorage.removeItem("@resultado");
   //   getInfAsyncStorage()
   // };
+
 
   return (
     <View style={styles.container}>
@@ -56,7 +61,7 @@ export const HeaderConfiguration = () => {
           >
             <Text style={styles.editProfile}>Editar Perfil</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogOut}>
             <Text>Sair</Text>
           </TouchableOpacity>
         </View>
