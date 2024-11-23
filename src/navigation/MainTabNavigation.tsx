@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ionicons, Entypo, Feather } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, TouchableOpacity } from 'react-native';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,17 +13,19 @@ import { Chat } from '../screens/Chat';
 import { NoImplements } from '../screens/NoImplements';
 import { MainTabNavigatorChat } from './MainTabNavigatorChat';
 
-
+import { useAuth } from '../hooks/useAuth';
+import { ProductAdd } from '@/screens/ProductAdd';
 
 
 export function MainTabNavigator() {
 
     const Tab = createBottomTabNavigator();
     const navigation = useNavigation();
-
+    const {setTabChat} = useAuth();
+ 
     return (
+
         <Tab.Navigator
-            initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
                 headerTitleAlign: "center",
@@ -50,7 +52,7 @@ export function MainTabNavigator() {
                 }}
             />
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Chat"
                 component={Chat}
                 options={({ navigation }) => {
@@ -61,11 +63,12 @@ export function MainTabNavigator() {
                       onPress: () => navigation.navigate("Chat"),
                     };
                   }}
-            />
+            /> */}
 
+                
             <Tab.Screen
                 name="Add"
-                component={NoImplements}
+                component={ProductAdd}
                 options={({ navigation }) => ({
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="add-circle-outline" size={size} color={color} />

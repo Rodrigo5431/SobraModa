@@ -13,12 +13,13 @@ export const styles = StyleSheet.create({
     width: 120,
   },
 
-  tituloPrincipal: {
-    fontFamily: "Island Moments",
-    fontSize: 36,
-    color: "#342142",
-    marginBottom: 30,
-  },
+
+    tituloPrincipal:{
+       fontFamily: "IslandMoments_400Regular",
+       fontSize: 36,
+       color: "#342142",
+       marginBottom: 30
+    },
 
   boxForms: {
     width: "80%",

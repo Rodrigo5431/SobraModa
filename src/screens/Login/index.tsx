@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   Text,
@@ -30,11 +31,13 @@ export const Login = () => {
 
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
+  const [users, setUsers] = useState<PropsInf[]>([]);
   const [senha, setSenha] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [users, setUsers] = useState<PropsInf[]>([]);
   const { handleLogin } = useAuth();
+
+  // const { setId } = useAuth();
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -50,7 +53,7 @@ export const Login = () => {
         user.email.toLowerCase() === email.toLowerCase() &&
         user.password === senha
     );
-
+  
     if (resultado) {
       handleLogin(resultado);
       setSuccess(true);
@@ -59,11 +62,17 @@ export const Login = () => {
       setTimeout(() => {
         navigation.navigate("Home");
       }, 1000);
+      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setSuccess(true);
+      setError("");
+      Alert.alert("Login realizado com sucesso!");
+      navigation.navigate("Home");
     } else {
       setError("Usuário ou senha inválidos!");
       setSuccess(false);
     }
   };
+  
 
   const searchUser = async () => {
     try {
@@ -73,7 +82,6 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
-        console.log(response.data);
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -148,10 +156,11 @@ export const Login = () => {
             </TouchableOpacity>
           </View>
 
-          {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
+          {error && <Text style={{ fontSize: 18, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35, color: "green" }}>
+            <Text style={{ fontSize: 18, color: "green" }}>
               Login realizado com sucesso!
+
             </Text>
           )}
         </View>

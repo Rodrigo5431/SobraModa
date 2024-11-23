@@ -6,6 +6,8 @@ type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
   handleLogin: (resultado: any) => void;
   handleLogout: (resultado: any) => void;
+  tabChat?:boolean;
+  setTabChat?: (value: boolean) => void;
   isLoading: boolean;
   fetchUserData:() => void;
   userData: any;
@@ -18,15 +20,19 @@ const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   handleLogout: () => {},
   fetchUserData: () => {},
   userData: [],
+  tabChat: false,
+  setTabChat: () => {},
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
-  const [id, setId] = useState<number>();
+  const [id, setId] = useState<number | null>(null);
   const [email, setEmail] = useState<string>("");
   const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>(null);
+  const [tabChat, setTabChat] = useState<boolean>(false);
+
 
   const handleLogin = async (resultado: any) => {
     try {
@@ -68,37 +74,29 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);
-    storeData(email, password);
-    console.log("Pegou o email", email);
+
+   
+    const userId = 1;
+    setId(userId);
+    storeData(userId);
+
     setIsLoading(false);
   };
 
-  const storeData = async (email: string, password: string) => {
-    console.log("chamou a funcao");
-
+  const storeData = async (id: number) => {
     try {
-      console.log("entrou no try");
-
-      const jsonValue = JSON.stringify(email);
-      await AsyncStorage.setItem("@infoUser", jsonValue);
-      console.log("Dados salvos com sucesso");
+      await AsyncStorage.setItem("@userId", JSON.stringify(id));
     } catch (error) {
       console.log("Erro ao salvar dados!");
     }
   };
 
-  //     const handleLogOut = () => {
-  //     AsyncStorage.removeItem('@InfoUser');
-  //     navigation.navigate('StackLogin', {name: "Home"});
-  //   }
-
   const getData = async () => {
     setIsLoading(true);
     try {
-      const value = await AsyncStorage.getItem("@infoUser");
+      const value = await AsyncStorage.getItem("@userId");
       if (value !== null) {
-        const jsonValue = JSON.parse(value);
-        console.log("pegou os dados", jsonValue);
+        setId(JSON.parse(value));
       }
     } catch (error) {
       console.log("Erro ao buscar dados");
@@ -119,7 +117,6 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         fetchUserData,
         isLoading,
         userData,
-        
       }}
     >
       {children}

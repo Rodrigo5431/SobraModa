@@ -16,4 +16,8 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
 
+  msg: {
+    fontFamily: "ComicNeue_700Bold"
+  }
+
 });
