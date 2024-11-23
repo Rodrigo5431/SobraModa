@@ -14,8 +14,7 @@ import { NoImplements } from '../screens/NoImplements';
 import { MainTabNavigatorChat } from './MainTabNavigatorChat';
 
 import { useAuth } from '../hooks/useAuth';
-
-
+import { ProductAdd } from '@/screens/ProductAdd';
 
 
 export function MainTabNavigator() {

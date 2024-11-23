@@ -16,7 +16,7 @@ import { Home } from "../screens/Home";
 import { useAuth } from "../hooks/useAuth";
 import { MyDrawer } from "./drawerNavigator";
 
-import { PrivateChat } from "../screens/PrivateChat";
+import { ProductAdd } from "@/screens/ProductAdd";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +62,13 @@ export function Navigator() {
                     <Stack.Screen
                         name="PrivateChat"
                         component={PrivateChat}
-                        options={{ title: "ConversaPrivada", headerShown: false }}
+                        options={{ title: "ConversaPrivada", headerShown: true, headerTitleAlign: "center" }}
+                    />
+
+                    <Stack.Screen
+                        name="ProductAdd"
+                        component={ProductAdd}
+                        options={{ title: "Editar Perfil", headerShown: false }}
                     />
 
 
