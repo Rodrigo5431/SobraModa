@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { Chat } from "../screens/Chat";
@@ -6,18 +6,21 @@ import { EditProfile } from "../screens/EditProfile";
 import { NoImplements } from "../screens/NoImplements";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
+import { Login } from "../screens/Login";
+import { Cadastro } from "../screens/Cadastro";
+import  PrivateChat  from "../screens/PrivateChat";
+import { Alert } from "react-native";
+import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
+import { Home } from "../screens/Home";
+import { useAuth } from "../hooks/useAuth";
+import { MyDrawer } from "./drawerNavigator";
 
 const Stack = createNativeStackNavigator();
 
 export const Navigator = () => {
 
-    // const navigation = useNavigation();
 
-    // const handleChats = () => {
-
-    //   Alert.alert('Vamos para a Chats');
-    //   navigation.navigate('Chat');
-    // };
+    const{tabChat} = useAuth();
 
 
     return (
@@ -32,33 +35,26 @@ export const Navigator = () => {
                 }}>
 
 
-                <Stack.Screen
+                {/* <Stack.Screen
                     name="Home"
                     component={MainTabNavigator}
                     options={{ headerShown: false }}
-                />
-                {/* <TouchableOpacity onPress={handleChats}> */}
-                <Stack.Screen
-                    name="Chat"
-                    // onPress={() => handleChats()}
-                    component={Chat}
-                    options={({ navigation }) => ({
-                        headerShown: false,
-                        headerTitle: "Mensagens",
-                        headerTitleAlign: "center",
-                    })}
+                /> */}
 
+                <Stack.Screen
+                    name="Home"
+                    component={MyDrawer}
+                    options={{ title: "Mensagens Privadas", headerShown: false }}
                 />
-                {/* </TouchableOpacity> */}
 
                 <Stack.Screen
                     name="Login"
-                    component={NoImplements}
+                    component={Login}
                     options={{ title: "Login", headerShown: false }}
                 />
                 <Stack.Screen
                     name="Cadastrar"
-                    component={NoImplements}
+                    component={Cadastro}
                     options={{ title: "Cadastro", headerShown: false }}
                 />
 
@@ -67,12 +63,12 @@ export const Navigator = () => {
                     component={EditProfile}
                     options={{ title: "Editar Perfil", headerShown: false }}
                 />
-{/* 
+
                 <Stack.Screen
                     name="PrivateChat"
                     component={PrivateChat}
-                    options={{ title: "Conversa Privada", headerShown: false }}
-                /> */}
+                    options={{ title: "ConversaPrivada", headerShown: false }}
+                />
 
 
 

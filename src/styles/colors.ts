@@ -5,7 +5,8 @@ export const colors = {
         cor2: "#342142", // cor para icones e letras
         cor3: "#8B65BF",
         cor4: "#C9ACF2",
-        cor5: "#E3D5F6" //background geral
+        cor5: "#E3D5F6", //background geral
+        cor6: "#6340e0",
 
     },
 

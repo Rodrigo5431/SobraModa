@@ -4,7 +4,7 @@ import { HeaderChat } from "../../components/HeaderChat";
 import { SearchInput } from "../../components/SearchInput";
 import axios from "axios";
 import { styles } from "./style";
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp, useRoute } from "@react-navigation/native";
 
 type UsuarioData = {
   id: string;
@@ -23,9 +23,18 @@ type ChatProps = {
 };
 
 export const Chat: React.FC<ChatProps> = ({ navigation }) => {
+
   const [dados, setDados] = useState<UsuarioData[]>([]);
   const [dadosFiltrados, setDadosFiltrados] = useState<UsuarioData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const route = useRoute();
+  
+  useEffect(()=> {
+    if(route.name === "Chat"){
+      
+    }
+  });
+
 
   const listaDados = async () => {
     try {
