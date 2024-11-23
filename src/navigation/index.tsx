@@ -10,6 +10,9 @@ import Configuration from "../screens/UserConfig";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
 
+import { PrivateChat } from "../screens/PrivateChat";
+import { Login } from "../screens/Login";
+
 const Stack = createNativeStackNavigator();
 
 export const Navigator = () => {
@@ -72,3 +75,4 @@ export const Navigator = () => {
     </NavigationContainer>
   );
 };
+

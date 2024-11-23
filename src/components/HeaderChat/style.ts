@@ -29,5 +29,6 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 24,
     marginBottom: 10,
+    fontFamily: "ComicNeue_700Bold"
   },
 });
