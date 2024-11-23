@@ -33,8 +33,11 @@ export const Login = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
   const [senha, setSenha] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const { handleLogin } = useAuth();
 
-  const { setId, setEmail, email } = useAuth();
+  // const { setId } = useAuth();
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -44,7 +47,7 @@ export const Login = () => {
     setSenha(value);
   };
 
-  const handleLogin = () => {
+  const handleVerifyLogin = () => {
     const resultado = users.find(
       (user) =>
         user.email.toLowerCase() === email.toLowerCase() &&
@@ -52,11 +55,16 @@ export const Login = () => {
     );
   
     if (resultado) {
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
-      setId(resultado.id);
+      handleLogin(resultado);
       setSuccess(true);
       setError("");
-  
+
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setSuccess(true);
+      setError("");
       Alert.alert("Login realizado com sucesso!");
       navigation.navigate("Home");
     } else {
@@ -74,6 +82,8 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
+        console.log(response.data);
+        
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -112,7 +122,7 @@ export const Login = () => {
 
           <ButtonMain
             title="Entrar"
-            handleFunction={handleLogin}
+            handleFunction={handleVerifyLogin}
             propsBackgroundColor="#342142"
           />
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   FlatList,
   Image,
   ScrollView,
@@ -8,12 +7,13 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Alert,
 } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
+import style from "./style";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
-import style from "./style";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 interface Produto {
   id: string;
@@ -27,6 +27,7 @@ export const Home = () => {
   const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
   const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
+  const { fetchUserData, userData } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +76,7 @@ export const Home = () => {
       <View style={style.containerPlusMaxAdvencedPower}>
         <View style={style.profileContainer}>
           <Image
-            source={require("../../../assets/images/perfil.jpg")}
+            source={{ uri: userData?.Foto} }
             style={style.profileImage}
           />
         </View>
