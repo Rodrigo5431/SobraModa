@@ -12,6 +12,7 @@ import {
 import whatsappIcon from "../../assets/whatsapp.png";
 import { HeaderConfiguration } from "../../components/HeaderConfiguration";
 import { styles } from "./style";
+import { useAuth } from "../../hooks/useAuth";
 
 interface PropsPostagem {
   id_usuario: number;
@@ -30,22 +31,19 @@ export default function Configuration() {
   const [foto, setFoto] = useState<any>();
   const [error, setError] = useState<string>();
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
-  const [userData, setUserData] = useState<any>(null);
+  const { fetchUserData, userData } = useAuth();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const data = await AsyncStorage.getItem("resultado");
-        if (data) {
-          setUserData(JSON.parse(data));
-        }
+        await fetchUserData(); // Recupera os dados do usuário
+        await handlePostagem(); // Carrega as postagens
       } catch (error) {
-        console.error("Erro ao buscar dados do AsyncStorage:", error);
+        console.error("Erro ao carregar os dados:", error);
       }
     };
 
-    fetchUserData();
-    handlePostagem();
+    fetchData();
   }, []);
 
   const handlePostagem = async () => {
@@ -53,27 +51,27 @@ export default function Configuration() {
       const response = await axios.get(
         "https://673e81080118dbfe860b784d.mockapi.io/postagem"
       );
-      console.log(response);
-      
 
       if (response.status === 200) {
-        setPostagens(response.data);
+        const allPosts = response.data;
+
+        const userPosts = allPosts.filter(
+          (post: PropsPostagem) => post.id_usuario === userData?.id
+        );
+
+        if (userPosts.length > 0) {
+          setPostagens(userPosts);
+        } else {
+          setError("Nao há postagens disponiveis.");
+        }
       }
-      
-      const postagensT = response.data;
-
-      const resultado: any = postagensT.filter(posts => posts.id_usuario === userData.id);
-
-      if (resultado) {
-        setFilteredPosts(resultado);
-      } else {
-        setError("não ha postagens");
-      }
-
     } catch (error) {
-      console.log("erro ao conectar api");
+      console.error("Erro ao conectar a API:", error);
+      setError("Erro ao conectar. Verifique sua conexão.");
     }
   };
+
+  
 
   return (
     <ScrollView style={styles.container}>
@@ -93,7 +91,7 @@ export default function Configuration() {
         </TouchableOpacity>
       </View>
       <View style={styles.postsArea}>
-        {error! && <View></View>}
+        {error && <View></View>}
         <FlatList
           data={FilteredPosts}
           keyExtractor={(dados) => dados.id_usuario.toString()}

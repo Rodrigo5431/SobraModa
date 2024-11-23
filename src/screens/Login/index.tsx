@@ -30,21 +30,11 @@ export const Login = () => {
 
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
-  const [users, setUsers] = useState<PropsInf[]>([]);
-
-  const {
-    id,
-    setId,
-    foto,
-    setFoto,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    nome,
-    setNome,
-  } = useAuth();
   const [senha, setSenha] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [users, setUsers] = useState<PropsInf[]>([]);
+  const { handleLogin } = useAuth();
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -54,7 +44,7 @@ export const Login = () => {
     setSenha(value);
   };
 
-  const handleLogin = () => {
+  const handleVerifyLogin = () => {
     const resultado = users.find(
       (user) =>
         user.email.toLowerCase() === email.toLowerCase() &&
@@ -62,11 +52,9 @@ export const Login = () => {
     );
 
     if (resultado) {
-      AsyncStorage.setItem("@resultado", JSON.stringify(resultado)); // vai pro contexto
+      handleLogin(resultado);
       setSuccess(true);
       setError("");
-      console.log("resultado: " + resultado);
-      console.log(`nome: ${nome}`);
 
       setTimeout(() => {
         navigation.navigate("Home");
@@ -124,7 +112,7 @@ export const Login = () => {
 
           <ButtonMain
             title="Entrar"
-            handleFunction={handleLogin}
+            handleFunction={handleVerifyLogin}
             propsBackgroundColor="#342142"
           />
 

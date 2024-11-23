@@ -1,26 +1,30 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../hooks/useAuth";
 
 export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState(false);
   const navigation = useNavigation();
-  const [userData, setUserData] = useState<any>(null);
+  const {fetchUserData , handleLogin , handleLogout , userData} = useAuth()
 
-  const fetchUserData = async () => { //vai pro contexto
-    try {
-      const data = await AsyncStorage.getItem("@resultado");
-      if (data) {
-        setUserData(JSON.parse(data));
-      }
-    } catch (error) {
-      Alert.alert("Voce nao esta logado");
+  // const getInfAsyncStorage = async () => { //vai pro contexto
+  //   fetchUserData()
+    
 
-    }
-  };
+
+
+    // try {
+    //   const data = await AsyncStorage.getItem("@resultado");
+    //   if (data) {
+    //     setUserData(JSON.parse(data));
+    //   }
+    // } catch (error) {
+    //   Alert.alert("Voce nao esta logado");
+    // }
 
   useEffect(() => {
     fetchUserData();
@@ -29,10 +33,10 @@ export const HeaderConfiguration = () => {
   const handleEditProfile = () => {
     navigation.navigate("EditProfile");
   };
-  const handleLogout = () => { //vai pro contexto
-    AsyncStorage.removeItem("@resultado");
-    fetchUserData()
-  };
+  // const handleLogout = () => { //vai pro contexto
+  //   AsyncStorage.removeItem("@resultado");
+  //   getInfAsyncStorage()
+  // };
 
   return (
     <View style={styles.container}>

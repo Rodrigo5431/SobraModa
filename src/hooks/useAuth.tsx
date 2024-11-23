@@ -1,34 +1,23 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useContext, createContext, useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
-  id: number;
-  setId: (value: number) => void;
-  foto: string;
-  setFoto: (value: string) => void;
-  email: string;
-  setEmail: (value: string) => void;
-  nome: string;
-  setNome: (value: string) => void;
-  password: string;
-  setPassword: (value: string) => void;
+  handleLogin: (resultado: any) => void;
+  handleLogout: (resultado: any) => void;
   isLoading: boolean;
+  fetchUserData:() => void;
+  userData: any;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
-  id: 0,
-  setId: (value: number) => {},
-  foto: "",
-  setFoto: (value: string) => {},
-  email: "",
-  setEmail: () => {},
-  nome: "Rodrigo",
-  setNome: () => {},
-  password: "",
-  setPassword: () => {},
   isLoading: false,
+  handleLogin: () => {},
+  handleLogout: () => {},
+  fetchUserData: () => {},
+  userData: [],
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
@@ -37,8 +26,45 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>(null);
 
+  const handleLogin = async (resultado: any) => {
+    try {
+      await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
+      console.log("Usuário autenticado:", resultado);
 
+    } catch (error) {
+      console.error("Erro ao salvar os dados do usuário:", error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const data = await AsyncStorage.getItem("@resultado");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setUserData(parsedData); // Atualiza o estado global com os dados recuperados
+        console.log("Dados recuperados:", parsedData);
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar informações do usuário:", error);
+
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("@resultado");
+      setUserData(null);
+      console.log("Usuário deslogado com sucesso.");      
+
+    } catch (error) {
+      console.error("Erro ao realizar logout:", error);
+    }
+  };
 
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);
@@ -75,7 +101,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         console.log("pegou os dados", jsonValue);
       }
     } catch (error) {
-      console.log("Erro ao buscr dados");
+      console.log("Erro ao buscar dados");
     }
     setIsLoading(false);
   };
@@ -88,17 +114,12 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     <Propriedade.Provider
       value={{
         checkAuthentication,
-        id: 0,
-        setId: () => {},
-        foto: "",
-        setFoto: () => {},
-        email,
-        setEmail,
-        nome: "",
-        setNome: () => {},
-        password: "",
-        setPassword,
+        handleLogin,
+        handleLogout,
+        fetchUserData,
         isLoading,
+        userData,
+        
       }}
     >
       {children}
