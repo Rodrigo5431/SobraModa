@@ -110,6 +110,7 @@ export const Home = () => {
         }
       } catch (error) {
         Alert.alert("voce nao esta logado");
+
       }
     };
 
@@ -129,7 +130,7 @@ export const Home = () => {
         <View style={style.perfil}>
           <View style={style.profileContainer}>
             <Image
-              source={{uri:userData?.Foto}}
+              source={{uri:userData?.image_url}}
               style={style.profileImage}
             />
           </View>

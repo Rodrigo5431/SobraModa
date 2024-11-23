@@ -38,6 +38,8 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+
+
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);
     storeData(email, password);

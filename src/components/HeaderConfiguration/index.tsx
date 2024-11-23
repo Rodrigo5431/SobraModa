@@ -10,27 +10,28 @@ export const HeaderConfiguration = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const data = await AsyncStorage.getItem("resultado");
-        if (data) {
-          setUserData(JSON.parse(data));
-        }
-      } catch (error) {
-        Alert.alert("Voce nao esta logado");
+  const fetchUserData = async () => { //vai pro contexto
+    try {
+      const data = await AsyncStorage.getItem("@resultado");
+      if (data) {
+        setUserData(JSON.parse(data));
       }
-    };
+    } catch (error) {
+      Alert.alert("Voce nao esta logado");
 
+    }
+  };
+
+  useEffect(() => {
     fetchUserData();
   }, []);
 
   const handleEditProfile = () => {
     navigation.navigate("EditProfile");
   };
-
-  const handleLogout = () => {
-    AsyncStorage.removeItem("resultado");
+  const handleLogout = () => { //vai pro contexto
+    AsyncStorage.removeItem("@resultado");
+    fetchUserData()
   };
 
   return (

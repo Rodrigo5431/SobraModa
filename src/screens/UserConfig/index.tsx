@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -7,19 +9,27 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import configurationIcon from "../../assets/configurationIcon.png";
 import whatsappIcon from "../../assets/whatsapp.png";
-import { DataAPI } from "../../Mock/data";
-import { styles } from "./style";
 import { HeaderConfiguration } from "../../components/HeaderConfiguration";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./style";
+
+interface PropsPostagem {
+  id_usuario: number;
+  titulo: string;
+  descricao: string;
+  preco: number;
+  foto: string;
+}
 
 export default function Configuration() {
   const [user, setUser] = useState<any>();
+  const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
   const [id, setId] = useState<number>();
   const [nome, setNome] = useState<string>();
   const [descricao, setDescricao] = useState<string>();
   const [foto, setFoto] = useState<any>();
+  const [error, setError] = useState<string>();
+  const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -35,33 +45,64 @@ export default function Configuration() {
     };
 
     fetchUserData();
+    handlePostagem();
   }, []);
+
+  const handlePostagem = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+      );
+      console.log(response);
+      
+
+      if (response.status === 200) {
+        setPostagens(response.data);
+      }
+      
+      const postagensT = response.data;
+
+      const resultado: any = postagensT.filter(posts => posts.id_usuario === userData.id);
+
+      if (resultado) {
+        setFilteredPosts(resultado);
+      } else {
+        setError("não ha postagens");
+      }
+
+    } catch (error) {
+      console.log("erro ao conectar api");
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
       <HeaderConfiguration />
       <View style={styles.user}>
-
-        <Image source={{uri : userData?.Foto}} style={styles.userImage}></Image>
+        <Image
+          source={{ uri: userData?.image_url }}
+          style={styles.userImage}
+        ></Image>
 
         <Text>{userData?.descricao}</Text>
       </View>
       <View style={styles.talk}>
         <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
-          <Image source={whatsappIcon} style={styles.talkImg} ></Image>
+          <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.postsArea}>
+        {error! && <View></View>}
         <FlatList
-          data={DataAPI}
-          keyExtractor={(dados) => dados.id.toString()}
+          data={FilteredPosts}
+          keyExtractor={(dados) => dados.id_usuario.toString()}
           numColumns={3}
           renderItem={({ item }) => (
             <View style={styles.posts}>
               <Image
                 style={styles.postImg}
-                source={item.image}
+                source={{ uri: item.foto }}
                 alt="publicacao"
               />
             </View>

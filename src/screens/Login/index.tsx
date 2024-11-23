@@ -62,11 +62,7 @@ export const Login = () => {
     );
 
     if (resultado) {
-      // setId(resultado.id);
-      // setFoto(resultado.foto);
-      // setNome(resultado.nome);
-      // setPassword(resultado.password);
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      AsyncStorage.setItem("@resultado", JSON.stringify(resultado)); // vai pro contexto
       setSuccess(true);
       setError("");
       console.log("resultado: " + resultado);

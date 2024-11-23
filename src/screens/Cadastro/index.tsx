@@ -75,6 +75,7 @@ export const Cadastro = () => {
       }
     } else {
       setErroSenha("As senhas não coincidem")
+      setErro("")
     }
   };
 
@@ -106,6 +107,7 @@ export const Cadastro = () => {
     );
     if (resultado) {
       setErro("email ja existente");
+      setErroSenha("")
     } else {
       createUsers();
     }
