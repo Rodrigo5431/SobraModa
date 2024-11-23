@@ -4,6 +4,7 @@ export type PropsStack = {
     EditProfile:undefined
     Configuration:undefined
     Home:undefined
+    Login:undefined
 }
 
 export type PropsTabs = {

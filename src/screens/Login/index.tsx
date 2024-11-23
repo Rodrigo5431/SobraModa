@@ -82,6 +82,8 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
+        console.log(response.data);
+        
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
