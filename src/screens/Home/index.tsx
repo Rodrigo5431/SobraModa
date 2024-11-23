@@ -1,6 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   ScrollView,
@@ -9,6 +10,7 @@ import {
   View,
 } from "react-native";
 import style from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {
   id: string;
@@ -96,6 +98,23 @@ export const Home = () => {
 
   const [expand, setExpand] = useState<boolean>(true);
   const [foto, setFoto] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>(null);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await AsyncStorage.getItem("resultado");
+        if (data) {
+          setUserData(JSON.parse(data));
+        }
+      } catch (error) {
+        Alert.alert("voce nao esta logado");
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={style.produtoContainer}>
@@ -110,7 +129,7 @@ export const Home = () => {
         <View style={style.perfil}>
           <View style={style.profileContainer}>
             <Image
-              source={require("../../assets/configurationIcon.png")}
+              source={{uri:userData?.Foto}}
               style={style.profileImage}
             />
           </View>

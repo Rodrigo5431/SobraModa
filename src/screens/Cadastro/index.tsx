@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -15,12 +15,23 @@ import { ButtonMain } from "../../components/ButtonMain";
 import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
 
+interface PropsUser {
+  id: number;
+  nome: string;
+  email: string;
+  password: string;
+  Foto: string;
+}
+
 export const Cadastro = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [erro, setErro] = useState<string>("");
+  const [erroSenha, setErroSenha] = useState<string>("");
+  const [users, setUsers] = useState<PropsUser[]>([]);
 
   const createUsers = async () => {
     if (
@@ -63,7 +74,7 @@ export const Cadastro = () => {
         Alert.alert("Erro", "Erro ao cadastrar usuario");
       }
     } else {
-      Alert.alert("As senhas não são iguais!");
+      setErroSenha("As senhas não coincidem")
     }
   };
 
@@ -88,6 +99,31 @@ export const Cadastro = () => {
       setImageUri(result.assets[0].uri);
     }
   };
+
+  const handleEmailVerification = () => {
+    const resultado = users.find(
+      (user) => user.email.toLowerCase() === email.toLowerCase()
+    );
+    if (resultado) {
+      setErro("email ja existente");
+    } else {
+      createUsers();
+    }
+  };
+
+  const handleSearchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
+      );
+      setUsers(response.data);
+    } catch (error) {
+      console.log("nao foi possivel achar usuarios");
+    }
+  };
+  useEffect(() => {
+    handleSearchUsers();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -117,6 +153,7 @@ export const Cadastro = () => {
             <TextInputField
               placeHolder="Digite seu nome"
               handleFunctionInput={setNome}
+              valueInput={nome}
             />
           </View>
 
@@ -125,7 +162,13 @@ export const Cadastro = () => {
             <TextInputField
               placeHolder="Digite seu email"
               handleFunctionInput={setEmail}
+              valueInput={email}
             />
+            {erro && (
+              <View>
+                <Text style={{ color: "red" }}>{erro}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.input}>
@@ -133,7 +176,13 @@ export const Cadastro = () => {
             <TextInputField
               placeHolder="Digite sua senha"
               handleFunctionInput={setPassword}
-            />
+              valueInput={password}
+              />
+              {erroSenha && (
+                <View>
+                  <Text style={{ color: "red" }}>{erroSenha}</Text>
+                </View>
+              )}
           </View>
 
           <View style={styles.input}>
@@ -141,6 +190,7 @@ export const Cadastro = () => {
             <TextInputField
               placeHolder="Confirme a senha"
               handleFunctionInput={setConfirmPassword}
+              valueInput={confirmPassword}
             />
           </View>
         </View>
@@ -149,7 +199,7 @@ export const Cadastro = () => {
           <ButtonMain
             title="FINALIZAR"
             propsBackgroundColor="#342142"
-            handleFunction={createUsers}
+            handleFunction={handleEmailVerification}
           />
         </View>
 

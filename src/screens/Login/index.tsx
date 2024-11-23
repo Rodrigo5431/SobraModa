@@ -32,8 +32,19 @@ export const Login = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
 
-  const { id, setId, foto, setFoto, email, setEmail, password, setPassword, nome, setNome } = useAuth();
-    const [senha, setSenha] = useState<string>("")
+  const {
+    id,
+    setId,
+    foto,
+    setFoto,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    nome,
+    setNome,
+  } = useAuth();
+  const [senha, setSenha] = useState<string>("");
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -45,9 +56,11 @@ export const Login = () => {
 
   const handleLogin = () => {
     const resultado = users.find(
-      (user) => user.email.toLowerCase() === email.toLowerCase() && user.password === senha
+      (user) =>
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.password === senha
     );
-    
+
     if (resultado) {
       // setId(resultado.id);
       // setFoto(resultado.foto);
@@ -58,12 +71,10 @@ export const Login = () => {
       setError("");
       console.log("resultado: " + resultado);
       console.log(`nome: ${nome}`);
-      
-      
+
       setTimeout(() => {
         navigation.navigate("Home");
       }, 1000);
-
     } else {
       setError("Usuário ou senha inválidos!");
       setSuccess(false);
@@ -79,7 +90,6 @@ export const Login = () => {
       if (response.status === 200) {
         setUsers(response.data);
         console.log(response.data);
-        
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -89,6 +99,10 @@ export const Login = () => {
   useEffect(() => {
     searchUser();
   }, []);
+
+  const handleRegister = () => {
+    navigation.navigate("Cadastrar");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -143,6 +157,7 @@ export const Login = () => {
             <TouchableOpacity>
               <Text
                 style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                onPress={handleRegister}
               >
                 Cadastre-se
               </Text>
@@ -151,7 +166,9 @@ export const Login = () => {
 
           {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35, color: "green" }}>Login realizado com sucesso!</Text>
+            <Text style={{ fontSize: 35, color: "green" }}>
+              Login realizado com sucesso!
+            </Text>
           )}
         </View>
       </View>
