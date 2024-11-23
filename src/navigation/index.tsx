@@ -1,17 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
+import { Cadastro } from "../screens/Cadastro";
 import { Chat } from "../screens/Chat";
 import { EditProfile } from "../screens/EditProfile";
-import { NoImplements } from "../screens/NoImplements";
+import { Login } from "../screens/Login";
+import Configuration from "../screens/UserConfig";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
-import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
-import Configuration from "../screens/UserConfig";
-import { HeaderConfiguration } from "../components/HeaderConfiguration";
-import { Login } from "../screens/Login";
-import { Cadastro } from "../screens/Cadastro";
-import { PrivateChat } from "../screens/PrivateChat";
 
 const Stack = createNativeStackNavigator();
 
