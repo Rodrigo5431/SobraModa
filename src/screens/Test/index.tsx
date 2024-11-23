@@ -37,7 +37,7 @@ export const ProductList = () => {
       <Text style={styles.header}>Produtos Anunciados</Text>
       
       {loading ? (
-        <Text>Carregando...</Text>  // Mensagem enquanto os dados estão sendo carregados
+        <Text>Carregando...</Text>
       ) : (
         <FlatList
           data={products}
@@ -47,7 +47,7 @@ export const ProductList = () => {
               <Text style={styles.productTitle}>{item.titulo}</Text>
               <Text style={styles.productDesc}>{item.descricao}</Text>
               <Text style={styles.productPrice}>Preço: R${item.preco}</Text>
-              <Image source={{ uri: item.foto }} style={styles.productImage} />
+              <Image source={{ uri: item.foto }} style={styles.productImage}></Image>
             </View>
           )}
         />

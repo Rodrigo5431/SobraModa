@@ -12,6 +12,7 @@ import UserConfig from "../screens/UserConfig";
 import { Chat } from '../screens/Chat';
 import { NoImplements } from '../screens/NoImplements';
 import { MainTabNavigatorChat } from './MainTabNavigatorChat';
+
 import { useAuth } from '../hooks/useAuth';
 
 
@@ -68,7 +69,7 @@ export function MainTabNavigator() {
                 
             <Tab.Screen
                 name="Add"
-                component={NoImplements}
+                component={ProductAdd}
                 options={({ navigation }) => ({
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="add-circle-outline" size={size} color={color} />

@@ -27,7 +27,7 @@ export const ProductInput = ({
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TextInput
-        style={{ height }}
+        style={[styles.msg, { height }]}
         placeholder={placeHolder}
         placeholderTextColor="rgba(0,0,0,0.5)"
         value={value}

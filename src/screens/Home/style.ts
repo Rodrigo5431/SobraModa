@@ -5,23 +5,24 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E3D5F6",
-    paddingTop: 90,
     paddingBottom: 60,
   },
-  container2: {
-    paddingBottom: 80,
-    alignItems: "center",
-    marginTop: 30,
+
+  containerPlusMaxAdvencedPower: {
+    marginTop: 100,
   },
 
-  perfil: {
-    justifyContent: "center",
+  container2: {
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 0,
   },
-  produtoGrid: {
-    paddingHorizontal: 5,
-    paddingTop: 10,
-    justifyContent: "center",
+
+  container3: {
+    alignItems: "center",
+    top: 0,
   },
+
   produtoContainer: {
     height: 200,
     margin: 5,
@@ -30,58 +31,26 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
   },
+
   produtoImage: {
-    width: 200,
-    height: 180,
+    width: 150,
+    height: 150,
     borderRadius: 15,
     margin: 0,
     padding: 5,
     borderWidth: 2,
+
     borderColor: "#8B65BF",
   },
 
-  ProdutoContainer: {
-    flex: 1,
-    margin: 5,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    height: 220,
-  },
-  ProdutoImage: {
-    width: screenWidth / 2 - 30,
-    height: 140,
-    borderRadius: 10,
-  },
-
   produtoTitle: {
-    marginTop: -2,
-    marginBottom: 0,
     fontSize: 14,
     // fontWeight: 'bold',
+
     textAlign: "center",
     color: "#333",
     fontFamily: "Comic Neue",
-  },
-
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    margin: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-  },
-  searchInput: {
-    // flex: 1,
-    height: 40,
-    marginLeft: 10,
-    fontSize: 16,
-    color: "#333",
+    marginTop: 0,
   },
 
   button: {
@@ -90,11 +59,12 @@ const style = StyleSheet.create({
     width: "60%",
     padding: 3,
     borderRadius: 20,
+    // alignContent: ,
     alignItems: "center",
     flexDirection: "row",
     marginHorizontal: "30%",
-    marginLeft:130,
-    marginTop: "-29%",
+    marginTop: "-20%",
+    // borderWidth: 2,
     borderColor: "#8B65BF",
   },
   buttonText: {
@@ -122,9 +92,9 @@ const style = StyleSheet.create({
     backgroundColor: "#E3D5F6",
   },
   profileContainer: {
+    flexDirection: "row",
     marginTop: -30,
     marginBottom: 50,
-    marginLeft: 10,
   },
 });
 
