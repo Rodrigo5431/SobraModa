@@ -12,6 +12,7 @@ import UserConfig from "../screens/UserConfig";
 import { Chat } from '../screens/Chat';
 import { NoImplements } from '../screens/NoImplements';
 import { MainTabNavigatorChat } from './MainTabNavigatorChat';
+import { ProductAdd } from '../screens/ProductAdd';
 
 
 
@@ -50,8 +51,6 @@ export function MainTabNavigator() {
                 }}
             />
 
-             * @description This function returns an icon of the house, which is the icon for the main screen of the app.
-             */
             <Tab.Screen
                 name="Chat"
                 component={Chat}
@@ -67,7 +66,7 @@ export function MainTabNavigator() {
 
             <Tab.Screen
                 name="Add"
-                component={NoImplements}
+                component={ProductAdd}
                 options={({ navigation }) => ({
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="add-circle-outline" size={size} color={color} />

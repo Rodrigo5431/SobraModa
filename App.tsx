@@ -1,11 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Navigator } from "./src/navigation";
-<<<<<<< HEAD
-=======
-
-import { StatusBar } from "expo-status-bar";
->>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
 import { ProductAdd } from "./src/screens/ProductAdd";
 import { ProductList } from "./src/screens/Test";
 import { 
@@ -16,11 +11,8 @@ import {
 import { IslandMoments_400Regular } from "@expo-google-fonts/island-moments";
 import AppLoading from "expo-app-loading";
 import { Home } from "./src/screens/Home";
-<<<<<<< HEAD
 import { Cadastro } from "./src/screens/Cadastro";
 
-=======
->>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -35,7 +27,6 @@ export default function App() {
 
   return (
     <>
-<<<<<<< HEAD
       <StatusBar style="auto" />
       {/* <ProductList /> */}
       {/* <ProductAdd /> */}
@@ -43,14 +34,7 @@ export default function App() {
       {/* <Home /> */}
       {/* <ProductList /> */}
       {/* <Cadastro /> */}
-=======
 
-      <StatusBar style="auto" />
-      {/* <ProductList /> */}
-      {/* <ProductAdd /> */}
-      {/* <Navigator /> */}
-      <Home />
->>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
     </>
   );
 }

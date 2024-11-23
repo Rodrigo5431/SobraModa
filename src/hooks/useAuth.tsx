@@ -3,7 +3,7 @@ import React, { useContext, createContext, useState, useEffect } from "react";
 
 type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
-  id: number;
+  id: number | null;
   setId: (value: number) => void;
   foto: string;
   setFoto: (value: string) => void;
@@ -18,7 +18,7 @@ type PropriedadeIniciadaOuObrigatoria = {
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
-  id: 0,
+  id: null,
   setId: (value: number) => {},
   foto: "",
   setFoto: (value: string) => {},
@@ -32,7 +32,7 @@ const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
-  const [id, setId] = useState<number>();
+  const [id, setId] = useState<number | null>(null);
   const [email, setEmail] = useState<string>("");
   const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
@@ -40,40 +40,32 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);
-    storeData(email, password);
-    console.log("Pegou o email", email);
+
+   
+    const userId = 1;
+    setId(userId);
+    storeData(userId);
+
     setIsLoading(false);
   };
 
-  const storeData = async (email: string, password: string) => {
-    console.log("chamou a funcao");
-
+  const storeData = async (id: number) => {
     try {
-      console.log("entrou no try");
-
-      const jsonValue = JSON.stringify(email);
-      await AsyncStorage.setItem("@infoUser", jsonValue);
-      console.log("Dados salvos com sucesso");
+      await AsyncStorage.setItem("@userId", JSON.stringify(id));
     } catch (error) {
       console.log("Erro ao salvar dados!");
     }
   };
 
-  //     const handleLogOut = () => {
-  //     AsyncStorage.removeItem('@InfoUser');
-  //     navigation.navigate('StackLogin', {name: "Home"});
-  //   }
-
   const getData = async () => {
     setIsLoading(true);
     try {
-      const value = await AsyncStorage.getItem("@infoUser");
+      const value = await AsyncStorage.getItem("@userId");
       if (value !== null) {
-        const jsonValue = JSON.parse(value);
-        console.log("pegou os dados", jsonValue);
+        setId(JSON.parse(value));
       }
     } catch (error) {
-      console.log("Erro ao buscr dados");
+      console.log("Erro ao buscar dados");
     }
     setIsLoading(false);
   };
@@ -86,8 +78,8 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     <Propriedade.Provider
       value={{
         checkAuthentication,
-        id: 0,
-        setId: () => {},
+        id,
+        setId,
         foto: "",
         setFoto: () => {},
         email,

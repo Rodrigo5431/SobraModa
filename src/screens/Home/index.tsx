@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {
   id: string;
-  image_url: string;
+  foto: string;
   titulo: string;
   preco: string;
 }
@@ -55,7 +55,7 @@ export const Home = () => {
       onPress={() => handleProductClick(item)}
       style={style.produtoContainer}
     >
-      <Image source={{ uri: item.image_url }} style={style.produtoImage} />
+      <Image source={{ uri: item.foto }} style={style.produtoImage} />
       <Text style={style.produtoTitle}>{item.titulo}</Text>
       <Text>R$ {item.preco}</Text>
     </TouchableOpacity>
