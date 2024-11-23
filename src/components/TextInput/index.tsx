@@ -4,8 +4,7 @@ import { Icon } from "react-native-elements";
 import { styles } from "./style";
 
 interface PropsInput {
-  placeHolder: string;
-  typeInput?: boolean;
+  placeHolder?: string;
   valueInput?: string;
   typeIcon?: string;
   handleFunctionInput?: (value: string) => void;
@@ -13,11 +12,11 @@ interface PropsInput {
 
 export const TextInputField = ({
   placeHolder,
-  typeInput,
-  valueInput,
+  valueInput = "",
   typeIcon,
   handleFunctionInput,
 }: PropsInput) => {
+  
   const [viewPassword, setViewPassword] = useState<boolean>(false);
 
   const togglePasswordVisibility = () => setViewPassword(!viewPassword);

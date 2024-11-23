@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
 type PropriedadeIniciadaOuObrigatoria = {
@@ -16,10 +17,12 @@ type PropriedadeIniciadaOuObrigatoria = {
   password: string;
   setPassword: (value: string) => void;
   isLoading: boolean;
+  handleLogOut: () => void;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
+  handleLogOut: () => {},
   id: null,
   setId: (value: number) => {},
   foto: "",
@@ -43,37 +46,52 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tabChat, setTabChat] = useState<boolean>(false);
 
+  const navigation = useNavigation();
+
   const checkAuthentication = (email: string, password: string) => {
-    setIsLoading(true);
-
-   
-    const userId = 1;
-    setId(userId);
-    storeData(userId);
-
-    setIsLoading(false);
+    saveLogin(email, password)    
+    navigation.navigate("Home")
   };
 
-  const storeData = async (id: number) => {
+  const handleLogOut = () => {
+    AsyncStorage.removeItem("@infoUserEmail");
+    AsyncStorage.removeItem("@infoUserPassword");
+    navigation.navigate("Login")
+  }
+
+  const saveLogin = async (email: string, password:string) => {
     try {
-      await AsyncStorage.setItem("@userId", JSON.stringify(id));
+      const jsonEmail = JSON.stringify(email)
+      const jsonPassword = JSON.stringify(password)
+      await AsyncStorage.setItem("@infoUserEmail", jsonEmail);
+      await AsyncStorage.setItem("@infoUserPassword", jsonPassword)
+      console.log("dados salvos com sucesso!", jsonEmail, jsonPassword);
+      
     } catch (error) {
       console.log("Erro ao salvar dados!");
     }
   };
 
+
+
   const getData = async () => {
-    setIsLoading(true);
     try {
-      const value = await AsyncStorage.getItem("@userId");
-      if (value !== null) {
-        setId(JSON.parse(value));
+      const valueEmail = await AsyncStorage.getItem("@infoUserEmail");
+      const valuePassword = await AsyncStorage.getItem("@infoUserPassword");
+      if (valueEmail !== null && valuePassword !== null) {
+        const jsonEmail =JSON.parse(valueEmail)
+        const jsonPassword =JSON.parse(valuePassword)
+        navigation.navigate("Home")
+        console.log("Pegou os dados", jsonEmail, jsonPassword);
+        
       }
     } catch (error) {
       console.log("Erro ao buscar dados");
     }
     setIsLoading(false);
   };
+
+
 
   useEffect(() => {
     getData();
@@ -83,6 +101,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     <Propriedade.Provider
       value={{
         checkAuthentication,
+        handleLogOut,
         id,
         setId,
         foto: "",
@@ -91,9 +110,13 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         setEmail,
         nome: "",
         setNome: () => {},
-        password: "",
+        password,
         setPassword,
         isLoading,
+        tabChat,
+        setTabChat(value) {
+            
+        },
       }}
     >
       {children}

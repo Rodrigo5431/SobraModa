@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";  // Importe o tipo AxiosError
+import axios, { AxiosError } from "axios"; // Importe o tipo AxiosError
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
@@ -36,17 +36,24 @@ export default function Cadastro() {
   const navigation = useNavigation();
 
   const UPLOAD_PRESET = "agoraVai"; // Substitua com seu upload preset correto!
-  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+  const CLOUDINARY_URL =
+    "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+
+  const arrowBackToLogin = () => {
+    navigation.navigate("Login");
+  };
 
   const createUsers = async () => {
-
     if (
       !nome.trim() ||
       !email.trim() ||
       !password.trim() ||
       !confirmPassword.trim()
     ) {
-      Alert.alert("Campos obrigatórios", "Por favor, preencha todos os campos.");
+      Alert.alert(
+        "Campos obrigatórios",
+        "Por favor, preencha todos os campos."
+      );
       return false;
     }
 
@@ -81,12 +88,14 @@ export default function Cadastro() {
         setPassword("");
         setConfirmPassword("");
         setImageUri(null);
-        handleSearchUsers(); // Atualiza lista de usuários
         return true; // Cadastro realizado com sucesso
       }
     } catch (error) {
       console.error("Erro no cadastro:", error);
-      Alert.alert("Erro", "Erro ao cadastrar usuário. Tente novamente mais tarde.");
+      Alert.alert(
+        "Erro",
+        "Erro ao cadastrar usuário. Tente novamente mais tarde."
+      );
     }
 
     return false; // Cadastro falhou
@@ -98,17 +107,17 @@ export default function Cadastro() {
       Alert.alert("Erro", "É necessário adicionar uma foto.");
       return;
     }
-  
+
     const resultado = users.find(
       (user) => user.email.toLowerCase() === email.toLowerCase()
     );
-  
+
     if (resultado) {
       Alert.alert(
         "E-mail já cadastrado",
         "Este e-mail já existe em nossa base. Faça seu Login."
       );
-      navigation.navigate("Login"); 
+      navigation.navigate("Login");
       return;
     }
 
@@ -120,20 +129,16 @@ export default function Cadastro() {
         const formData = new FormData();
         const file = {
           uri: imageUri,
-          type: 'image/jpeg', // Ajuste o tipo conforme o tipo da sua imagem
-          name: 'foto_usuario.jpg',
+          type: "image/jpeg", // Ajuste o tipo conforme o tipo da sua imagem
+          name: "foto_usuario.jpg",
         };
-        formData.append('file', file as any);
-        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append("file", file as any);
+        formData.append("upload_preset", UPLOAD_PRESET);
 
         // Envia a imagem para o Cloudinary
-        const cloudinaryResponse = await axios.post(
-          CLOUDINARY_URL,
-          formData,
-          {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          }
-        );
+        const cloudinaryResponse = await axios.post(CLOUDINARY_URL, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         if (cloudinaryResponse.data.secure_url) {
           const imageUrl = cloudinaryResponse.data.secure_url;
@@ -170,20 +175,20 @@ export default function Cadastro() {
         // Verificando se o erro é do tipo AxiosError
         if (axios.isAxiosError(error)) {
           console.error("Erro Axios:", error.response?.data);
-          Alert.alert("Erro", `Erro ao cadastrar usuario: ${error.response?.data}`);
+          Alert.alert(
+            "Erro",
+            `Erro ao cadastrar usuario: ${error.response?.data}`
+          );
         } else {
           console.error("Erro desconhecido:", error);
           Alert.alert("Erro", "Erro desconhecido ao tentar cadastrar.");
         }
       }
     } else {
-      setErroSenha("As senhas não coincidem")
-
+      setErroSenha("As senhas não coincidem");
     }
   };
-  
 
-  
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -209,6 +214,13 @@ export default function Cadastro() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+
+        <View style={styles.arrowLogin}>
+          <TouchableOpacity onPress={arrowBackToLogin}>
+            <Icon name="arrow-back-outline" type="ionicon" color={"#342142"}/>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.tituloPrincipal}>Cadastro</Text>
 
         {/* Caixa para adicionar imagem */}

@@ -1,7 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   Text,
@@ -13,10 +13,8 @@ import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
-import { styles } from "./style";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./style";
 
 interface PropsInf {
   id: number;
@@ -32,39 +30,21 @@ export const Login = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
-  const [senha, setSenha] = useState<string>("");
 
-  const { setId, setEmail, email } = useAuth();
+  const { setId, setEmail, email, setPassword, password, checkAuthentication } =
+    useAuth();
 
   const handleEmail = (value: string) => {
     setEmail(value);
   };
 
   const handlePassword = (value: string) => {
-    setSenha(value);
+    setPassword(value);
   };
 
   const handleLogin = () => {
-    const resultado = users.find(
-      (user) =>
-        user.email.toLowerCase() === email.toLowerCase() &&
-        user.password === senha
-    );
-  
-    if (resultado) {
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
-      setId(resultado.id);
-      setSuccess(true);
-      setError("");
-  
-      Alert.alert("Login realizado com sucesso!");
-      navigation.navigate("Home");
-    } else {
-      setError("Usuário ou senha inválidos!");
-      setSuccess(false);
-    }
+    checkAuthentication(email, password);
   };
-  
 
   const searchUser = async () => {
     try {
@@ -105,8 +85,7 @@ export const Login = () => {
           <TextInputField
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
-            valueInput={senha}
-            typeInput={true}
+            valueInput={password}
             typeIcon="password"
           />
 
@@ -152,7 +131,6 @@ export const Login = () => {
           {success && (
             <Text style={{ fontSize: 18, color: "green" }}>
               Login realizado com sucesso!
-
             </Text>
           )}
         </View>
