@@ -9,40 +9,70 @@ export const styles = StyleSheet.create({
   },
 
   tituloPrincipal: {
-    fontFamily: "Island Moments",
-    fontSize: 36,
+    fontSize: 30,
+    marginBottom: 10,
     color: "#342142",
-    marginBottom: 50,
   },
 
-  inputs: {
-    width: "80%",
-    height: 50,
-    backgroundColor: "#fff",
+  input: {
+    marginBottom: 15,
+    marginTop: 15,
+  },
+
+  inputBox: {
+    width: "90%",
+    backgroundColor: "#34214260",
+    paddingHorizontal: 20,
     borderRadius: 5,
-    marginBottom: 25,
+    paddingVertical: 5,
+    marginBottom: 20,
   },
 
-  textInput: {
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
+    borderRadius: 8,
+    alignSelf: "center",
+  },
+
+  imageBoxWithImage: {
+    justifyContent: "flex-start",
+  },
+  imageInsideBox: {
     width: "100%",
-    fontWeight: "bold",
-    color: "#342142",
-    left: 50,
-    marginBottom: 2,
+    height: "100%",
+    borderRadius: 100,
+    resizeMode: "cover",
   },
 
-  buttonFinalizar: {
-    width: "60%",
-    height: 40,
-    backgroundColor: "#342142",
-    borderRadius: 10,
+  caixa: {
+    width: 100,
+    height: 100,
+    borderColor: "rgba(0,0,0,0.6)",
+    borderWidth: 1,
+    borderStyle: "dashed",
     justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+    backgroundColor: "#D0B9F0",
+    marginBottom: 20,
+    position: "relative",
   },
 
-  textButtonFinalizar: {
-    fontSize: 20,
+  msg: {
+    fontSize: 15,
+    color: "#342142",
+    marginBottom: 10,
+  },
+
+  button: {
+    width: "60%",
+  },
+
+  ButtonText: {
     color: "#fff",
+    fontSize: 20,
     fontWeight: "bold",
-    left: 80,
   },
 });

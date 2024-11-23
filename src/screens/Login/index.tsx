@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -11,24 +12,96 @@ import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
-import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
-import React from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface PropsInf {
+  id: number;
+  foto: string;
+  nome: string;
+  email: string;
+  password: string;
+}
 
 export const Login = () => {
-  const { email, setEmail, checkAuthentication, isLoading } = useAuth();
-  const [password, setPassword] = useState<string>("");
+  const navigation = useNavigation();
+
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [users, setUsers] = useState<PropsInf[]>([]);
+
+  const {
+    id,
+    setId,
+    foto,
+    setFoto,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    nome,
+    setNome,
+  } = useAuth();
+  const [senha, setSenha] = useState<string>("");
 
   const handleEmail = (value: string) => {
     setEmail(value);
   };
 
   const handlePassword = (value: string) => {
-    setPassword(value);
+    setSenha(value);
   };
 
   const handleLogin = () => {
-    checkAuthentication(email, password);
+    const resultado = users.find(
+      (user) =>
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.password === senha
+    );
+
+    if (resultado) {
+      // setId(resultado.id);
+      // setFoto(resultado.foto);
+      // setNome(resultado.nome);
+      // setPassword(resultado.password);
+      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setSuccess(true);
+      setError("");
+      console.log("resultado: " + resultado);
+      console.log(`nome: ${nome}`);
+
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+    } else {
+      setError("Usuário ou senha inválidos!");
+      setSuccess(false);
+    }
+  };
+
+  const searchUser = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
+      );
+
+      if (response.status === 200) {
+        setUsers(response.data);
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar usuários:", error);
+    }
+  };
+
+  useEffect(() => {
+    searchUser();
+  }, []);
+
+  const handleRegister = () => {
+    navigation.navigate("Cadastrar");
   };
 
   return (
@@ -48,7 +121,7 @@ export const Login = () => {
           <TextInputField
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
-            valueInput={password}
+            valueInput={senha}
             typeInput={true}
             typeIcon="password"
           />
@@ -68,7 +141,7 @@ export const Login = () => {
           />
 
           <ButtonSocial
-            title="Entrar com o google"
+            title="Entrar com o Google"
             icon="logo-google"
             propsType="ionicon"
           />
@@ -84,11 +157,19 @@ export const Login = () => {
             <TouchableOpacity>
               <Text
                 style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                onPress={handleRegister}
               >
                 Cadastre-se
               </Text>
             </TouchableOpacity>
           </View>
+
+          {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
+          {success && (
+            <Text style={{ fontSize: 35, color: "green" }}>
+              Login realizado com sucesso!
+            </Text>
+          )}
         </View>
       </View>
     </TouchableWithoutFeedback>
