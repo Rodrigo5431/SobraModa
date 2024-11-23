@@ -11,6 +11,7 @@ import {
 import { IslandMoments_400Regular } from "@expo-google-fonts/island-moments";
 import AppLoading from "expo-app-loading";
 import { Home } from "./src/screens/Home";
+import { Cadastro } from "./src/screens/Cadastro";
 
 
 export default function App() {
@@ -29,10 +30,10 @@ export default function App() {
       <StatusBar style="auto" />
       {/* <ProductList /> */}
       {/* <ProductAdd /> */}
-      {/* <Navigator /> */}
-      <Home />
+      <Navigator />
+      {/* <Home /> */}
       {/* <ProductList /> */}
-
+      {/* <Cadastro /> */}
     </>
   );
 }

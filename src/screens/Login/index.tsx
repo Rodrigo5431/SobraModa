@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -15,7 +14,7 @@ import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 interface PropsInf {
   id: number;
@@ -32,11 +31,12 @@ export const Login = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
 
-  const { id, setId, foto, setFoto, email, setEmail, password, setPassword, nome, setNome } = useAuth();
-    const [senha, setSenha] = useState<string>("")
+  const { setId, setEmail } = useAuth(); // Atualizando somente o necessário
+  const [email, setLocalEmail] = useState<string>(""); // Campo local
+  const [senha, setSenha] = useState<string>("");
 
   const handleEmail = (value: string) => {
-    setEmail(value);
+    setLocalEmail(value);
   };
 
   const handlePassword = (value: string) => {
@@ -45,25 +45,22 @@ export const Login = () => {
 
   const handleLogin = () => {
     const resultado = users.find(
-      (user) => user.email.toLowerCase() === email.toLowerCase() && user.password === senha
+      (user) =>
+        user.email.toLowerCase() === email.toLowerCase() && user.password === senha
     );
-    
+
     if (resultado) {
-      // setId(resultado.id);
-      // setFoto(resultado.foto);
-      // setNome(resultado.nome);
-      // setPassword(resultado.password);
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setId(resultado.id); // Atualizando o ID globalmente
+      setEmail(resultado.email); // Atualizando o email globalmente
       setSuccess(true);
       setError("");
-      console.log("resultado: " + resultado);
-      console.log(`nome: ${nome}`);
-      
-      
+
+      console.log("ID do usuário:", resultado.id); // Debug
+      console.log("Usuário logado:", resultado);
+
       setTimeout(() => {
         navigation.navigate("Home");
       }, 1000);
-
     } else {
       setError("Usuário ou senha inválidos!");
       setSuccess(false);
@@ -78,8 +75,7 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
-        console.log(response.data);
-        
+        console.log("Usuários carregados:", response.data);
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -151,7 +147,9 @@ export const Login = () => {
 
           {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35, color: "green" }}>Login realizado com sucesso!</Text>
+            <Text style={{ fontSize: 35, color: "green" }}>
+              Login realizado com sucesso!
+            </Text>
           )}
         </View>
       </View>

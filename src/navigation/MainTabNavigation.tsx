@@ -50,6 +50,8 @@ export function MainTabNavigator() {
                 }}
             />
 
+             * @description This function returns an icon of the house, which is the icon for the main screen of the app.
+             */
             <Tab.Screen
                 name="Chat"
                 component={Chat}

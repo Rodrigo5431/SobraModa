@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -16,41 +16,29 @@ import axios from "axios";
 import { HeaderChat } from "../../components/HeaderChat";
 import { ProductInput } from "../../components/ProductInput";
 import { styles } from "./style";
+import { useAuth } from "../../hooks/useAuth"; // Contexto de autenticação
+
+// Variáveis de configuração para o Cloudinary
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 
 const { height } = Dimensions.get("window");
 
 export const ProductAdd = () => {
+  const { id: userId } = useAuth(); // Obtendo o ID do usuário do contexto
+
+  console.log("ID do usuário:", userId);
+  
+
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState("");
-  const [userId, setUserId] = useState<string | null>(null);
-
-  // Busca o ID do usuário ao carregar o componente
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const response = await axios.get(
-          "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
-        );
-        if (response.data && response.data[0]?.id) {
-          setUserId(response.data[0].id); // Obtém o primeiro usuário
-        } else {
-          Alert.alert("Erro", "Não foi possível obter o ID do usuário.");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar o ID do usuário:", error);
-        Alert.alert("Erro", "Não foi possível buscar o ID do usuário.");
-      }
-    };
-
-    fetchUserId();
-  }, []);
 
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
+    if (!permissionResult.granted) {
       Alert.alert(
         "Permissão negada",
         "Você precisa dar permissão para acessar a galeria."
@@ -84,12 +72,30 @@ export const ProductAdd = () => {
     }
 
     try {
+      // Envia a imagem para o Cloudinary
+      const formData = new FormData();
+
+      const file = {
+        uri: imageUri,
+        type: "image/jpeg",
+        name: "produto.jpg",
+      };
+
+      formData.append("file", file as any);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      const cloudinaryResponse = await axios.post(CLOUDINARY_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const imageUrl = cloudinaryResponse.data.secure_url;
+
       const newProduct = {
         titulo,
         descricao,
         preco: parseFloat(preco),
-        foto: imageUri,
-        idUser: userId, // Inclui o ID do usuário no produto
+        foto: imageUrl,
+        idUser: userId, // O ID do usuário vem do contexto
       };
 
       const response = await axios.post(
@@ -105,8 +111,16 @@ export const ProductAdd = () => {
         setImageUri(null);
       }
     } catch (error) {
-      Alert.alert("Erro", "Erro ao publicar o produto. Tente novamente.");
-      console.error("Erro ao enviar produto:", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Erro na resposta:", error.response?.data);
+        Alert.alert(
+          "Erro",
+          `Erro no envio do produto: ${error.response?.data}`
+        );
+      } else {
+        console.error("Erro desconhecido:", error);
+        Alert.alert("Erro", "Erro desconhecido ao publicar o produto.");
+      }
     }
   };
 

@@ -15,7 +15,7 @@ import style from "./style";
 
 interface Produto {
   id: string;
-  foto: string;
+  image_url: string;
   titulo: string;
   preco: string;
 }
@@ -55,7 +55,7 @@ export const Home = () => {
       onPress={() => handleProductClick(item)}
       style={style.produtoContainer}
     >
-      <Image source={{ uri: item.foto }} style={style.produtoImage} />
+      <Image source={{ uri: item.image_url }} style={style.produtoImage} />
       <Text style={style.produtoTitle}>{item.titulo}</Text>
       <Text>R$ {item.preco}</Text>
     </TouchableOpacity>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";  // Importe o tipo AxiosError
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import {
@@ -22,6 +22,9 @@ export const Cadastro = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const UPLOAD_PRESET = "agoraVai"; // Substitua com seu upload preset correto!
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+
   const createUsers = async () => {
     if (
       !nome.trim() ||
@@ -39,28 +42,67 @@ export const Cadastro = () => {
 
     if (password === confirmPassword) {
       try {
-        const newUsers = {
-          nome,
-          email,
-          password,
-          Foto: imageUri,
-        };
+        console.log("Iniciando o upload da imagem para o Cloudinary...");
 
-        const response = await axios.post(
-          "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
-          newUsers
+        // Primeiro, faça o upload da imagem para o Cloudinary
+        const formData = new FormData();
+        const file = {
+          uri: imageUri,
+          type: 'image/jpeg', // Ajuste o tipo conforme o tipo da sua imagem
+          name: 'foto_usuario.jpg',
+        };
+        formData.append('file', file as any);
+        formData.append('upload_preset', UPLOAD_PRESET);
+
+        // Envia a imagem para o Cloudinary
+        const cloudinaryResponse = await axios.post(
+          CLOUDINARY_URL,
+          formData,
+          {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          }
         );
 
-        if (response.status === 201) {
-          Alert.alert("Sucesso", "Cadastro realizado!");
-          setNome("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setImageUri(null);
+        if (cloudinaryResponse.data.secure_url) {
+          const imageUrl = cloudinaryResponse.data.secure_url;
+          console.log("Imagem carregada com sucesso! URL:", imageUrl);
+
+          // Envia os dados do usuário para a API
+          const userData = {
+            nome,
+            email,
+            password,
+            Foto: imageUrl,
+          };
+
+          const response = await axios.post(
+            "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
+            userData
+          );
+
+          if (response.status === 201) {
+            Alert.alert("Sucesso", "Cadastro realizado!");
+            setNome("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setImageUri(null);
+          } else {
+            console.error("Erro ao cadastrar usuário:", response);
+            Alert.alert("Erro", "Erro ao cadastrar usuario");
+          }
+        } else {
+          throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
         }
-      } catch (error) {
-        Alert.alert("Erro", "Erro ao cadastrar usuario");
+      } catch (error: unknown) {
+        // Verificando se o erro é do tipo AxiosError
+        if (axios.isAxiosError(error)) {
+          console.error("Erro Axios:", error.response?.data);
+          Alert.alert("Erro", `Erro ao cadastrar usuario: ${error.response?.data}`);
+        } else {
+          console.error("Erro desconhecido:", error);
+          Alert.alert("Erro", "Erro desconhecido ao tentar cadastrar.");
+        }
       }
     } else {
       Alert.alert("As senhas não são iguais!");
@@ -152,10 +194,6 @@ export const Cadastro = () => {
             handleFunction={createUsers}
           />
         </View>
-
-        {/* <TouchableOpacity style={styles.button} onPress={postUsers}>
-          <Text style={styles.ButtonText}>FINALIZAR</Text>
-        </TouchableOpacity> */}
       </View>
     </TouchableWithoutFeedback>
   );
