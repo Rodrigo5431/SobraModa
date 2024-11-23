@@ -1,7 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   Text,
@@ -13,10 +13,8 @@ import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
-import { styles } from "./style";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./style";
 
 interface PropsInf {
   id: number;
@@ -32,10 +30,12 @@ export const Login = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
+
+  
   const [senha, setSenha] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { handleLogin } = useAuth();
+  const { handleLogin, checkAuthentication} = useAuth();
 
   // const { setId } = useAuth();
 
@@ -44,9 +44,11 @@ export const Login = () => {
   };
 
   const handlePassword = (value: string) => {
-    setSenha(value);
+    setPassword(value);
   };
 
+  const handleLogin = () => {
+    checkAuthentication(email, password);
   const handleVerifyLogin = () => {
     const resultado = users.find(
       (user) =>
@@ -72,7 +74,6 @@ export const Login = () => {
       setSuccess(false);
     }
   };
-  
 
   const searchUser = async () => {
     try {
@@ -115,8 +116,7 @@ export const Login = () => {
           <TextInputField
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
-            valueInput={senha}
-            typeInput={true}
+            valueInput={password}
             typeIcon="password"
           />
 
@@ -162,7 +162,6 @@ export const Login = () => {
           {success && (
             <Text style={{ fontSize: 18, color: "green" }}>
               Login realizado com sucesso!
-
             </Text>
           )}
         </View>
