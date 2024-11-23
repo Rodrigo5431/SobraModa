@@ -22,7 +22,6 @@ export function MainTabNavigatorChat() {
 
     return (
         <Tab.Navigator
-            initialRouteName="Chat"
             screenOptions={{
                 headerShown: false,
                 headerTitleAlign: "center",
@@ -38,6 +37,14 @@ export function MainTabNavigatorChat() {
                 },
             }}
         >
+
+            <Tab.Screen
+                name="Chat"
+                component={Chat}
+                options={{
+
+                }}
+            />
             <Tab.Screen
                 name="Home"
                 component={Home}
@@ -58,17 +65,9 @@ export function MainTabNavigatorChat() {
                 }}
             />
 
-<Tab.Screen
-                name="Chat"
-                component={Chat}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Feather name="home" size={size} color={color} />
-                    ),
-                }}
-            />
+
 
         </Tab.Navigator>
- 
+
     );
 };

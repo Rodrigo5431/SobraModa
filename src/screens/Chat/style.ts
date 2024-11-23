@@ -53,5 +53,8 @@ export const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
+
+
+
   
 });

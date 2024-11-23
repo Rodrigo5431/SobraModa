@@ -8,6 +8,8 @@ type PropriedadeIniciadaOuObrigatoria = {
   foto: string;
   setFoto: (value: string) => void;
   email: string;
+  tabChat:boolean;
+  setTabChat: (value: boolean) => void;
   setEmail: (value: string) => void;
   nome: string;
   setNome: (value: string) => void;
@@ -29,6 +31,8 @@ const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   password: "",
   setPassword: () => {},
   isLoading: false,
+  tabChat: false,
+  setTabChat: () => {},
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
@@ -37,6 +41,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tabChat, setTabChat] = useState<boolean>(false);
 
   const checkAuthentication = (email: string, password: string) => {
     setIsLoading(true);

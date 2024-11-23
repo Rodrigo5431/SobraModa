@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import style from "./style";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {
@@ -21,42 +22,42 @@ interface Produto {
 const produtosvertical: Produto[] = [
   {
     id: "1",
-    image: require("../../../assets/alfaiataria.jpg"),
+    image: require("../../assets/images/alfaiataria.jpg"),
     title: "Alfaiataria\nR$ 55,99 por 30cm",
   },
   {
     id: "2",
-    image: require("../../../assets/algodão.jpg"),
+    image: require("../../assets/images/algodão.jpg"),
     title: "Algodao\nR$ 35,99 por 30cm",
   },
   {
     id: "3",
-    image: require("../../../assets/linhãografite.jpg"),
+    image: require("../../assets/images/linhãografite.jpg"),
     title: "Linhão\nR$ 9,99 por 15cm",
   },
   {
     id: "4",
-    image: require("../../../assets/linho.jpg"),
+    image: require("../../assets/images/linho.jpg"),
     title: "inho\nR$ 22,30 por 15cm",
   },
   {
     id: "4",
-    image: require("../../../assets/seda.jpg"),
+    image: require("../../assets/images/seda.jpg"),
     title: "Seda\nR$ 99,99 por 15cm",
   },
   {
     id: "9",
-    image: require("../../../assets/jeans.jpg"),
+    image: require("../../assets/images/jeans.jpg"),
     title: "linho\nR$ 22,50 por 15cm",
   },
   {
     id: "10",
-    image: require("../../../assets/moussekine.jpg"),
+    image: require("../../assets/images/moussekine.jpg"),
     title: "mousseline\nR$ 22 por 15cm",
   },
   {
     id: "11",
-    image: require("../../../assets/renda.jpg"),
+    image: require("../../assets/images/renda.jpg"),
     title: "linho\nR$ 50,00 por 10cm",
   },
 ];
@@ -64,24 +65,24 @@ const produtosvertical: Produto[] = [
 const produtosHorizontal: Produto[] = [
   {
     id: "5",
-    image: require("../../../assets/orford.jpg"),
+    image: require("../../assets/images/orford.jpg"),
     title: "oxford\nR$30 por 50cm",
   },
   // { id: '6', image: require('../../../assets/pelucia.jpg') ,title: 'pelucia/noii' },
   {
     id: "6",
-    image: require("../../../assets/pelucia.jpg"),
+    image: require("../../assets/images/pelucia.jpg"),
     title: "pelucia\nR$ 15,99 por 30cm ",
   },
 
   {
     id: "7",
-    image: require("../../../assets/tricole.jpg"),
+    image: require("../../assets/images/tricole.jpg"),
     title: "tricoline\nR$ 19,99 por 15cm",
   },
   {
     id: "8",
-    image: require("../../../assets/tricoline.jpg"),
+    image: require("../../assets/images/tricoline.jpg"),
     title: "tricoline\nR$ 15,50 por 40cm",
   },
 ];
@@ -95,6 +96,22 @@ export const Home = () => {
   //   Alert.alert('Vamos para a Chats');
   //   navigation.navigate('Chat');
   // };
+
+
+  const navigation = useNavigation();
+
+    
+  // useEffect(()=> {
+  //   navigation.setOptions({
+
+  //     if(clicou no chat){
+  //       navigation.navigate("Chat");
+  //     }
+    //   tabBarStyle: {
+    //     display: "none",
+    //   }
+    // });
+ // });
 
   const [expand, setExpand] = useState<boolean>(true);
   const [foto, setFoto] = useState<boolean>(false);

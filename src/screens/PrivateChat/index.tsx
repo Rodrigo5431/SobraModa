@@ -5,29 +5,33 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import { RouteProp } from "@react-navigation/native";
-import {styles} from "./styles";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { styles } from "./styles";
+import { MaterialIcons } from '@expo/vector-icons';
 
-// Definição do tipo para os parâmetros da rota
 type PrivateChatRouteParams = {
   Usuario: string;
   Mensagem: string;
 };
 
-// Tipo para a propriedade de rota
 type PrivateChatProps = {
   route: RouteProp<{ params: PrivateChatRouteParams }, "params">;
 };
 
-export const PrivateChat = ({ route }: PrivateChatProps) => {
+export default function PrivateChat({ route }: PrivateChatProps) {
+
   const { Usuario, Mensagem } = route.params;
 
-  // Estado para gerenciar a lista de mensagens e o campo de entrada
   const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-  // Função para enviar mensagem
+  const rotas = useRoute();
+  const navigation = useNavigation();
+
+
   const sendMessage = () => {
     if (newMessage.trim()) {
       setMessages((prevMessages) => [
@@ -41,7 +45,7 @@ export const PrivateChat = ({ route }: PrivateChatProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Conversa Privada</Text>
-      
+
       {/* Lista de mensagens */}
       <FlatList
         data={messages}
@@ -60,8 +64,8 @@ export const PrivateChat = ({ route }: PrivateChatProps) => {
         style={styles.messagesList}
       />
 
-      {/* Campo de entrada e botão de envio */}
-      <View style={styles.inputContainer}>
+<KeyboardAvoidingView>
+<View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Digite sua mensagem"
@@ -72,6 +76,8 @@ export const PrivateChat = ({ route }: PrivateChatProps) => {
           <Text style={styles.sendButtonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };
+
