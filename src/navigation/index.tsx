@@ -16,6 +16,8 @@ import { Home } from "../screens/Home";
 import { useAuth } from "../hooks/useAuth";
 import { MyDrawer } from "./drawerNavigator";
 
+import { PrivateChat } from "../screens/PrivateChat";
+
 const Stack = createNativeStackNavigator();
 
 export function Navigator() {

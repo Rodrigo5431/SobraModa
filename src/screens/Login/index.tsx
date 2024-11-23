@@ -32,20 +32,9 @@ export const Login = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
-
-  const {
-    id,
-    setId,
-    foto,
-    setFoto,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    nome,
-    setNome,
-  } = useAuth();
   const [senha, setSenha] = useState<string>("");
+
+  const { setId, setEmail, email } = useAuth();
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -61,26 +50,21 @@ export const Login = () => {
         user.email.toLowerCase() === email.toLowerCase() &&
         user.password === senha
     );
-
+  
     if (resultado) {
-      // setId(resultado.id);
-      // setFoto(resultado.foto);
-      // setNome(resultado.nome);
-      // setPassword(resultado.password);
       AsyncStorage.setItem("resultado", JSON.stringify(resultado));
+      setId(resultado.id);
       setSuccess(true);
       setError("");
-      console.log("resultado: " + resultado);
-      console.log(`nome: ${nome}`);
-
-      setTimeout(() => {
-        navigation.navigate("Home");
-      }, 1000);
+  
+      Alert.alert("Login realizado com sucesso!");
+      navigation.navigate("Home");
     } else {
       setError("Usuário ou senha inválidos!");
       setSuccess(false);
     }
   };
+  
 
   const searchUser = async () => {
     try {
@@ -90,7 +74,6 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
-        console.log(response.data);
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -165,10 +148,11 @@ export const Login = () => {
             </TouchableOpacity>
           </View>
 
-          {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
+          {error && <Text style={{ fontSize: 18, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35, color: "green" }}>
-              {Alert.alert("Login realizado!!")}
+            <Text style={{ fontSize: 18, color: "green" }}>
+              Login realizado com sucesso!
+
             </Text>
           )}
         </View>
