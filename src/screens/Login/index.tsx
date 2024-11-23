@@ -31,8 +31,23 @@ export const Login = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
 
+<<<<<<< HEAD
   const { setId, setEmail } = useAuth(); // Atualizando somente o necessário
   const [email, setLocalEmail] = useState<string>(""); // Campo local
+=======
+  const {
+    id,
+    setId,
+    foto,
+    setFoto,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    nome,
+    setNome,
+  } = useAuth();
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
   const [senha, setSenha] = useState<string>("");
 
   const handleEmail = (value: string) => {
@@ -46,7 +61,12 @@ export const Login = () => {
   const handleLogin = () => {
     const resultado = users.find(
       (user) =>
+<<<<<<< HEAD
         user.email.toLowerCase() === email.toLowerCase() && user.password === senha
+=======
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.password === senha
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
     );
 
     if (resultado) {
@@ -54,9 +74,14 @@ export const Login = () => {
       setEmail(resultado.email); // Atualizando o email globalmente
       setSuccess(true);
       setError("");
+<<<<<<< HEAD
 
       console.log("ID do usuário:", resultado.id); // Debug
       console.log("Usuário logado:", resultado);
+=======
+      console.log("resultado: " + resultado);
+      console.log(`nome: ${nome}`);
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
 
       setTimeout(() => {
         navigation.navigate("Home");
@@ -75,7 +100,11 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
+<<<<<<< HEAD
         console.log("Usuários carregados:", response.data);
+=======
+        console.log(response.data);
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -85,6 +114,10 @@ export const Login = () => {
   useEffect(() => {
     searchUser();
   }, []);
+
+  const handleRegister = () => {
+    navigation.navigate("Cadastrar");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -139,6 +172,7 @@ export const Login = () => {
             <TouchableOpacity>
               <Text
                 style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                onPress={handleRegister}
               >
                 Cadastre-se
               </Text>

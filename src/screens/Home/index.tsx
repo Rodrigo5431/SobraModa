@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   ScrollView,
@@ -7,11 +8,11 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import style from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {
   id: string;
@@ -42,7 +43,6 @@ export const Home = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 

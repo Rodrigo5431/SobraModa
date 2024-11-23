@@ -1,33 +1,25 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
+import { Cadastro } from "../screens/Cadastro";
 import { Chat } from "../screens/Chat";
 import { EditProfile } from "../screens/EditProfile";
-import { NoImplements } from "../screens/NoImplements";
+import { Login } from "../screens/Login";
+import Configuration from "../screens/UserConfig";
 import { colors } from "../styles/colors";
 import { MainTabNavigator } from "./MainTabNavigation";
-import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
-import Configuration from "../screens/UserConfig";
-import { HeaderConfiguration } from "../components/HeaderConfiguration";
-import { Login } from "../screens/Login";
-import { Cadastro } from "../screens/Cadastro";
+
+import { PrivateChat } from "../screens/PrivateChat";
 
 const Stack = createNativeStackNavigator();
 
 export const Navigator = () => {
-  // const navigation = useNavigation();
-
-  // const handleChats = () => {
-
-  //   Alert.alert('Vamos para a Chats');
-  //   navigation.navigate('Chat');
-  // };
-
   return (
     <NavigationContainer>
       <ProvedorPropriedadeAplicacao>
         <Stack.Navigator
-          initialRouteName="Login" //depois que terminar colocar a Login para ser a principal
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
             headerStyle: {
@@ -40,10 +32,8 @@ export const Navigator = () => {
             component={MainTabNavigator}
             options={{ headerShown: false }}
           />
-          {/* <TouchableOpacity onPress={handleChats}> */}
           <Stack.Screen
             name="Chat"
-            // onPress={() => handleChats()}
             component={Chat}
             options={({ navigation }) => ({
               headerShown: false,
@@ -51,7 +41,6 @@ export const Navigator = () => {
               headerTitleAlign: "center",
             })}
           />
-          {/* </TouchableOpacity> */}
 
           <Stack.Screen
             name="Login"
@@ -64,7 +53,6 @@ export const Navigator = () => {
             options={{ title: "Cadastro", headerShown: false }}
           />
 
-
           <Stack.Screen
             name="EditProfile"
             component={EditProfile}
@@ -75,12 +63,14 @@ export const Navigator = () => {
             component={Configuration}
             options={{ title: "Configuraçoes Usuario", headerShown: false }}
           />
-                {/* <TouchableOpacity onPress={handleChats}> */}
-              
+
+          {/* <Stack.Screen
+            name="PrivateChat"
+            component={PrivateChat}
+            options={{ title: "Conversa Privada", headerShown: false }}
+          /> */}
         </Stack.Navigator>
       </ProvedorPropriedadeAplicacao>
     </NavigationContainer>
   );
 };
-
-

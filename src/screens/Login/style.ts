@@ -13,13 +13,20 @@ export const styles = StyleSheet.create({
     width: 120,
   },
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
     tituloPrincipal:{
        fontFamily: "IslandMoments_400Regular",
        fontSize: 36,
        color: "#342142",
        marginBottom: 30
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
 
   boxForms: {
     width: "80%",

@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -10,30 +10,31 @@ export const HeaderConfiguration = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState<any>(null);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const data = await AsyncStorage.getItem("resultado"); 
+        const data = await AsyncStorage.getItem("resultado");
         if (data) {
-          setUserData(JSON.parse(data)); 
+          setUserData(JSON.parse(data));
         }
       } catch (error) {
-        console.error("Erro ao buscar dados do AsyncStorage:", error);
+        Alert.alert("Voce nao esta logado");
       }
     };
 
     fetchUserData();
   }, []);
 
-
   const handleEditProfile = () => {
     navigation.navigate("EditProfile");
   };
 
+  const handleLogout = () => {
+    AsyncStorage.removeItem("resultado");
+  };
+
   return (
     <View style={styles.container}>
-
       <View style={styles.navBar}>
         <Text style={styles.userName}>{userData?.nome}</Text>
         <TouchableOpacity onPress={() => setConfiguration(!configuration)}>
@@ -43,16 +44,14 @@ export const HeaderConfiguration = () => {
 
       {configuration && (
         <View style={styles.configMenu}>
-          <Text style={styles.userEmail}>
-            {userData?.email}
-          </Text>
+          <Text style={styles.userEmail}>{userData?.email}</Text>
           <TouchableOpacity
             onPress={handleEditProfile}
             style={styles.editProfileButton}
           >
             <Text style={styles.editProfile}>Editar Perfil</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.logoutButton}>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text>Sair</Text>
           </TouchableOpacity>
         </View>

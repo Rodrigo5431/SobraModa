@@ -3,7 +3,10 @@ const screenWidth = Dimensions.get("window").width;
 
 const style = StyleSheet.create({
   container: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
      flex: 1,
      backgroundColor: '#E3D5F6' ,
      paddingBottom: 60,
@@ -24,7 +27,10 @@ const style = StyleSheet.create({
     top: 0,
    },
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
   produtoContainer: {
     height: 200,
     margin: 5,
@@ -41,12 +47,20 @@ const style = StyleSheet.create({
     margin: 0,
     padding: 5,
     borderWidth: 2,
+<<<<<<< HEAD
+=======
+
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
     borderColor: '#8B65BF', 
   },
 
   produtoTitle: {
     fontSize: 14,
     // fontWeight: 'bold',
+<<<<<<< HEAD
+=======
+
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
     textAlign: 'center',
     color: '#333',
     fontFamily: 'Comic Neue',
@@ -96,6 +110,12 @@ const style = StyleSheet.create({
       marginTop: -30,
       marginBottom: 50,
     },
+<<<<<<< HEAD
+=======
+    
+    
+ 
+>>>>>>> d67ec59b453bc8393e45fed14f92ad8286430258
 });
 
 export default style;
