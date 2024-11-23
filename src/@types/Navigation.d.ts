@@ -6,6 +6,7 @@ export type PropsStack = {
     Home:undefined
     Login: undefined
     UserConfig: undefined
+
 }
 
 export type PropsTabs = {

@@ -96,6 +96,30 @@ const style = StyleSheet.create({
     marginTop: -30,
     marginBottom: 50,
   },
+
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    marginHorizontal: "10%",
+    marginTop: -20,
+    borderColor: "#8B65BF",
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    marginRight: 10,
+    fontSize: 16,
+  },
+  chatText: {
+    fontSize: 14,
+    color: "#0066cc",
+    textDecorationLine: "underline",
+    marginTop: 5,
+  },
 });
 
 export default style;
