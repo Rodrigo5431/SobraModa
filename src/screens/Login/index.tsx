@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   Text,
@@ -167,7 +168,7 @@ export const Login = () => {
           {error && <Text style={{ fontSize: 35, color: "red" }}>{error}</Text>}
           {success && (
             <Text style={{ fontSize: 35, color: "green" }}>
-              Login realizado com sucesso!
+              {Alert.alert("Login realizado!!")}
             </Text>
           )}
         </View>
