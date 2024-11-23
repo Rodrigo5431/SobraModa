@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   ScrollView,
@@ -12,6 +14,7 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import style from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {
   id: string;
@@ -21,6 +24,7 @@ interface Produto {
 }
 
 export const Home = () => {
+
   const [produtosVertical, setProdutosVertical] = useState<Produto[]>([]);
   const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
   const [expand, setExpand] = useState<boolean>(true);
@@ -42,7 +46,6 @@ export const Home = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -60,6 +63,7 @@ export const Home = () => {
       <Text>R$ {item.preco}</Text>
     </TouchableOpacity>
   );
+
 
   if (loading) {
     return (

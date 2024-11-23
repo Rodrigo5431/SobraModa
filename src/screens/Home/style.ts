@@ -1,5 +1,5 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
-const screenWidth = Dimensions.get('window').width;
+import { Dimensions, Platform, StyleSheet } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 
 const style = StyleSheet.create({
   container: {
@@ -24,12 +24,12 @@ const style = StyleSheet.create({
    },
 
   produtoContainer: {
-    height:200, 
+    height: 200,
     margin: 5,
-    marginVertical: 35, 
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+    marginVertical: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
   
   produtoImage: {
@@ -39,12 +39,14 @@ const style = StyleSheet.create({
     margin: 0,
     padding: 5,
     borderWidth: 2,
+
     borderColor: '#8B65BF', 
   },
 
   produtoTitle: {
     fontSize: 14,
     // fontWeight: 'bold',
+
     textAlign: 'center',
     color: '#333',
     fontFamily: 'Comic Neue',

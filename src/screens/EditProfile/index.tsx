@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -13,8 +13,13 @@ import {
 import { styles } from "./style";
 import axios from "axios";
 import { KeyboardAvoidingView } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
+import { HeaderConfiguration } from "../../components/HeaderConfiguration";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const EditProfile = () => {
+  const { email, setEmail } = useAuth();
+
   const [showName, setShowName] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [savedName, setSavedName] = useState<string>("");
@@ -23,22 +28,47 @@ export const EditProfile = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const id = useState<string>("");
-  //const token = localStorage.getItem("token");
-  const handlesubmitPassword = async () => {
+  const [userData, setUserData] = useState<any>(null);
+
+  const atualizaNome = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:8080/usuarios/${id}`,
-
-        { password, newPassword, confirmPassword },
-
+      axios.put(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
         {
-          headers: {
-            //   Authorization: `Bearer ${token}`,
-          },
+          nome: savedName,
         }
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log("nao foi possivel atualizar o nome");
+    }
   };
+  const atualizaSenha = async () => {
+    try {
+      axios.put(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
+        {
+          password: newPassword,
+        }
+      );
+    } catch (error) {
+      console.log("nao foi possivel atualizar o nome");
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await AsyncStorage.getItem("resultado");
+        if (data) {
+          setUserData(JSON.parse(data));
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do AsyncStorage:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -55,12 +85,9 @@ export const EditProfile = () => {
               setShowPassword(false);
             }}
           >
-            <Text style={styles.title}>{savedName}</Text>
+            <Text style={styles.title}>{userData?.nome}</Text>
             <View style={styles.editItem}>
-              <Image
-                style={styles.userImg}
-                source={require("../../assets/configurationIcon.png")}
-              />
+              <Image style={styles.userImg} source={{ uri: userData?.Foto }} />
               <View style={styles.name}>
                 <TouchableOpacity
                   style={styles.buttonChange}
@@ -97,6 +124,7 @@ export const EditProfile = () => {
                     onPress={() => {
                       setSavedName(name);
                       setName("");
+                      atualizaNome()
                     }}
                   >
                     <Text style={styles.saveButtonText}>Salvar</Text>
@@ -104,6 +132,7 @@ export const EditProfile = () => {
                 </View>
               </View>
             )}
+
             {showPassword && (
               <View style={styles.changeInformation}>
                 <View style={styles.titleAreaPassword}>
@@ -132,14 +161,16 @@ export const EditProfile = () => {
                 />
                 <View>
                   <TouchableOpacity style={styles.saveButtonPassword}>
-                    <Text style={styles.saveButtonText}>Salvar</Text>
+                    <Text style={styles.saveButtonText}
+                    onPress={atualizaSenha}
+                    >Salvar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             )}
             <View style={styles.logoutArea}>
               <TouchableOpacity activeOpacity={0.6} style={styles.logoutButton}>
-                <Text style={styles.alter}>Sair</Text>
+                <Text style={styles.alter}>Voltar</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
