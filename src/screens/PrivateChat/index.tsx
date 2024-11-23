@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { styles } from "./styles";
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { HeaderConfiguration } from "@/components/HeaderConfiguration";
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type PrivateChatRouteParams = {
   Usuario: string;
@@ -24,28 +24,30 @@ type PrivateChatProps = {
 
 export default function PrivateChat({ route }: PrivateChatProps) {
 
-  const routes = useRoute();
   const navigation = useNavigation();
-
   const { Usuario, Mensagem } = route.params;
 
   const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-
+  // Ajuste da configuração do cabeçalho aqui
   useEffect(() => {
+    // A opção do título é configurada com o nome do usuário
     navigation.setOptions({
-        headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('UserConfig')}>
-                <Ionicons name="settings-outline" size={24} color="black" />
-            </TouchableOpacity>
-        ),
-        headerTitle: route.params.name,
+      headerTitle: Usuario, // Exibindo o nome do usuário no cabeçalho
+      headerTitleAlign: 'center',  // Título centralizado
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('UserConfig')}>
+          <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+      ),
     });
-}, [navigation, route.params.name]);
-
-
-
+  }, [navigation, Usuario]); // Atualiza o título toda vez que o nome do usuário mudar
 
   const sendMessage = () => {
     if (newMessage.trim()) {
@@ -53,15 +55,12 @@ export default function PrivateChat({ route }: PrivateChatProps) {
         ...prevMessages,
         { sender: "Você", text: newMessage },
       ]);
-      setNewMessage(""); // Limpa o campo de entrada
+      setNewMessage(""); 
     }
   };
 
   return (
-    <View style={styles.container}>
-      
-      
-
+    <SafeAreaView style={styles.container}>
       {/* Lista de mensagens */}
       <FlatList
         data={messages}
@@ -80,20 +79,19 @@ export default function PrivateChat({ route }: PrivateChatProps) {
         style={styles.messagesList}
       />
 
-<KeyboardAvoidingView>
-<View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite sua mensagem"
-          value={newMessage}
-          onChangeText={setNewMessage}
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>Enviar</Text>
-        </TouchableOpacity>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua mensagem"
+            value={newMessage}
+            onChangeText={setNewMessage}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Text style={styles.sendButtonText}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
-

@@ -75,7 +75,7 @@ export const Home = () => {
       <View style={style.containerPlusMaxAdvencedPower}>
         <View style={style.profileContainer}>
           <Image
-            source={require("../../../assets/perfil.jpg")}
+            source={require("../../../assets/images/perfil.jpg")}
             style={style.profileImage}
           />
         </View>
