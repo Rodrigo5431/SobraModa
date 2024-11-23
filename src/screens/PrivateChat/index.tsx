@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { styles } from "./styles";
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { HeaderConfiguration } from "@/components/HeaderConfiguration";
 
 type PrivateChatRouteParams = {
   Usuario: string;
@@ -23,13 +24,27 @@ type PrivateChatProps = {
 
 export default function PrivateChat({ route }: PrivateChatProps) {
 
+  const routes = useRoute();
+  const navigation = useNavigation();
+
   const { Usuario, Mensagem } = route.params;
 
   const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-  const rotas = useRoute();
-  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('UserConfig')}>
+                <Ionicons name="settings-outline" size={24} color="black" />
+            </TouchableOpacity>
+        ),
+        headerTitle: route.params.name,
+    });
+}, [navigation, route.params.name]);
+
+
 
 
   const sendMessage = () => {
@@ -44,7 +59,8 @@ export default function PrivateChat({ route }: PrivateChatProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Conversa Privada</Text>
+      
+      
 
       {/* Lista de mensagens */}
       <FlatList
