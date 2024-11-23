@@ -12,6 +12,7 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import style from "./style";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Produto {

@@ -152,6 +152,7 @@ export const Login = () => {
           {success && (
             <Text style={{ fontSize: 18, color: "green" }}>
               Login realizado com sucesso!
+
             </Text>
           )}
         </View>

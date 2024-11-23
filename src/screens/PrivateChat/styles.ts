@@ -1,12 +1,14 @@
 import { StyleSheet } from "react-native";
+import { colors } from "@/styles/colors"; 
 
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#E3D5F6",
+      backgroundColor: colors.purple.cor5,
       padding: 20,
     },
     title: {
+      marginTop:20,  
       fontSize: 20,
       fontWeight: "bold",
       marginBottom: 20,
@@ -23,11 +25,12 @@ export const styles = StyleSheet.create({
       maxWidth: "80%",
     },
     theirMessage: {
-      backgroundColor: "#fff",
+      backgroundColor: colors.purple.cor4, 
       alignSelf: "flex-start",
+      color: colors.basic.preto,
     },
     myMessage: {
-      backgroundColor: "#DCF8C6",
+      backgroundColor: colors.purple.cor3,
       alignSelf: "flex-end",
     },
     user: {
@@ -37,9 +40,10 @@ export const styles = StyleSheet.create({
     },
     message: {
       fontSize: 14,
-      color: "#555",
+      color: colors.basic.preto,
     },
     inputContainer: {
+      width:"100%", 
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 10,
@@ -55,17 +59,34 @@ export const styles = StyleSheet.create({
       borderColor: "#ccc",
       borderWidth: 1,
       marginRight: 10,
+      width:20,
+
     },
     sendButton: {
-      backgroundColor: "#6200ee",
+      backgroundColor: colors.purple.cor6,
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 10,
     },
     sendButtonText: {
+
       color: "#fff",
       fontSize: 14,
       fontWeight: "bold",
+      width:40,
+
+      
     },
+    bottomsend:{
+      position:"absolute",
+      right:0,
+      backgroundColor:"#fff",
+      width:40,
+      height:"100%",
+      justifyContent:"center",
+      alignItems:"center",
+      alignContent:"center",
+  
+  },
   });
   
