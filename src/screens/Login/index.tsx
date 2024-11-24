@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   Text,
@@ -16,7 +15,7 @@ import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 interface PropsInf {
   id: number;
@@ -34,10 +33,8 @@ export const Login = () => {
   const [users, setUsers] = useState<PropsInf[]>([]);
 
 
-  const { setEmail, email, setPassword, password } =
+  const { setEmail, email, setPassword, password, handleLogin } =
     useAuth();
-
-  const { handleLogin } = useAuth();
 
 
   const handleEmail = (value: string) => {
@@ -47,11 +44,6 @@ export const Login = () => {
   const handlePassword = (value: string) => {
     setPassword(value);
   };
-
-
-  // const handleLogin = () => {
-  // checkAuthentication(email, password);
-  // }
 
   const handleVerifyLogin = () => {
     const resultado = users.find(

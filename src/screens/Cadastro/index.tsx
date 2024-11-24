@@ -40,13 +40,20 @@ export default function Cadastro() {
 
   const navigation = useNavigation();
 
+
   const arrowBackToLogin = () => {
     navigation.navigate("Login");
   };
 
   const UPLOAD_PRESET = "agoraVai";
+
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+
+  const arrowBackToLogin = () => {
+    navigation.navigate("Login");
+  };
+
 
   const createUsers = async () => {
     if (
@@ -55,6 +62,7 @@ export default function Cadastro() {
       !password.trim() ||
       !confirmPassword.trim()
     ) {
+
       return false;
     }
     try {
@@ -146,6 +154,7 @@ export default function Cadastro() {
             setIsLoading(false); // Para o loading em caso de erro
           }
         } else {
+
           setIsLoading(false);
           setErroSenha("As senhas não coincidem");
           setErro("");
@@ -208,11 +217,13 @@ export default function Cadastro() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+
         <View style={styles.arrowLogin}>
           <TouchableOpacity onPress={arrowBackToLogin}>
             <Icon name="arrow-back-outline" type="ionicon" color={"#342142"} />
           </TouchableOpacity>
         </View>
+
         <Text style={styles.tituloPrincipal}>Cadastro</Text>
 
         <TouchableOpacity

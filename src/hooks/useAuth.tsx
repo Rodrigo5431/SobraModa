@@ -19,6 +19,7 @@ type PropriedadeIniciadaOuObrigatoria = {
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
 
+
   handleLogOut: () => {},
   email: "",
   setEmail: () => {},
@@ -39,6 +40,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [userData, setUserData] = useState<any>(null);
   const [tabChat, setTabChat] = useState<boolean>(false);
 
+  const navigation = useNavigation();
 
   const navigation = useNavigation();
 
@@ -96,8 +98,6 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     }
   };
 
-
-
   const getData = async () => {
     try {
       const valueEmail = await AsyncStorage.getItem("@infoUserEmail");
@@ -115,15 +115,13 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     setIsLoading(false);
   };
 
-
-
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <Propriedade.Provider
-      value={{
+     value={{
         checkAuthentication,
         handleLogOut,
         email,
@@ -133,8 +131,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         isLoading,
         handleLogin,
         userData,
-fetchUserData,
-
+        fetchUserData,
       }}
     >
       {children}
