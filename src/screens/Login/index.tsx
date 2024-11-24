@@ -16,6 +16,7 @@ import { TextInputField } from "../../components/TextInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
+
 interface PropsInf {
   id: number;
   foto: string;
@@ -31,13 +32,10 @@ export const Login = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
 
-  
-  const [senha, setSenha] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const { handleLogin, checkAuthentication} = useAuth();
 
-  // const { setId } = useAuth();
+  const { setEmail, email, setPassword, password, handleLogin } =
+    useAuth();
+
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -47,13 +45,11 @@ export const Login = () => {
     setPassword(value);
   };
 
-  const handleLogin = () => {
-    checkAuthentication(email, password);
   const handleVerifyLogin = () => {
     const resultado = users.find(
       (user) =>
         user.email.toLowerCase() === email.toLowerCase() &&
-        user.password === senha
+        user.password === password
     );
   
     if (resultado) {
@@ -147,10 +143,10 @@ export const Login = () => {
           />
 
           <View style={styles.cadastro}>
-            <Text>Não tem conta?</Text>
+            <Text style={{fontSize: 16}}>Não tem conta?</Text>
             <TouchableOpacity>
               <Text
-                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5, fontSize: 20 }}
                 onPress={handleRegister}
               >
                 Cadastre-se

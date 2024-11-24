@@ -1,29 +1,34 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
+
 
 type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
   handleLogin: (resultado: any) => void;
-  handleLogout: (resultado: any) => void;
-  tabChat?:boolean;
-  setTabChat?: (value: boolean) => void;
   isLoading: boolean;
   handleLogOut: () => void;
   fetchUserData:() => void;
   userData: any;
+  email: string;
+  setEmail: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
 
+
+  handleLogOut: () => {},
+  email: "",
+  setEmail: () => {},
+  password: "",
+  setPassword: () => {},
   isLoading: false,
   handleLogin: () => {},
-  handleLogout: () => {},
   fetchUserData: () => {},
   userData: [],
-  tabChat: false,
-  setTabChat: () => {},
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
@@ -41,7 +46,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     try {
       await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
       console.log("Usuário autenticado:", resultado);
-
+      checkAuthentication(email, password)
     } catch (error) {
       console.error("Erro ao salvar os dados do usuário:", error);
     }
@@ -64,24 +69,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem("@resultado");
-      setUserData(null);
-      console.log("Usuário deslogado com sucesso.");      
 
-    } catch (error) {
-      console.error("Erro ao realizar logout:", error);
-    }
-  };
-
-  const checkAuthentication = (email: string, password: string) => {
-    setIsLoading(true);
-
-   
-    const userId = 1;
-    setId(userId);
-    storeData(userId);
 
   const checkAuthentication = (email: string, password: string) => {
     saveLogin(email, password)    
@@ -107,8 +95,6 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     }
   };
 
-
-
   const getData = async () => {
     try {
       const valueEmail = await AsyncStorage.getItem("@infoUserEmail");
@@ -126,22 +112,23 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     setIsLoading(false);
   };
 
-
-
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <Propriedade.Provider
-      value={{
+     value={{
         checkAuthentication,
-
-        handleLogin,
-        handleLogout,
-        fetchUserData,
+        handleLogOut,
+        email,
+        setEmail,
+        password,
+        setPassword,
         isLoading,
+        handleLogin,
         userData,
+        fetchUserData,
       }}
     >
       {children}
