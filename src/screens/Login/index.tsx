@@ -19,7 +19,7 @@ import { styles } from "./style";
 
 interface PropsInf {
   id: number;
-  foto: string;
+  Foto: string;
   nome: string;
   email: string;
   password: string;
@@ -60,10 +60,8 @@ export const Login = () => {
       setTimeout(() => {
         navigation.navigate("Home");
       }, 1000);
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
       setSuccess(true);
       setError("");
-      Alert.alert("Login realizado com sucesso!");
       navigation.navigate("Home");
     } else {
       setError("Usuário ou senha inválidos!");
