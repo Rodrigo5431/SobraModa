@@ -20,7 +20,7 @@ interface PropsPostagem {
   titulo: string;
   descricao: string;
   preco: number;
-  Foto: string;
+  foto: string;
   dataPostagem: Date;
 }
 
@@ -34,7 +34,6 @@ export default function Configuration() {
     fetchUserData();
   }, []);
 
-  // Carrega postagens do usuário após `userData` estar disponível
   useEffect(() => {
     if (userData?.id) {
       handlePostagem();
@@ -102,7 +101,7 @@ export default function Configuration() {
             <View style={styles.posts}>
               <Image
                 style={styles.postImg}
-                source={{ uri: item.Foto }}
+                source={{ uri: item.foto }}
                 alt="publicacao"
               />
               <Text style={styles.postTitle}>{item.titulo}</Text>
