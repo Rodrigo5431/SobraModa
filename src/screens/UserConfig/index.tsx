@@ -78,7 +78,7 @@ export default function Configuration() {
       <HeaderConfiguration />
       <View style={styles.user}>
         <Image
-          source={{ uri: userData?.image_url }}
+          source={{ uri: userData?.Foto }}
           style={styles.userImage}
         ></Image>
 

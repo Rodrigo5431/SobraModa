@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
   },
 
   tituloPrincipal: {
-    fontSize: 30,
-    marginBottom: 10,
+    fontFamily: "IslandMoments_400Regular",
+    fontSize: 90,
     color: "#342142",
   },
 
@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
 
   arrowLogin:{
     right: 150,
-    bottom: 60
+    bottom: 45
   },
 
 });

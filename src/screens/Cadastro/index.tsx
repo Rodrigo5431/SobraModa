@@ -1,4 +1,6 @@
-import axios, { AxiosError } from "axios"; // Importe o tipo AxiosError
+import { Loading } from "@/components/Loading";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios"; // Importe o tipo AxiosError
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,8 +16,6 @@ import { Icon } from "react-native-elements";
 import { ButtonMain } from "../../components/ButtonMain";
 import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
-import { useNavigation } from "@react-navigation/native";
-import { Loading } from "@/components/Loading";
 
 interface PropsUser {
   id: number;
@@ -40,7 +40,13 @@ export default function Cadastro() {
 
   const navigation = useNavigation();
 
-  const UPLOAD_PRESET = "agoraVai"; // Substitua com seu upload preset correto!
+
+  const arrowBackToLogin = () => {
+    navigation.navigate("Login");
+  };
+
+  const UPLOAD_PRESET = "agoraVai";
+
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 
@@ -82,8 +88,8 @@ export default function Cadastro() {
         setErroSenha("");
         setImageUri(null);
         handleSearchUsers();
-        setSucess("Conta criada com sucesso")
-        
+        setSucess("Conta criada com sucesso");
+
         setTimeout(() => {
           navigation.navigate("Login");
         }, 3000);
@@ -159,13 +165,12 @@ export default function Cadastro() {
         setErro("Este e-mail já existe em nossa base. Faça seu Login.");
         setErroSenha("");
         setErroFoto("");
-          // setEmailExistente(
-          //   "Este e-mail já existe em nossa base. Faça seu Login."
-          // );
-          setTimeout(() => {
-            navigation.navigate("Login");
-          }, 3000);
-
+        // setEmailExistente(
+        //   "Este e-mail já existe em nossa base. Faça seu Login."
+        // );
+        setTimeout(() => {
+          navigation.navigate("Login");
+        }, 3000);
       }
     } catch (error) {
       setIsLoading(false); // Para o loading em caso de erro
@@ -215,7 +220,7 @@ export default function Cadastro() {
 
         <View style={styles.arrowLogin}>
           <TouchableOpacity onPress={arrowBackToLogin}>
-            <Icon name="arrow-back-outline" type="ionicon" color={"#342142"}/>
+            <Icon name="arrow-back-outline" type="ionicon" color={"#342142"} />
           </TouchableOpacity>
         </View>
 
@@ -238,9 +243,7 @@ export default function Cadastro() {
           <Text style={styles.msg}>Adicionar Foto</Text>
         </TouchableOpacity>
         {erroFoto && <Text style={{ color: "red" }}>{erroFoto}</Text>}
-        {sucess && (
-          <Text style={{ color: "green" }}>{sucess}</Text>
-        )}
+        {sucess && <Text style={{ color: "green", fontSize: 15}}>{sucess}</Text>}
         <View style={styles.inputBox}>
           <View style={styles.input}>
             <Text style={{ left: 5, color: "#342142" }}>Nome:</Text>
