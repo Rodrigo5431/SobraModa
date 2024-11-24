@@ -1,6 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -12,55 +11,53 @@ import {
 import whatsappIcon from "../../assets/whatsapp.png";
 import { HeaderConfiguration } from "../../components/HeaderConfiguration";
 import { styles } from "./style";
+import React from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 interface PropsPostagem {
+  id: number;
   id_usuario: number;
   titulo: string;
   descricao: string;
   preco: number;
-  foto: string;
+  Foto: string;
+  dataPostagem: Date;
 }
 
 export default function Configuration() {
-  const [user, setUser] = useState<any>();
   const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
-  const [id, setId] = useState<number>();
-  const [nome, setNome] = useState<string>();
-  const [descricao, setDescricao] = useState<string>();
-  const [foto, setFoto] = useState<any>();
   const [error, setError] = useState<string>();
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
   const { fetchUserData, userData } = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchUserData(); // Recupera os dados do usuário
-        await handlePostagem(); // Carrega as postagens
-      } catch (error) {
-        console.error("Erro ao carregar os dados:", error);
-      }
-    };
-
-    fetchData();
+    fetchUserData();
   }, []);
+
+  // Carrega postagens do usuário após `userData` estar disponível
+  useEffect(() => {
+    if (userData?.id) {
+      handlePostagem();
+    }
+  }, [userData]);
 
   const handlePostagem = async () => {
     try {
       const response = await axios.get(
         "https://673e81080118dbfe860b784d.mockapi.io/postagem"
       );
-
       if (response.status === 200) {
+        console.log("postagens: " + JSON.stringify(response.data));
         const allPosts = response.data;
 
-        const userPosts = allPosts.filter(
-          (post: PropsPostagem) => post.id_usuario === userData?.id
+        setFilteredPosts(
+          allPosts.filter(
+            (post: PropsPostagem) => post.id_usuario === userData?.id
+          )
         );
 
-        if (userPosts.length > 0) {
-          setPostagens(userPosts);
+        if (FilteredPosts.length > 0) {
+          setPostagens(FilteredPosts);
         } else {
           setError("Nao há postagens disponiveis.");
         }
@@ -70,8 +67,13 @@ export default function Configuration() {
       setError("Erro ao conectar. Verifique sua conexão.");
     }
   };
+  console.log("posts filtrados : " + FilteredPosts);
 
-  
+  // Ordena as postagens da mais recente para a mais antiga
+  const sortedPosts = FilteredPosts.sort(
+    (a, b) =>
+      new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -93,16 +95,19 @@ export default function Configuration() {
       <View style={styles.postsArea}>
         {error && <View></View>}
         <FlatList
-          data={FilteredPosts}
+          data={sortedPosts}
           keyExtractor={(dados) => dados.id_usuario.toString()}
           numColumns={3}
           renderItem={({ item }) => (
             <View style={styles.posts}>
               <Image
                 style={styles.postImg}
-                source={{ uri: item.foto }}
+                source={{ uri: item.Foto }}
                 alt="publicacao"
               />
+              <Text style={styles.postTitle}>{item.titulo}</Text>
+              <Text style={styles.postDesc}>{item.descricao}</Text>
+              <Text style={styles.postPrice}>Preço: R${item.preco}</Text>
             </View>
           )}
         />

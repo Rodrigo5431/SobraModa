@@ -47,7 +47,8 @@ export const styles = StyleSheet.create({
         marginTop: 100,
       },
       posts:{
-        
+        justifyContent: 'center',
+        alignItems: 'center',
       },
     
       postImg:{
@@ -59,5 +60,19 @@ export const styles = StyleSheet.create({
         marginBottom: 5,
         // marginHorizontal:1
       },
-     
+      postTitle:{
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginBottom: 5,
+      },
+      postDesc:{
+        marginTop: 5,
+        fontSize: 16,
+      },
+      postPrice:{
+        marginTop: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#00b894',
+      }
 });
