@@ -6,15 +6,17 @@ import axios from "axios";
 import { styles } from "./style";
 import { NavigationProp, useRoute } from "@react-navigation/native";
 
-type UsuarioData = {
-  id: string;
-  Usuario: string;
-  Mensagem: string;
+interface PropsInfUser {
+  id: number;
   Foto: string;
-};
+  nome: string;
+  email: string;
+  password: string;
+  mensagem: string;
+}
 
 type ChatScreenNavigationProp = NavigationProp<
-  { PrivateChat: { Usuario: string; Mensagem: string } },
+  { PrivateChat: { nome: string; mensagem: string } },
   "PrivateChat"
 >;
 
@@ -22,24 +24,21 @@ type ChatProps = {
   navigation: ChatScreenNavigationProp;
 };
 
-
-export const Chat = ({ navigation }:ChatProps) => {
-  const [dados, setDados] = useState<UsuarioData[]>([]);
-  const [dadosFiltrados, setDadosFiltrados] = useState<UsuarioData[]>([]);
+export const Chat = ({ navigation }: ChatProps) => {
+  const [dados, setDados] = useState<PropsInfUser[]>([]);
+  const [dadosFiltrados, setDadosFiltrados] = useState<PropsInfUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const route = useRoute();
-  
-  useEffect(()=> {
-    if(route.name === "Chat"){
-      
+
+  useEffect(() => {
+    if (route.name === "Chat") {
     }
   });
 
-
   const listaDados = async () => {
     try {
-      const response = await axios.get<UsuarioData[]>(
-        "https://673cc81b96b8dcd5f3fba5e2.mockapi.io/Usuarios"
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
       );
       setDados(response.data);
       setDadosFiltrados(response.data);
@@ -55,7 +54,7 @@ export const Chat = ({ navigation }:ChatProps) => {
       setDadosFiltrados(dados);
     } else {
       const filtrados = dados.filter((item) =>
-        item.Usuario.toLowerCase().includes(texto.toLowerCase())
+        item.nome.toLowerCase().includes(texto.toLowerCase())
       );
       setDadosFiltrados(filtrados);
     }
@@ -81,8 +80,8 @@ export const Chat = ({ navigation }:ChatProps) => {
                 style={styles.chatContainer}
                 onPress={() =>
                   navigation.navigate("PrivateChat", {
-                    Usuario: item.Usuario,
-                    Mensagem: item.Mensagem,
+                    nome: item.nome,
+                    mensagem: item.mensagem,
                   })
                 }
               >
@@ -94,11 +93,11 @@ export const Chat = ({ navigation }:ChatProps) => {
                     style={styles.userImage}
                   />
                   <View style={styles.textContainer}>
-                    <Text style={styles.chatUser}>{item.Usuario}</Text>
+                    <Text style={styles.chatUser}>{item.nome}</Text>
                     <Text style={styles.chatMessage}>
-                      {item.Mensagem.length > 50
-                        ? `${item.Mensagem.substring(0, 50)}...`
-                        : item.Mensagem}
+                      {item.mensagem.length > 50
+                        ? `${item.mensagem.substring(0, 50)}...`
+                        : item.mensagem}
                     </Text>
                   </View>
                 </View>
