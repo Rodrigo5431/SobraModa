@@ -5,7 +5,7 @@ import React from "react";
 interface PropsButton {
   title: string;
   propsBackgroundColor: string;
-  handleFunction: () => void;
+  handleFunction?: () => void;
 }
 
 export const ButtonMain = ({

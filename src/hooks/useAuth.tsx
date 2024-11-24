@@ -2,40 +2,32 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
+
 type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
-  id: number | null;
-  setId: (value: number) => void;
-  foto: string;
-  setFoto: (value: string) => void;
-  email: string;
-  tabChat:boolean;
-  setTabChat: (value: boolean) => void;
-  setEmail: (value: string) => void;
-  nome: string;
-  setNome: (value: string) => void;
-  password: string;
-  setPassword: (value: string) => void;
+  handleLogin: (resultado: any) => void;
   isLoading: boolean;
   handleLogOut: () => void;
+  fetchUserData:() => void;
+  userData: any;
+  email: string;
+  setEmail: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
+
   handleLogOut: () => {},
-  id: null,
-  setId: (value: number) => {},
-  foto: "",
-  setFoto: (value: string) => {},
   email: "",
   setEmail: () => {},
-  nome: "Rodrigo",
-  setNome: () => {},
   password: "",
   setPassword: () => {},
   isLoading: false,
-  tabChat: false,
-  setTabChat: () => {},
+  handleLogin: () => {},
+  fetchUserData: () => {},
+  userData: [],
 });
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
@@ -44,9 +36,41 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>(null);
   const [tabChat, setTabChat] = useState<boolean>(false);
 
+
   const navigation = useNavigation();
+
+
+  const handleLogin = async (resultado: any) => {
+    try {
+      await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
+      console.log("Usuário autenticado:", resultado);
+      checkAuthentication(email, password)
+    } catch (error) {
+      console.error("Erro ao salvar os dados do usuário:", error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const data = await AsyncStorage.getItem("@resultado");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setUserData(parsedData); // Atualiza o estado global com os dados recuperados
+        console.log("Dados recuperados:", parsedData);
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar informações do usuário:", error);
+
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
 
   const checkAuthentication = (email: string, password: string) => {
     saveLogin(email, password)    
@@ -102,21 +126,15 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
       value={{
         checkAuthentication,
         handleLogOut,
-        id,
-        setId,
-        foto: "",
-        setFoto: () => {},
         email,
         setEmail,
-        nome: "",
-        setNome: () => {},
         password,
         setPassword,
         isLoading,
-        tabChat,
-        setTabChat(value) {
-            
-        },
+        handleLogin,
+        userData,
+fetchUserData,
+
       }}
     >
       {children}
