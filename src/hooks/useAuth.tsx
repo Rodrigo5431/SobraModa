@@ -42,9 +42,6 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   const navigation = useNavigation();
 
-  const navigation = useNavigation();
-
-
   const handleLogin = async (resultado: any) => {
     try {
       await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));

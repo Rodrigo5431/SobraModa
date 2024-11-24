@@ -2,8 +2,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { styles } from "./style";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
@@ -11,16 +9,7 @@ export const HeaderConfiguration = () => {
   const [configuration, setConfiguration] = useState(false);
   const navigation = useNavigation();
 
-
-  const {handleLogOut} = useAuth();
-
-  const {fetchUserData , handleLogin , handleLogout , userData} = useAuth()
-
-   
-
-
-
-  const { fetchUserData, userData, handleLogOut } = useAuth();
+  const { fetchUserData, handleLogin, handleLogOut, userData } = useAuth();
 
   useEffect(() => {
     fetchUserData();
@@ -29,8 +18,6 @@ export const HeaderConfiguration = () => {
   const handleEditProfile = () => {
     navigation.navigate("EditProfile");
   };
-
-
 
   return (
     <View style={styles.container}>

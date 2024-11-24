@@ -50,11 +50,6 @@ export default function Cadastro() {
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 
-  const arrowBackToLogin = () => {
-    navigation.navigate("Login");
-  };
-
-
   const createUsers = async () => {
     if (
       !nome.trim() ||
