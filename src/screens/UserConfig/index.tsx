@@ -92,21 +92,21 @@ export default function Configuration() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>     
       <HeaderConfiguration />
       {confirmDelete && (
         <View style={styles.confirm}>
-          <Text>Voce Tem certeza que deseja Excluir?</Text>
+          <Text style={styles.msgDelete}>Tem certeza que deseja Excluir?</Text>
           <View style={{ flexDirection: "row", gap: 10 }}>
             <TouchableOpacity
               onPress={() => {
                 handleDelete(), setConfirmDelete(false);
               }}
             >
-              <Text>Sim</Text>
+              <Text style={styles.buttom}>Sim</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setConfirmDelete(false)}>
-              <Text>Não</Text>
+              <Text style={styles.buttom}>Não</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -119,18 +119,18 @@ export default function Configuration() {
 
         <Text>{userData?.descricao}</Text>
       </View>
-      <View style={styles.talk}>
+      {/* <View style={styles.talk}>
         <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
           <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.postsArea}>
         {error && <View></View>}
         <FlatList
           data={sortedPosts}
           keyExtractor={(dados) => dados.id_usuario.toString()}
-          numColumns={3}
+          numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.posts}>
               <TouchableOpacity
@@ -139,7 +139,7 @@ export default function Configuration() {
                   setConfirmDelete(true), setId(item.id);
                 }}
               >
-                <Text>. . .</Text>
+                <Text style={styles.textDelete}>. . .</Text>
               </TouchableOpacity>
               <Image
                 style={styles.postImg}

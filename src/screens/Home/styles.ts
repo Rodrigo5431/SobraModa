@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "#E3D5F6",
     paddingBottom: 60,
   },
+  mainContainer:{
+    backgroundColor: "#E3D5F6",
+    paddingBottom: 20,
+    
+  },
 
   containerPlusMaxAdvencedPower: {
     marginTop: 30,
@@ -31,10 +36,7 @@ export const styles = StyleSheet.create({
   produtoContainer: {
     height: 200,
     marginVertical: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    alignContent: "center",
-    padding:10
+    padding:17
   },
 
   produtoImage: {
@@ -54,7 +56,13 @@ export const styles = StyleSheet.create({
     marginVertical: 5,
     // textAlign: "center",
     color: "#333",
+<<<<<<< HEAD
     fontFamily: "ComicNeue_700Bold"
+=======
+    fontFamily: "Comic Neue",
+
+
+>>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
   },
 
   button: {
@@ -133,8 +141,13 @@ export const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     color: '#000',
+<<<<<<< HEAD
     marginBottom: 10, 
     fontFamily: "ComicNeue_400Regular"
+=======
+    marginBottom: 10, // Espaçamento abaixo do preço
+
+>>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
   },
   container2: {
     marginLeft: 20,

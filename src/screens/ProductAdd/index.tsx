@@ -18,6 +18,7 @@ import { ProductInput } from "../../components/ProductInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
+// Variáveis de configuração para o Cloudinary
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 
@@ -69,6 +70,7 @@ export const ProductAdd = () => {
     }
 
     try {
+      // Envia a imagem para o Cloudinary
       const formData = new FormData();
 
       const file = {

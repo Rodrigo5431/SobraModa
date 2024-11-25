@@ -1,16 +1,27 @@
 import { StyleSheet } from "react-native";
-
+import { colors } from "@/styles/colors"
+;
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#E3D5F6',
+        backgroundColor: colors.purple.cor5,
         height: '100%',
       },
       header:{
-        height: '5%',
-        backgroundColor:"#fff"
+        marginTop: 40,
+        height: 40,
+        backgroundColor:colors.purple.cor5,
       },
       userName:{
+<<<<<<< HEAD
         fontFamily: "ComicNeue_700Bold"
+=======
+        fontSize:30,
+        fontWeight:'bold', 
+        justifyContent:"center", 
+        alignSelf:"center",
+        backgroundColor: colors.purple.cor5,
+
+>>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
       },
       user:{
         marginTop:40,
