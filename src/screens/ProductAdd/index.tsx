@@ -16,16 +16,16 @@ import axios from "axios";
 import { HeaderChat } from "../../components/HeaderChat";
 import { ProductInput } from "../../components/ProductInput";
 import { styles } from "./style";
-import { useAuth } from "../../hooks/useAuth"; // Contexto de autenticação
+import { useAuth } from "../../hooks/useAuth";
 
-// Variáveis de configuração para o Cloudinary
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 
 const { height } = Dimensions.get("window");
 
 export const ProductAdd = () => {
-  const { id: userId } = useAuth(); // Obtendo o ID do usuário do contexto
+  const { id: userId } = useAuth();
+
 
   console.log("ID do usuário:", userId);
   
@@ -72,7 +72,6 @@ export const ProductAdd = () => {
     }
 
     try {
-      // Envia a imagem para o Cloudinary
       const formData = new FormData();
 
       const file = {
@@ -95,7 +94,7 @@ export const ProductAdd = () => {
         descricao,
         preco: parseFloat(preco),
         foto: imageUrl,
-        idUser: userId, // O ID do usuário vem do contexto
+        idUser: userId,
       };
 
       const response = await axios.post(
