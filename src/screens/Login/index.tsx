@@ -141,10 +141,10 @@ export const Login = () => {
           />
 
           <View style={styles.cadastro}>
-            <Text style={{fontSize: 16}}>Não tem conta?</Text>
+            <Text style={{fontSize: 16, fontFamily: "ComicNeue_700Bold"}}>Não tem conta?</Text>
             <TouchableOpacity>
               <Text
-                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5, fontSize: 20 }}
+                style={{ color: "#fff", marginLeft: 5, fontSize: 20, fontFamily: "ComicNeue_700Bold" }}
                 onPress={handleRegister}
               >
                 Cadastre-se
@@ -154,7 +154,7 @@ export const Login = () => {
 
           {error && <Text style={{ fontSize: 18, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 18, color: "green" }}>
+            <Text style={{ fontSize: 18, color: "green", fontFamily: "ComicNeue_700Bold" }}>
               Login realizado com sucesso!
             </Text>
           )}

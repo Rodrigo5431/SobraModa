@@ -52,13 +52,11 @@ export const styles = StyleSheet.create({
 
   produtoTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginVertical: 5,
     // textAlign: "center",
     color: "#333",
-    fontFamily: "Comic Neue",
-
-
+    fontFamily: "ComicNeue_700Bold"
   },
 
   button: {
@@ -77,18 +75,19 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#333",
-
-    fontWeight: "bold",
+    fontFamily: "ComicNeue_700Bold",
+    // fontWeight: "bold",
     fontSize: 16,
     marginLeft: 10,
   },
 
   buttonText2: {
     fontSize: 18,
-    fontWeight: "bold",
+    // fontWeight: "bold",
     marginVertical: 10,
     textAlign: "center",
     color: "#555",
+    fontFamily: "ComicNeue_700Bold"
   },
 
   profileImage: {
@@ -116,7 +115,7 @@ export const styles = StyleSheet.create({
     width: "60%",
     borderColor: "#8B65BF",
     marginTop:-45,
-    marginLeft:5
+    marginLeft:5,
   },
   searchInput: {
     flex: 1,
@@ -124,6 +123,7 @@ export const styles = StyleSheet.create({
     marginRight: 10,
     fontSize: 16,
     alignItems: "center",
+    fontFamily: "ComicNeue_700Bold"
   },
   chatText: {
     fontSize: 14,
@@ -135,8 +135,8 @@ export const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     color: '#000',
-    marginBottom: 10, // Espaçamento abaixo do preço
-
+    marginBottom: 10, 
+    fontFamily: "ComicNeue_400Regular"
   },
   container2: {
     marginLeft: 20,

@@ -13,34 +13,41 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    fontFamily: "ComicNeue_700Bold"
   },
   messagesList: {
     flex: 1,
     marginBottom: 10,
+    fontFamily: "ComicNeue_700Bold"
   },
   messageBox: {
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
     maxWidth: "80%",
+    fontFamily: "ComicNeue_700Bold"
   },
   theirMessage: {
     backgroundColor: colors.purple.cor4,
     alignSelf: "flex-start",
     color: colors.basic.preto,
+    fontFamily: "ComicNeue_700Bold"
   },
   myMessage: {
     backgroundColor: colors.purple.cor3,
     alignSelf: "flex-end",
+    fontFamily: "ComicNeue_700Bold"
   },
   user: {
     fontSize: 14,
-    fontWeight: "bold",
+    // fontWeight: "bold",
     marginBottom: 5,
+    fontFamily: "ComicNeue_700Bold"
   },
   message: {
     fontSize: 14,
     color: colors.basic.preto,
+    fontFamily: "ComicNeue_700Bold"
   },
   inputContainer: {
     flexDirection: "row",
@@ -49,18 +56,19 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginBottom: 10, // Garante um pequeno espaço entre o input e a parte inferior da tela
+    marginBottom: 10,
   },
   input: {
     flex:1, 
     flexDirection:"row",
-    padding: 25,
+    padding: 20,
     fontSize: 14,
     borderRadius: 10,
     borderColor: "#ccc",
     borderWidth: 1,
     marginRight: 80,
-    minWidth: 120, 
+    minWidth: 190, 
+    fontFamily: "ComicNeue_700Bold"
   },
   sendButton: {
     paddingBlockEnd:30,
@@ -68,10 +76,13 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
+    fontFamily: "ComicNeue_700Bold",
+    right: 50,
   },
   sendButtonText: {
     color: "#fff",
     fontSize: 14,
-    fontWeight: "bold",
+    // fontWeight: "bold",
+    fontFamily: "ComicNeue_700Bold"
   },
 });

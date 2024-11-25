@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 10,
     fontSize: 16,
-    paddingRight: 45
+    paddingRight: 45,
+    fontFamily: "ComicNeue_700Bold"
   },
 
   boxIcon:{

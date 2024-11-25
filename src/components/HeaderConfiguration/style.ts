@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
       userEmail:{
         marginTop:10,
         color: '#fff',
-
+        fontFamily: "ComicNeue_700Bold"
       },
       editProfileButton:{
         marginTop:5,
@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 10,
         textAlign:'center',
+        fontFamily: "ComicNeue_700Bold"
       },
       logoutButton:{
         justifyContent:"center",
@@ -60,7 +61,7 @@ export const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 50,
         width: 100,
-        marginTop:'20%'
+        marginTop:'20%',
       },
       
     });
