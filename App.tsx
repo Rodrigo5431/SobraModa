@@ -14,6 +14,7 @@ import { Home } from "./src/screens/Home";
 import { Cadastro } from "./src/screens/Cadastro";
 
 
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     ComicNeue_400Regular,

@@ -1,7 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   Text,
@@ -13,14 +13,13 @@ import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
-import { styles } from "./style";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./style";
+
 
 interface PropsInf {
   id: number;
-  foto: string;
+  Foto: string;
   nome: string;
   email: string;
   password: string;
@@ -32,39 +31,43 @@ export const Login = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PropsInf[]>([]);
-  const [senha, setSenha] = useState<string>("");
 
-  const { setId, setEmail, email } = useAuth();
+
+  const { setEmail, email, setPassword, password, handleLogin } =
+    useAuth();
+
 
   const handleEmail = (value: string) => {
     setEmail(value);
   };
 
   const handlePassword = (value: string) => {
-    setSenha(value);
+    setPassword(value);
   };
 
-  const handleLogin = () => {
+  const handleVerifyLogin = () => {
     const resultado = users.find(
       (user) =>
         user.email.toLowerCase() === email.toLowerCase() &&
-        user.password === senha
+        user.password === password
     );
   
     if (resultado) {
-      AsyncStorage.setItem("resultado", JSON.stringify(resultado));
-      setId(resultado.id);
+      handleLogin(resultado);
       setSuccess(true);
       setError("");
-  
-      Alert.alert("Login realizado com sucesso!");
+
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+      setSuccess(true);
+      setError("");
       navigation.navigate("Home");
     } else {
       setError("Usuário ou senha inválidos!");
       setSuccess(false);
     }
   };
-  
 
   const searchUser = async () => {
     try {
@@ -74,6 +77,8 @@ export const Login = () => {
 
       if (response.status === 200) {
         setUsers(response.data);
+        console.log(response.data);
+        
       }
     } catch (error) {
       console.error("Erro ao carregar usuários:", error);
@@ -105,14 +110,13 @@ export const Login = () => {
           <TextInputField
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
-            valueInput={senha}
-            typeInput={true}
+            valueInput={password}
             typeIcon="password"
           />
 
           <ButtonMain
             title="Entrar"
-            handleFunction={handleLogin}
+            handleFunction={handleVerifyLogin}
             propsBackgroundColor="#342142"
           />
 
@@ -137,10 +141,10 @@ export const Login = () => {
           />
 
           <View style={styles.cadastro}>
-            <Text>Não tem conta?</Text>
+            <Text style={{fontSize: 16}}>Não tem conta?</Text>
             <TouchableOpacity>
               <Text
-                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5, fontSize: 20 }}
                 onPress={handleRegister}
               >
                 Cadastre-se
