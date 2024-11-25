@@ -6,7 +6,8 @@ export type PropsStack = {
     Home:undefined
     Login: undefined
     UserConfig: undefined
-    PrivateChat: undefined
+    PrivateChat:undefined;
+    Profile: undefined
 }
 
 export type PropsTabs = {

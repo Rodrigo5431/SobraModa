@@ -4,6 +4,11 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+
+  },
+
+  msg: {
+    fontFamily: "ComicNeue_700Bold",
     backgroundColor: "#fff",
     width: "75%",
     borderRadius: 10,
@@ -14,10 +19,6 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 5,
     elevation: 5,
-  },
-
-  msg: {
-    fontFamily: "ComicNeue_700Bold"
   }
 
 });

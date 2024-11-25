@@ -1,41 +1,40 @@
+
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { styles } from "./styles";
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./styles";
+import { useAuth } from '@/hooks/useAuth';
 
-type PrivateChatRouteParams = {
-  Usuario: string;
-  Mensagem: string;
-};
 
-type PrivateChatProps = {
-  route: RouteProp<{ params: PrivateChatRouteParams }, "params">;
-};
 
-export default function PrivateChat({ route }: PrivateChatProps) {
-
+export default function PrivateChat () {
+  
   const navigation = useNavigation();
-  const { Usuario, Mensagem } = route.params;
+  const [ nome, setNome ] = useState<string>("");  
+  const { user, postagem } = useAuth();  
+  const [ message, setMessage ] = useState<string>(`Oi, que bom ter você aqui! O produto selecionado: ${postagem.titulo} - R$ ${postagem} seria esse o seu interesse ?`);
 
-  const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
+ const [messages, setMessages] = useState([{ sender: nome, text: message }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-  // Ajuste da configuração do cabeçalho aqui
+  useEffect(()=>{
+    setNome(user.nome);
+  },[])
+
   useEffect(() => {
-    // A opção do título é configurada com o nome do usuário
     navigation.setOptions({
-      headerTitle: Usuario, // Exibindo o nome do usuário no cabeçalho
-      headerTitleAlign: 'center',  // Título centralizado
+      headerTitle: nome,
+      headerTitleAlign: 'center',
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -47,7 +46,7 @@ export default function PrivateChat({ route }: PrivateChatProps) {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, Usuario]); // Atualiza o título toda vez que o nome do usuário mudar
+  }, [navigation, nome]); 
 
   const sendMessage = () => {
     if (newMessage.trim()) {
@@ -61,7 +60,7 @@ export default function PrivateChat({ route }: PrivateChatProps) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Lista de mensagens */}
+ 
       <FlatList
         data={messages}
         keyExtractor={(_, index) => index.toString()}

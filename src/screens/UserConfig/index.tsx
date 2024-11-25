@@ -26,9 +26,11 @@ interface PropsPostagem {
 
 export default function Configuration() {
   const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
+  const [id, setId] = useState<number>(0);
   const [error, setError] = useState<string>();
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
-  const { fetchUserData, userData } = useAuth();
+  const { fetchUserData, userData, postagem } = useAuth();
 
   useEffect(() => {
     fetchUserData();
@@ -39,6 +41,22 @@ export default function Configuration() {
       handlePostagem();
     }
   }, [userData]);
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
+      );
+
+      if (response.status === 200) {
+        console.log("excluido com sucesso");
+      } else {
+        console.log("falha ao excluir ");
+      }
+    } catch (error) {
+      console.log("Erro ao conectar a api");
+    }
+  };
 
   const handlePostagem = async () => {
     try {
@@ -68,7 +86,6 @@ export default function Configuration() {
   };
   console.log("posts filtrados : " + FilteredPosts);
 
-  // Ordena as postagens da mais recente para a mais antiga
   const sortedPosts = FilteredPosts.sort(
     (a, b) =>
       new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
@@ -77,6 +94,23 @@ export default function Configuration() {
   return (
     <View style={styles.container}>     
       <HeaderConfiguration />
+      {confirmDelete && (
+        <View style={styles.confirm}>
+          <Text style={styles.msgDelete}>Tem certeza que deseja Excluir?</Text>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                handleDelete(), setConfirmDelete(false);
+              }}
+            >
+              <Text style={styles.buttom}>Sim</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setConfirmDelete(false)}>
+              <Text style={styles.buttom}>Não</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <View style={styles.user}>
         <Image
           source={{ uri: userData?.Foto }}
@@ -85,27 +119,37 @@ export default function Configuration() {
 
         <Text>{userData?.descricao}</Text>
       </View>
-      <View style={styles.talk}>
+      {/* <View style={styles.talk}>
         <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
           <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.postsArea}>
         {error && <View></View>}
         <FlatList
           data={sortedPosts}
           keyExtractor={(dados) => dados.id_usuario.toString()}
-          numColumns={3}
+          numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.posts}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => {
+                  setConfirmDelete(true), setId(item.id);
+                }}
+              >
+                <Text style={styles.textDelete}>. . .</Text>
+              </TouchableOpacity>
               <Image
                 style={styles.postImg}
                 source={{ uri: item.foto }}
                 alt="publicacao"
               />
               <Text style={styles.postTitle}>{item.titulo}</Text>
-              <Text style={styles.postDesc}>{item.descricao}</Text>
+              <Text numberOfLines={1} style={styles.postDesc}>
+                {item.descricao}
+              </Text>
               <Text style={styles.postPrice}>Preço: R${item.preco}</Text>
             </View>
           )}
