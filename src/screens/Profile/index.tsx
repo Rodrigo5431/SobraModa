@@ -24,39 +24,43 @@ interface PropsPostagem {
   dataPostagem: Date;
 }
 
-export default function Configuration() {
+export default function Profile() {
   const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
   const [error, setError] = useState<string>();
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
-  const { fetchUserData, userData } = useAuth();
+  const { fetchUserData, user } = useAuth();
 
   useEffect(() => {
     fetchUserData();
+    const id = user.id
+    console.log("id do usuario", id);
+    
   }, []);
 
   useEffect(() => {
-    if (userData?.id) {
+    if (user?.id) {
       handlePostagem();
     }
-  }, [userData]);
+  }, [user]);
+
 
   const handlePostagem = async () => {
     try {
       const response = await axios.get(
-        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem/"
       );
       if (response.status === 200) {
-        console.log("postagens: " + JSON.stringify(response.data));
         const allPosts = response.data;
 
         setFilteredPosts(
           allPosts.filter(
-            (post: PropsPostagem) => post.id_usuario === userData?.id
+            (post: PropsPostagem) => post.id_usuario === user?.id
           )
         );
 
         if (FilteredPosts.length > 0) {
           setPostagens(FilteredPosts);
+
         } else {
           setError("Nao há postagens disponiveis.");
         }
@@ -75,14 +79,16 @@ export default function Configuration() {
 
   return (
     <ScrollView style={styles.container}>
-      <HeaderConfiguration />
+      <View style={styles.header}>
+        <Text style={styles.userName}>{user.nome}</Text>
+      </View>
       <View style={styles.user}>
         <Image
-          source={{ uri: userData?.Foto }}
+          source={{ uri: user?.Foto }}
           style={styles.userImage}
         ></Image>
 
-        <Text>{userData?.descricao}</Text>
+        <Text>{user?.descricao}</Text>
       </View>
       <View style={styles.talk}>
         <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
