@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -16,7 +15,6 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-
 interface Produto {
   id: number;
   foto: string;
@@ -29,7 +27,7 @@ export const Home = () => {
   const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
   const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
-  const { fetchUserData, userData } = useAuth();
+  const { userData } = useAuth();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
 
@@ -65,16 +63,20 @@ export const Home = () => {
 
   const navigateToChat = async (produto: Produto) => {
     try {
-      // Suponha que cada produto tenha um 'userId' associado que identifique o vendedor
+      
       const response = await axios.get(
-        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id}` // Suponha que 'userId' seja o ID do vendedor
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id}` 
       );
 
       if (response.status === 200) {
         const vendedor = response.data; // Dados do vendedor (usuário que fez a postagem)
+
+        const mensagem = `Oi, que bom ter você aqui! O produto selecionado: ${produto.titulo} - R$ ${produto.preco} seria esse o seu interesse ?`;
         
-        // Redirecionar para a tela de chat, passando o nome do vendedor e uma mensagem inicial
-       // navigation.navigate("PrivateChat", { Usuario: id.nome, Mensagem: "Oi, estou interessado no produto!" });
+          navigation.navigate("PrivateChat", {
+          nome: vendedor.nome, 
+          mensagem: mensagem,
+        });
       } else {
         throw new Error("Erro ao buscar o vendedor: status diferente de 200");
       }
@@ -89,11 +91,11 @@ export const Home = () => {
       <TouchableOpacity onPress={() => handleProductClick(item)}>
         <Image source={{ uri: item.foto }} style={styles.produtoImage} />
         <Text style={styles.produtoTitle}>{item.titulo}</Text>
-        <Text style={styles.price}>R$ {item.preco}</Text> {/* Coloquei o preço abaixo da descrição */}
+        <Text style={styles.price}>R$ {item.preco}</Text> 
       </TouchableOpacity>
       <Text
         style={styles.chatText}
-    //    onPress={() => navigateToChat(item.id)} 
+        onPress={() => navigateToChat(item)} 
       >
         Fale comigo
       </Text>
@@ -113,10 +115,10 @@ export const Home = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}> 
       <View style={styles.containerPlusMaxAdvencedPower}>
-          {/* Contêiner com perfil e pesquisa lado a lado */}
-          <View style={styles.profileAndSearchContainer}>
+       
+        <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
             <Image
               source={{ uri: userData?.Foto }}
@@ -146,20 +148,17 @@ export const Home = () => {
           data={expand ? filteredProdutos : produtosHorizontal}
           horizontal={expand}
           renderItem={renderItem}
-        //  keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
       <View style={styles.container3}>
-
         <FlatList
           data={produtosVertical}
           renderItem={renderItem}
-        //  keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           numColumns={2}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };

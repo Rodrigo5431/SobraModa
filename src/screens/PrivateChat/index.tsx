@@ -14,8 +14,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type PrivateChatRouteParams = {
-  Usuario: string;
-  Mensagem: string;
+  nome: string;  // Nome do usuário com quem a conversa está ocorrendo
+  mensagem: string;  // Mensagem inicial
 };
 
 type PrivateChatProps = {
@@ -23,19 +23,16 @@ type PrivateChatProps = {
 };
 
 export default function PrivateChat({ route }: PrivateChatProps) {
-
   const navigation = useNavigation();
-  const { Usuario, Mensagem } = route.params;
+  const { nome, mensagem } = route.params;  // Corrigido: Desestruturando 'nome' e 'mensagem'
 
-  const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
+  const [messages, setMessages] = useState([{ sender: nome, text: mensagem }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-  // Ajuste da configuração do cabeçalho aqui
   useEffect(() => {
-    // A opção do título é configurada com o nome do usuário
     navigation.setOptions({
-      headerTitle: Usuario, // Exibindo o nome do usuário no cabeçalho
-      headerTitleAlign: 'center',  // Título centralizado
+      headerTitle: nome,
+      headerTitleAlign: 'center',
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -47,7 +44,7 @@ export default function PrivateChat({ route }: PrivateChatProps) {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, Usuario]); // Atualiza o título toda vez que o nome do usuário mudar
+  }, [navigation, nome]); // Atualiza o título toda vez que o nome do usuário mudar
 
   const sendMessage = () => {
     if (newMessage.trim()) {
@@ -55,7 +52,7 @@ export default function PrivateChat({ route }: PrivateChatProps) {
         ...prevMessages,
         { sender: "Você", text: newMessage },
       ]);
-      setNewMessage(""); 
+      setNewMessage(""); // Limpa o campo de mensagem após envio
     }
   };
 
