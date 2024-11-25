@@ -92,7 +92,7 @@ export default function Configuration() {
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <HeaderConfiguration />
       {confirmDelete && (
         <View style={styles.confirm}>
@@ -155,6 +155,6 @@ export default function Configuration() {
           )}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
