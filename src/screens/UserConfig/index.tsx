@@ -92,7 +92,7 @@ export default function Configuration() {
   );
 
   return (
-    <View style={styles.container}>     
+    <ScrollView style={styles.container}>
       <HeaderConfiguration />
       {confirmDelete && (
         <View style={styles.confirm}>
@@ -116,15 +116,8 @@ export default function Configuration() {
           source={{ uri: userData?.Foto }}
           style={styles.userImage}
         ></Image>
-
         <Text>{userData?.descricao}</Text>
       </View>
-      {/* <View style={styles.talk}>
-        <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
-          <Image source={whatsappIcon} style={styles.talkImg}></Image>
-          <Text style={styles.talkText}>Fale Comigo</Text>
-        </TouchableOpacity>
-      </View> */}
       <View style={styles.postsArea}>
         {error && <View></View>}
         <FlatList
@@ -155,6 +148,6 @@ export default function Configuration() {
           )}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
