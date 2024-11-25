@@ -2,11 +2,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { MainTabNavigator } from './MainTabNavigation';
 import { colors } from '@/styles/colors';
-import { LinearGradient } from 'expo-linear-gradient';
-
 import { Chat } from '@/screens/Chat';
 import Profile from '@/screens/Profile';
-import { StyleSheet } from 'react-native';
+import UserConfig from "@/screens/UserConfig"
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
@@ -36,7 +35,7 @@ export function MyDrawer() {
               }}>
       <Drawer.Screen name="Home" component={MainTabNavigator} options={{headerTitle:""}}/>
       <Drawer.Screen name="Mensagens" component={Chat} options={{headerTitle:""}} />
-      <Drawer.Screen name="Perfil" component={Profile} options={{headerTitle:""}} />
+      <Drawer.Screen name="Perfil" component={UserConfig} options={{headerTitle:""}} />
     </Drawer.Navigator>
     </GestureHandlerRootView>
   );
