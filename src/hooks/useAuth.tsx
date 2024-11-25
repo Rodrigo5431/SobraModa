@@ -60,7 +60,6 @@ interface PropsPostagem {
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [id, setId] = useState<number | null>(null);
   const [email, setEmail] = useState<string>("");
-  const [nome, setNome] = useState<string>("rodrigo");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>(null);
@@ -70,10 +69,9 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   const navigation = useNavigation();
 
-  const handleLogin = async (resultado: any) => {
+  const handleLogin = async (resultado: PropsUser) => {
     try {
       await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
-      console.log("Usuário autenticado:", resultado);
       checkAuthentication(email, password);
     } catch (error) {
       console.error("Erro ao salvar os dados do usuário:", error);
