@@ -1,5 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -9,10 +10,8 @@ import {
   View,
 } from "react-native";
 import whatsappIcon from "../../assets/whatsapp.png";
-import { HeaderConfiguration } from "../../components/HeaderConfiguration";
-import { styles } from "./style";
-import React from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { styles } from "./style";
 
 interface PropsPostagem {
   id: number;
@@ -30,11 +29,13 @@ export default function Profile() {
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
   const { fetchUserData, user } = useAuth();
 
+  const navigation = useNavigation();
+
   useEffect(() => {
     fetchUserData();
     const id = user.id
     console.log("id do usuario", id);
-    
+
   }, []);
 
   useEffect(() => {
@@ -77,8 +78,19 @@ export default function Profile() {
       new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
   );
 
+  const handleMensagem = () => {
+    // const mensagem = `Oi, que bom ter você aqui! O produto 
+    //      selecionado: ${user.titulo} - R$ ${user.preco} seria esse o seu interesse ?`;
+
+     navigation.navigate("PrivateChat" //, {
+    //   nome: user.nome,
+    //   mensagem: mensagem,
+    // }
+    )
+}
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.userName}>{user.nome}</Text>
       </View>
@@ -91,7 +103,9 @@ export default function Profile() {
         <Text>{user?.descricao}</Text>
       </View>
       <View style={styles.talk}>
-        <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          onPress={handleMensagem}
+          style={styles.talkButton} activeOpacity={0.7}>
           <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>

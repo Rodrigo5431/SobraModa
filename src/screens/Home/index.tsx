@@ -31,7 +31,7 @@ export const Home = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const { userData, setUser } = useAuth();
+  const { userData, user, setUser, postagem, setPostagem } = useAuth();
 
   const navigation = useNavigation();
 
@@ -65,12 +65,23 @@ export const Home = () => {
 
   const navigateToChat = async (id: number) => {
     try {
+
       const response = await axios.get(
         `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
       );
       if (response.status === 200) {
-        const produto = response.data;
+// 
+//         const vendedor = response.data; // Dados do vendedor (usuário que fez a postagem)
 
+//         const mensagem = `Oi, que bom ter você aqui! O produto selecionado: ${produto.titulo} - R$ ${produto.preco} seria esse o seu interesse ?`;
+        
+//           navigation.navigate("PrivateChat", {
+//           nome: vendedor.nome, 
+//           mensagem: mensagem,
+//         });
+// 
+        const produto = response.data;
+        setPostagem(response.data);
         try {
           const resultado = await axios.get(
             `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id_usuario}`
@@ -108,9 +119,14 @@ export const Home = () => {
 
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={styles.produtoContainer}>
-      <TouchableOpacity onPress={() => handleProductClick(item)}>
+      <TouchableOpacity
+        onPress={() => handleProductClick(item)}
+        style={styles.product}
+      >
         <Image source={{ uri: item.foto }} style={styles.produtoImage} />
-        <Text style={styles.produtoTitle}>{item.titulo}</Text>
+        <Text numberOfLines={1} style={styles.produtoTitle}>
+          {item.titulo}
+        </Text>
         <Text style={styles.price}>R$ {item.preco}</Text>
       </TouchableOpacity>
     </View>
@@ -150,5 +166,6 @@ export const Home = () => {
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.mainContainer}
     />
+
   );
 };

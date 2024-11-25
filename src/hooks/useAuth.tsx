@@ -15,6 +15,8 @@ type PropriedadeIniciadaOuObrigatoria = {
   setPassword: (value: string) => void;
   user: any;
   setUser: (value: PropsUser[]) => void;
+  postagem: any;
+  setPostagem: (value: PropsPostagem[]) => void;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
@@ -31,6 +33,9 @@ const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   userData: [],
   user: [],
   setUser: (value: PropsUser[]) => {},
+  postagem:[],
+  setPostagem: (value: PropsPostagem[]) => {},
+
 });
 
 interface PropsUser {
@@ -42,6 +47,16 @@ interface PropsUser {
   mensagem: string;
 }
 
+interface PropsPostagem {
+  id: number;
+  id_usuario: number;
+  titulo: string;
+  descricao: string;
+  preco: number;
+  foto: string;
+  dataPostagem: Date;
+}
+
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [id, setId] = useState<number | null>(null);
   const [email, setEmail] = useState<string>("");
@@ -51,6 +66,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [userData, setUserData] = useState<any>(null);
   const [tabChat, setTabChat] = useState<boolean>(false);
   const [user, setUser] = useState<PropsUser[]>([]);
+  const [postagem, setPostagem] = useState<PropsPostagem[]>([]);
 
   const navigation = useNavigation();
 
@@ -138,6 +154,8 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         fetchUserData,
         user,
         setUser,
+        postagem,
+        setPostagem
       }}
     >
       {children}

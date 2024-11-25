@@ -26,9 +26,11 @@ interface PropsPostagem {
 
 export default function Configuration() {
   const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
+  const [id, setId] = useState<number>(0);
   const [error, setError] = useState<string>();
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
-  const { fetchUserData, userData } = useAuth();
+  const { fetchUserData, userData, postagem } = useAuth();
 
   useEffect(() => {
     fetchUserData();
@@ -39,6 +41,22 @@ export default function Configuration() {
       handlePostagem();
     }
   }, [userData]);
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
+      );
+
+      if (response.status === 200) {
+        console.log("excluido com sucesso");
+      } else {
+        console.log("falha ao excluir ");
+      }
+    } catch (error) {
+      console.log("Erro ao conectar a api");
+    }
+  };
 
   const handlePostagem = async () => {
     try {
@@ -74,8 +92,25 @@ export default function Configuration() {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <HeaderConfiguration />
+      {confirmDelete && (
+        <View style={styles.confirm}>
+          <Text>Voce Tem certeza que deseja Excluir?</Text>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                handleDelete(), setConfirmDelete(false);
+              }}
+            >
+              <Text>Sim</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setConfirmDelete(false)}>
+              <Text>Não</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <View style={styles.user}>
         <Image
           source={{ uri: userData?.Foto }}
@@ -98,13 +133,23 @@ export default function Configuration() {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.posts}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => {
+                  setConfirmDelete(true), setId(item.id);
+                }}
+              >
+                <Text>. . .</Text>
+              </TouchableOpacity>
               <Image
                 style={styles.postImg}
                 source={{ uri: item.foto }}
                 alt="publicacao"
               />
               <Text style={styles.postTitle}>{item.titulo}</Text>
-              {/* <Text style={styles.postDesc}>{item.descricao}</Text> */}
+              <Text numberOfLines={1} style={styles.postDesc}>
+                {item.descricao}
+              </Text>
               <Text style={styles.postPrice}>Preço: R${item.preco}</Text>
             </View>
           )}

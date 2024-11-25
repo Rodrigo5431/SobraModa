@@ -18,21 +18,28 @@ export const styles = StyleSheet.create({
   },
   profileAndSearchContainer: {
     flexDirection: "row",
-    alignItems: "center", 
-    justifyContent: "space-around"
+    alignItems: "center",
+    justifyContent: "center"
   },
 
 
   container3: {
-    marginLeft:30, 
     alignItems: "center",
     top: 0,
+    marginHorizontal:15
+  },
+  product:{
+    justifyContent:"center",
+    alignItems:"center"
   },
 
   produtoContainer: {
     height: 200,
     marginVertical: 35,
-    padding:17
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    padding:10
   },
 
   produtoImage: {
@@ -49,11 +56,12 @@ export const styles = StyleSheet.create({
   produtoTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginVertical: 5, 
+    marginVertical: 5,
     // textAlign: "center",
     color: "#333",
     fontFamily: "Comic Neue",
-    marginLeft: 0,
+
+
   },
 
   button: {
@@ -98,7 +106,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 50,
-    marginRight:10,
+    marginRight: 10,
   },
 
   searchContainer: {
@@ -108,15 +116,17 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     paddingHorizontal: 10,
-    width: "60%", 
+    width: "60%",
     borderColor: "#8B65BF",
+    marginTop:-45,
+    marginLeft:5
   },
   searchInput: {
     flex: 1,
     height: 40,
     marginRight: 10,
     fontSize: 16,
-    alignItems:"center", 
+    alignItems: "center",
   },
   chatText: {
     fontSize: 14,
@@ -129,11 +139,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     marginBottom: 10, // Espaçamento abaixo do preço
+
   },
   container2: {
-    marginLeft:20, 
+    marginLeft: 20,
     marginBottom: 30,
-    alignItems:'center', 
+    alignItems: 'center',
     textAlign: "center",
     justifyContent: "center",
   },
