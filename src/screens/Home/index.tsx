@@ -25,8 +25,6 @@ interface Produto {
 
 export const Home = () => {
   const [allPosts, setAllPosts] = useState<Produto[]>([]);
-  // const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
-  const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
@@ -35,22 +33,22 @@ export const Home = () => {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://673e81080118dbfe860b784d.mockapi.io/postagem"
-        );
-        const data: Produto[] = response.data;
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+      );
+      const data: Produto[] = response.data;
 
-        setAllPosts(data);
-        setFilteredProdutos(data);
-      } catch (error) {
-        console.error("Erro ao buscar os dados da API:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setAllPosts(data);
+      setFilteredProdutos(data);
+    } catch (error) {
+      console.error("Erro ao buscar os dados da API:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -65,21 +63,10 @@ export const Home = () => {
 
   const navigateToChat = async (id: number) => {
     try {
-
       const response = await axios.get(
         `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
       );
       if (response.status === 200) {
-// 
-//         const vendedor = response.data; // Dados do vendedor (usuário que fez a postagem)
-
-//         const mensagem = `Oi, que bom ter você aqui! O produto selecionado: ${produto.titulo} - R$ ${produto.preco} seria esse o seu interesse ?`;
-        
-//           navigation.navigate("PrivateChat", {
-//           nome: vendedor.nome, 
-//           mensagem: mensagem,
-//         });
-// 
         const produto = response.data;
         setPostagem(response.data);
         try {
@@ -114,8 +101,6 @@ export const Home = () => {
     (a, b) =>
       new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
   );
-
-  
 
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={styles.produtoContainer}>
@@ -156,9 +141,15 @@ export const Home = () => {
   );
 
   return (
-    <FlatList 
-      refreshing={true}
-      onRefresh={()=> {}}
+    <FlatList
+      refreshing={refreshing}
+      onRefresh={() => {
+        setRefreshing(true),
+          fetchData(),
+          setTimeout(() => {
+            setRefreshing(false);
+          }, 1000);
+      }}
       data={allPosts}
       renderItem={renderItem}
       numColumns={2}
@@ -166,6 +157,5 @@ export const Home = () => {
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.mainContainer}
     />
-
   );
 };
