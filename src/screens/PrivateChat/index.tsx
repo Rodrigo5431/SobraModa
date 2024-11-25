@@ -1,33 +1,35 @@
+
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { styles } from "./styles";
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./styles";
+import { useAuth } from '@/hooks/useAuth';
 
-type PrivateChatRouteParams = {
-  nome: string;  // Nome do usuário com quem a conversa está ocorrendo
-  mensagem: string;  // Mensagem inicial
-};
 
-type PrivateChatProps = {
-  route: RouteProp<{ params: PrivateChatRouteParams }, "params">;
-};
 
-export default function PrivateChat({ route }: PrivateChatProps) {
+export default function PrivateChat () {
+  
   const navigation = useNavigation();
-  const { nome, mensagem } = route.params;  // Corrigido: Desestruturando 'nome' e 'mensagem'
+  const [ nome, setNome ] = useState<string>("");  
+  const { user, postagem } = useAuth();  
+  const [ message, setMessage ] = useState<string>(`Oi, que bom ter você aqui! O produto selecionado: ${postagem.titulo} - R$ ${postagem} seria esse o seu interesse ?`);
 
-  const [messages, setMessages] = useState([{ sender: nome, text: mensagem }]);
+ const [messages, setMessages] = useState([{ sender: nome, text: message }]);
   const [newMessage, setNewMessage] = useState<string>("");
+
+  useEffect(()=>{
+    setNome(user.nome);
+  },[])
 
   useEffect(() => {
     navigation.setOptions({

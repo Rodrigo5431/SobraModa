@@ -1,5 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -9,10 +10,8 @@ import {
   View,
 } from "react-native";
 import whatsappIcon from "../../assets/whatsapp.png";
-import { HeaderConfiguration } from "../../components/HeaderConfiguration";
-import { styles } from "./style";
-import React from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { styles } from "./style";
 
 interface PropsPostagem {
   id: number;
@@ -24,57 +23,45 @@ interface PropsPostagem {
   dataPostagem: Date;
 }
 
-export default function Configuration() {
+export default function Profile() {
   const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
-  const [id, setId] = useState<number>(0);
   const [error, setError] = useState<string>();
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
-  const { fetchUserData, userData, postagem } = useAuth();
+  const { fetchUserData, user } = useAuth();
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchUserData();
+    const id = user.id
+    console.log("id do usuario", id);
+
   }, []);
 
   useEffect(() => {
-    if (userData?.id) {
+    if (user?.id) {
       handlePostagem();
     }
-  }, [userData]);
+  }, [user]);
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(
-        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
-      );
-
-      if (response.status === 200) {
-        console.log("excluido com sucesso");
-      } else {
-        console.log("falha ao excluir ");
-      }
-    } catch (error) {
-      console.log("Erro ao conectar a api");
-    }
-  };
 
   const handlePostagem = async () => {
     try {
       const response = await axios.get(
-        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem/"
       );
       if (response.status === 200) {
-        console.log("postagens: " + JSON.stringify(response.data));
         const allPosts = response.data;
 
         setFilteredPosts(
           allPosts.filter(
-            (post: PropsPostagem) => post.id_usuario === userData?.id
+            (post: PropsPostagem) => post.id_usuario === user?.id
           )
         );
 
         if (FilteredPosts.length > 0) {
           setPostagens(FilteredPosts);
+
         } else {
           setError("Nao há postagens disponiveis.");
         }
@@ -91,36 +78,34 @@ export default function Configuration() {
       new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
   );
 
+  const handleMensagem = () => {
+    // const mensagem = `Oi, que bom ter você aqui! O produto 
+    //      selecionado: ${user.titulo} - R$ ${user.preco} seria esse o seu interesse ?`;
+
+     navigation.navigate("PrivateChat" //, {
+    //   nome: user.nome,
+    //   mensagem: mensagem,
+    // }
+    )
+}
+
   return (
-    <View style={styles.container}>
-      <HeaderConfiguration />
-      {confirmDelete && (
-        <View style={styles.confirm}>
-          <Text>Voce Tem certeza que deseja Excluir?</Text>
-          <View style={{ flexDirection: "row", gap: 10 }}>
-            <TouchableOpacity
-              onPress={() => {
-                handleDelete(), setConfirmDelete(false);
-              }}
-            >
-              <Text>Sim</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setConfirmDelete(false)}>
-              <Text>Não</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.userName}>{user.nome}</Text>
+      </View>
       <View style={styles.user}>
         <Image
-          source={{ uri: userData?.Foto }}
+          source={{ uri: user?.Foto }}
           style={styles.userImage}
         ></Image>
 
-        <Text>{userData?.descricao}</Text>
+        <Text>{user?.descricao}</Text>
       </View>
       <View style={styles.talk}>
-        <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          onPress={handleMensagem}
+          style={styles.talkButton} activeOpacity={0.7}>
           <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>
@@ -133,28 +118,18 @@ export default function Configuration() {
           numColumns={3}
           renderItem={({ item }) => (
             <View style={styles.posts}>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => {
-                  setConfirmDelete(true), setId(item.id);
-                }}
-              >
-                <Text>. . .</Text>
-              </TouchableOpacity>
               <Image
                 style={styles.postImg}
                 source={{ uri: item.foto }}
                 alt="publicacao"
               />
               <Text style={styles.postTitle}>{item.titulo}</Text>
-              <Text numberOfLines={1} style={styles.postDesc}>
-                {item.descricao}
-              </Text>
+              {/* <Text style={styles.postDesc}>{item.descricao}</Text> */}
               <Text style={styles.postPrice}>Preço: R${item.preco}</Text>
             </View>
           )}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }

@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { HeaderChat } from "../../components/HeaderChat";
 import { ProductInput } from "../../components/ProductInput";
-import { useAuth } from "../../hooks/useAuth"; // Contexto de autenticação
+import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
 // Variáveis de configuração para o Cloudinary
@@ -25,10 +25,8 @@ const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 const { height } = Dimensions.get("window");
 
 export const ProductAdd = () => {
-  const { userData } = useAuth(); // Obtendo o ID do usuário do contexto
 
-  console.log("ID do usuário:", userData.id);
-  
+  const { userData, fetchUserData } = useAuth(); // Obtendo o ID do usuário do contexto
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
@@ -124,6 +122,10 @@ export const ProductAdd = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchUserData();
+  }, [])
 
   return (
     <View style={{ flex: 1 }}>
