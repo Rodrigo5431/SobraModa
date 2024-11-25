@@ -40,7 +40,6 @@ export default function Cadastro() {
 
   const navigation = useNavigation();
 
-
   const arrowBackToLogin = () => {
     navigation.navigate("Login");
   };
@@ -50,126 +49,122 @@ export default function Cadastro() {
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 
-    const createUsers = async (uploadedImageUrl: string) => {
-      if (
-        !nome.trim() ||
-        !email.trim() ||
-        !password.trim() ||
-        !confirmPassword.trim()
-      ) {
-        return false;
-      }
-      try {
-        const newUser = {
-          nome,
-          email,
-          password,
-          Foto: uploadedImageUrl,
-        };
-    
-        const response = await axios.post(
-          "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
-          newUser
-        );
-        setIsLoading(false);
-        if (response.status === 201) {
-          setNome("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setErro("");
-          setErroFoto("");
-          setErroSenha("");
-          setImageUri(null);
-          handleSearchUsers();
-          setSucess("Conta criada com sucesso");
-    
-          setTimeout(() => {
-            navigation.navigate("Login");
-          }, 3000);
-          return true;
-        }
-      } catch (error) {
-        console.error("Erro no cadastro:", error);
-        Alert.alert(
-          "Erro",
-          "Erro ao cadastrar usuário. Tente novamente mais tarde."
-        );
-      }
+  const createUsers = async (uploadedImageUrl: string) => {
+    if (
+      !nome.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       return false;
-    };
-    
+    }
+    try {
+      const newUser = {
+        nome,
+        email,
+        password,
+        Foto: uploadedImageUrl,
+      };
 
-    const handleEmailVerification = async () => {
-      if (!imageUri) {
-        setIsLoading(false);
-        setErroFoto("É necessário adicionar uma foto");
-        setErroSenha("");
-        setErro("");
-        return;
-      }
-    
-      const resultado = users.find(
-        (user) => user.email.toLowerCase() === email.toLowerCase()
+      const response = await axios.post(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
+        newUser
       );
-    
-      try {
-        if (!resultado) {
-          if (password === confirmPassword) {
-            setIsLoading(true);
-            try {
-              const formData = new FormData();
-              const file = {
-                uri: imageUri,
-                type: "image/jpeg",
-                name: "foto_usuario.jpg",
-              };
-              formData.append("file", file as any);
-              formData.append("upload_preset", UPLOAD_PRESET);
-    
-              const cloudinaryResponse = await axios.post(
-                CLOUDINARY_URL,
-                formData,
-                {
-                  headers: { "Content-Type": "multipart/form-data" },
-                }
-              );
-    
-              if (cloudinaryResponse.data.secure_url) {
-                const imageUrl = cloudinaryResponse.data.secure_url;
-                console.log("Imagem carregada com sucesso! URL:", imageUrl);
-    
-                await createUsers(imageUrl);
-              } else {
-                throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
+      setIsLoading(false);
+      if (response.status === 201) {
+        setNome("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setErro("");
+        setErroFoto("");
+        setErroSenha("");
+        setImageUri(null);
+        handleSearchUsers();
+        setSucess("Conta criada com sucesso");
+
+        setTimeout(() => {
+          navigation.navigate("Login");
+        }, 3000);
+        return true;
+      }
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      Alert.alert(
+        "Erro",
+        "Erro ao cadastrar usuário. Tente novamente mais tarde."
+      );
+    }
+    return false;
+  };
+
+  const handleEmailVerification = async () => {
+    if (!imageUri) {
+      setIsLoading(false);
+      setErroFoto("É necessário adicionar uma foto");
+      setErroSenha("");
+      setErro("");
+      return;
+    }
+
+    const resultado = users.find(
+      (user) => user.email.toLowerCase() === email.toLowerCase()
+    );
+
+    try {
+      if (!resultado) {
+        if (password === confirmPassword) {
+          setIsLoading(true);
+          try {
+            const formData = new FormData();
+            const file = {
+              uri: imageUri,
+              type: "image/jpeg",
+              name: "foto_usuario.jpg",
+            };
+            formData.append("file", file as any);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const cloudinaryResponse = await axios.post(
+              CLOUDINARY_URL,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
               }
-            } catch (error) {
-              console.log("Erro ao carregar a imagem: ", error);
-              setIsLoading(false);
+            );
+
+            if (cloudinaryResponse.data.secure_url) {
+              const imageUrl = cloudinaryResponse.data.secure_url;
+              console.log("Imagem carregada com sucesso! URL:", imageUrl);
+
+              await createUsers(imageUrl);
+            } else {
+              throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
             }
-          } else {
+          } catch (error) {
+            console.log("Erro ao carregar a imagem: ", error);
             setIsLoading(false);
-            setErroSenha("As senhas não coincidem");
-            setErro("");
-            setErroFoto("");
           }
         } else {
           setIsLoading(false);
-          setErro("Este e-mail já existe em nossa base. Faça seu Login.");
-          setErroSenha("");
+          setErroSenha("As senhas não coincidem");
+          setErro("");
           setErroFoto("");
-          setTimeout(() => {
-            navigation.navigate("Login");
-          }, 3000);
         }
-      } catch (error) {
+      } else {
         setIsLoading(false);
-        console.log("Erro na verificação do email:", error);
+        setErro("Este e-mail já existe em nossa base. Faça seu Login.");
+        setErroSenha("");
+        setErroFoto("");
+        setTimeout(() => {
+          navigation.navigate("Login");
+        }, 3000);
       }
-    };
-    
-  
-  
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Erro na verificação do email:", error);
+    }
+  };
 
   const pickImage = async () => {
     const permissionResult =
@@ -210,7 +205,6 @@ export default function Cadastro() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-
         <View style={styles.arrowLogin}>
           <TouchableOpacity onPress={arrowBackToLogin}>
             <Icon name="arrow-back-outline" type="ionicon" color={"#342142"} />
@@ -236,10 +230,20 @@ export default function Cadastro() {
           <Text style={styles.msg}>Adicionar Foto</Text>
         </TouchableOpacity>
         {erroFoto && <Text style={{ color: "red" }}>{erroFoto}</Text>}
-        {sucess && <Text style={{ color: "green", fontSize:20 }}>{sucess}</Text>}
+        {sucess && (
+          <Text style={{ color: "green", fontSize: 20 }}>{sucess}</Text>
+        )}
         <View style={styles.inputBox}>
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Nome:</Text>
+            <Text
+              style={{
+                left: 5,
+                color: "#342142",
+                fontFamily: "ComicNeue_700Bold",
+              }}
+            >
+              Nome:
+            </Text>
             <TextInputField
               placeHolder="Digite seu nome"
               handleFunctionInput={setNome}
@@ -248,7 +252,15 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Email:</Text>
+            <Text
+              style={{
+                left: 5,
+                color: "#342142",
+                fontFamily: "ComicNeue_700Bold",
+              }}
+            >
+              Email:
+            </Text>
             <TextInputField
               placeHolder="Digite seu email"
               handleFunctionInput={setEmail}
@@ -258,7 +270,15 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Senha:</Text>
+            <Text
+              style={{
+                left: 5,
+                color: "#342142",
+                fontFamily: "ComicNeue_700Bold",
+              }}
+            >
+              Senha:
+            </Text>
             <TextInputField
               placeHolder="Digite sua senha"
               handleFunctionInput={setPassword}
@@ -267,7 +287,15 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Confirmar senha:</Text>
+            <Text
+              style={{
+                left: 5,
+                color: "#342142",
+                fontFamily: "ComicNeue_700Bold",
+              }}
+            >
+              Confirmar senha:
+            </Text>
             <TextInputField
               placeHolder="Confirme a senha"
               handleFunctionInput={setConfirmPassword}

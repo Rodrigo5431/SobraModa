@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E3D5F6",
-    height: "100%",
   },
   user: {
     marginTop: 40,
@@ -49,6 +48,8 @@ export const styles = StyleSheet.create({
   posts: {
     justifyContent: "center",
     alignItems: "center",
+    padding:15
+
   },
 
   postImg: {
@@ -85,12 +86,12 @@ export const styles = StyleSheet.create({
   },
   
  confirm: {
-  height: 100,
-  width: 200,
+  height: 300,
+  width: 340,
   position: "absolute",
   backgroundColor: "#342142",
-  top: 350,
-  left: 95,
+  top: 280,
+  left: 30,
   zIndex: 1,
   borderRadius: 10,
   alignItems: "center",
@@ -102,24 +103,31 @@ export const styles = StyleSheet.create({
   shadowRadius: 4.65,
   elevation: 8,
 },
+botao:{
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+},
 
 
   buttom: {
     backgroundColor: "#8B65BF",
     borderRadius: 5,
-    padding: 2,
-    paddingLeft: 5,
-    paddingRight: 5,
     color: "#fff",
     marginLeft: 15,
     marginRight: 15,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    height: 50,
+    width:80,
+    fontSize:18,
+    textAlign:'center',
+    justifyContent:"center"
   },
 
   msgDelete: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 15
+    fontSize: 22
   },
 
   textDelete: {
