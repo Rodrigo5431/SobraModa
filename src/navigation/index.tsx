@@ -69,12 +69,12 @@ export function Navigator() {
           <Stack.Screen
             name="Profile"
             component={Profile}
-            options={{ title: "Profile usuario", headerShown: false }}
+            options={{ title: "", headerShown: true }}
           />
           <Stack.Screen
             name="UserConfig"
             component={Configuration}
-            options={{ title: "Profile usuario", headerShown: true }}
+            options={{ title: "Configurações de Usuário", headerShown: true }}
           />
         </Stack.Navigator>
       </ProvedorPropriedadeAplicacao>
