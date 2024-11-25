@@ -20,7 +20,7 @@ export function Navigator() {
     <NavigationContainer>
       <ProvedorPropriedadeAplicacao>
         <Stack.Navigator
-          initialRouteName="Login" //depois que terminar colocar a Login para ser a principal, teste Home
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
             headerStyle: {

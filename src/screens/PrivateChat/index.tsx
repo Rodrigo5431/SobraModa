@@ -22,7 +22,7 @@ export default function PrivateChat () {
   const navigation = useNavigation();
   const [ nome, setNome ] = useState<string>("");  
   const { user, postagem } = useAuth();  
-  const [ message, setMessage ] = useState<string>(`Oi, que bom ter você aqui! O produto selecionado: ${postagem.titulo} - R$ ${postagem} seria esse o seu interesse ?`);
+  const [ message, setMessage ] = useState<string>(`Oi, que bom ter você aqui! O produto selecionado: ${postagem.titulo} - R$ ${postagem.preco} seria esse o seu interesse ?`);
 
  const [messages, setMessages] = useState([{ sender: nome, text: message }]);
   const [newMessage, setNewMessage] = useState<string>("");
