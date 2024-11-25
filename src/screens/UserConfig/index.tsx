@@ -75,7 +75,7 @@ export default function Configuration() {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>     
       <HeaderConfiguration />
       <View style={styles.user}>
         <Image
@@ -111,6 +111,6 @@ export default function Configuration() {
           )}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }

@@ -15,6 +15,7 @@ import { styles } from "./styles";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { Linking } from 'react-native';
 
 
 interface Produto {
@@ -94,8 +95,9 @@ export const Home = () => {
       <Text
         style={styles.chatText}
     //    onPress={() => navigateToChat(item.id)} 
+    onPress={() => Linking.openURL('https://wa.me/5521982386705?text=Oi%20estou%20interessado%20no%20produto%20' + item.titulo)} // Corrigido para usar Linking.openURL
       >
-        Fale comigo
+        Fale com o anunciante   
       </Text>
     </View>
   );
@@ -113,8 +115,8 @@ export const Home = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.containerPlusMaxAdvencedPower}>
+    <View style={styles.container}>     
+     <View style={styles.containerPlusMaxAdvencedPower}>
           {/* Contêiner com perfil e pesquisa lado a lado */}
           <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
@@ -160,6 +162,7 @@ export const Home = () => {
           numColumns={2}
         />
       </View>
-    </ScrollView>
+      
+    </View>
   );
 };
