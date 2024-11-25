@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "#E3D5F6",
     paddingBottom: 60,
   },
+  mainContainer:{
+    backgroundColor: "#E3D5F6",
+    paddingBottom: 20,
+    
+  },
 
   containerPlusMaxAdvencedPower: {
     marginTop: 30,
@@ -26,11 +31,8 @@ export const styles = StyleSheet.create({
 
   produtoContainer: {
     height: 200,
-    margin: 5,
     marginVertical: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    alignContent: "center",
+    padding:17
   },
 
   produtoImage: {
@@ -52,7 +54,6 @@ export const styles = StyleSheet.create({
     color: "#333",
     fontFamily: "Comic Neue",
     marginLeft: 0,
-    marginRight: 10,
   },
 
   button: {
@@ -128,7 +129,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     marginBottom: 10, // Espaçamento abaixo do preço
-    marginLeft:25,
   },
   container2: {
     marginLeft:20, 

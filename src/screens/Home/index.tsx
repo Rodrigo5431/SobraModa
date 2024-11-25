@@ -1,7 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./styles";
@@ -26,13 +26,12 @@ interface Produto {
 export const Home = () => {
   const [allPosts, setAllPosts] = useState<Produto[]>([]);
   // const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
-  const [productId, setproductId] = useState<number>(0);
   const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [product, setProduct] = useState<Produto[]>([]);
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
-  const { fetchUserData, userData, user, setUser } = useAuth();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { userData, setUser } = useAuth();
 
   const navigation = useNavigation();
 
@@ -105,6 +104,8 @@ export const Home = () => {
       new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
   );
 
+  
+
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={styles.produtoContainer}>
       <TouchableOpacity onPress={() => handleProductClick(item)}>
@@ -115,53 +116,39 @@ export const Home = () => {
     </View>
   );
 
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.containerPlusMaxAdvencedPower}>
-        {/* Contêiner com perfil e pesquisa lado a lado */}
-        <View style={styles.profileAndSearchContainer}>
-          <View style={styles.profileContainer}>
-            <Image
-              source={{ uri: userData?.Foto }}
-              style={styles.profileImage}
-            />
-          </View>
+  const renderHeader = () => (
+    <View style={styles.containerPlusMaxAdvencedPower}>
+      {/* Contêiner com perfil e pesquisa lado a lado */}
+      <View style={styles.profileAndSearchContainer}>
+        <View style={styles.profileContainer}>
+          <Image source={{ uri: userData?.Foto }} style={styles.profileImage} />
+        </View>
 
-          <View style={styles.searchContainer}>
-            <TextInput
-              placeholder="Pesquise aqui..."
-              value={searchTerm}
-              onChangeText={setSearchTerm}
-              style={styles.searchInput}
-            />
-            <TouchableOpacity onPress={handleSearch}>
-              <FontAwesome name="search" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.searchContainer}>
+          <TextInput
+            placeholder="Pesquise aqui..."
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+            style={styles.searchInput}
+          />
+          <TouchableOpacity onPress={handleSearch}>
+            <FontAwesome name="search" size={20} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
+    </View>
+  );
 
-      <View style={styles.container2}>
-        <Text onPress={() => setExpand(!expand)} style={styles.buttonText2}>
-          Recentes
-        </Text>
-        <FlatList
-          data={sortedPosts}
-          horizontal={expand}
-          renderItem={renderItem}
-          //   keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View style={styles.container3}>
-        <FlatList
-          data={allPosts}
-          renderItem={renderItem}
-          //keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
-          numColumns={2}
-        />
-      </View>
-    </ScrollView>
+  return (
+    <FlatList 
+      refreshing={true}
+      onRefresh={()=> {}}
+      data={allPosts}
+      renderItem={renderItem}
+      numColumns={2}
+      ListHeaderComponent={renderHeader}
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={styles.mainContainer}
+    />
   );
 };
