@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 3,
     borderColor: '#fff',
-    marginBottom:50
+    marginBottom:50,
   },
 
   name: {
