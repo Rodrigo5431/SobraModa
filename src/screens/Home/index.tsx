@@ -1,144 +1,160 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
-  ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import style from "./style";
+import { useAuth } from "../../hooks/useAuth";
+import { styles } from "./styles";
 
 interface Produto {
-  id: string;
-  image: any;
-  title: string;
+  id: number;
+  foto: string;
+  titulo: string;
+  preco: string;
+  dataPostagem: Date;
 }
 
-const produtosvertical: Produto[] = [
-  {
-    id: "1",
-    image: require("../../../assets/alfaiataria.jpg"),
-    title: "Alfaiataria\nR$ 55,99 por 30cm",
-  },
-  {
-    id: "2",
-    image: require("../../../assets/algodão.jpg"),
-    title: "Algodao\nR$ 35,99 por 30cm",
-  },
-  {
-    id: "3",
-    image: require("../../../assets/linhãografite.jpg"),
-    title: "Linhão\nR$ 9,99 por 15cm",
-  },
-  {
-    id: "4",
-    image: require("../../../assets/linho.jpg"),
-    title: "inho\nR$ 22,30 por 15cm",
-  },
-  {
-    id: "4",
-    image: require("../../../assets/seda.jpg"),
-    title: "Seda\nR$ 99,99 por 15cm",
-  },
-  {
-    id: "9",
-    image: require("../../../assets/jeans.jpg"),
-    title: "linho\nR$ 22,50 por 15cm",
-  },
-  {
-    id: "10",
-    image: require("../../../assets/moussekine.jpg"),
-    title: "mousseline\nR$ 22 por 15cm",
-  },
-  {
-    id: "11",
-    image: require("../../../assets/renda.jpg"),
-    title: "linho\nR$ 50,00 por 10cm",
-  },
-];
-
-const produtosHorizontal: Produto[] = [
-  {
-    id: "5",
-    image: require("../../../assets/orford.jpg"),
-    title: "oxford\nR$30 por 50cm",
-  },
-  // { id: '6', image: require('../../../assets/pelucia.jpg') ,title: 'pelucia/noii' },
-  {
-    id: "6",
-    image: require("../../../assets/pelucia.jpg"),
-    title: "pelucia\nR$ 15,99 por 30cm ",
-  },
-
-  {
-    id: "7",
-    image: require("../../../assets/tricole.jpg"),
-    title: "tricoline\nR$ 19,99 por 15cm",
-  },
-  {
-    id: "8",
-    image: require("../../../assets/tricoline.jpg"),
-    title: "tricoline\nR$ 15,50 por 40cm",
-  },
-];
-
 export const Home = () => {
-  // const navigation = useNavigation();
+  const [allPosts, setAllPosts] = useState<Produto[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { userData, user, setUser, postagem, setPostagem } = useAuth();
 
-  // const handleChats = () => {
+  const navigation = useNavigation();
 
-  //   Alert.alert('Vamos para a Chats');
-  //   navigation.navigate('Chat');
-  // };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+      );
+      const data: Produto[] = response.data;
 
-  const [expand, setExpand] = useState<boolean>(true);
+      setAllPosts(data);
+      setFilteredProdutos(data);
+    } catch (error) {
+      console.error("Erro ao buscar os dados da API:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSearch = () => {
+    const filtered = allPosts
+      .concat(allPosts)
+      .filter((produto) =>
+        produto.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    setFilteredProdutos(filtered);
+  };
+
+  const navigateToChat = async (id: number) => {
+    try {
+      const response = await axios.get(
+        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
+      );
+      if (response.status === 200) {
+        const produto = response.data;
+        setPostagem(response.data);
+        try {
+          const resultado = await axios.get(
+            `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id_usuario}`
+          );
+          setUser(resultado.data);
+          navigation.navigate("Profile");
+        } catch (error) {
+          console.log("erro ao achar usuario da postagem");
+        }
+      } else {
+        console.log("vendedor não encontrado");
+      }
+    } catch (error) {
+      console.log("erro ao conectar a api");
+    }
+  };
+
+  const handleProductClick = (product: Produto) => {
+    navigateToChat(product.id);
+  };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
+  const sortedPosts = filteredProdutos.sort(
+    (a, b) =>
+      new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
+  );
 
   const renderItem = ({ item }: { item: Produto }) => (
-    <View style={style.produtoContainer}>
-      <Image source={item.image} style={style.produtoImage} />
-      <Text style={style.produtoTitle}>{item.title}</Text>
+    <View style={styles.produtoContainer}>
+      <TouchableOpacity
+        onPress={() => handleProductClick(item)}
+        style={styles.product}
+      >
+        <Image source={{ uri: item.foto }} style={styles.produtoImage} />
+        <Text numberOfLines={1} style={styles.produtoTitle}>
+          {item.titulo}
+        </Text>
+        <Text style={styles.price}>R$ {item.preco}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderHeader = () => (
+    <View style={styles.containerPlusMaxAdvencedPower}>
+      {/* Contêiner com perfil e pesquisa lado a lado */}
+      <View style={styles.profileAndSearchContainer}>
+        <View style={styles.profileContainer}>
+          <Image source={{ uri: userData?.Foto }} style={styles.profileImage} />
+        </View>
+
+        <View style={styles.searchContainer}>
+          <TextInput
+            placeholder="Pesquise aqui..."
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+            style={styles.searchInput}
+          />
+          <TouchableOpacity onPress={handleSearch}>
+            <FontAwesome name="search" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 
   return (
-    <>
-      <ScrollView style={style.container}>
-        <View>
-          <View style={style.profileContainer}>
-            <Image
-              source={require("../../../assets/perfil.jpg")}
-              style={style.profileImage}
-            />
-          </View>
-
-          <TouchableOpacity style={style.button}>
-            <FontAwesome name="search" size={20} color="black" />
-            <Text style={style.buttonText}>Pesquise aqui</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={style.container2}>
-          <Text onPress={() => setExpand(!expand)} style={style.buttonText2}>
-            Favoritos{""}
-          </Text>
-          <FlatList
-            data={produtosHorizontal}
-            horizontal={expand}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        <FlatList
-          data={produtosvertical}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
-          numColumns={2}
-        />
-      </ScrollView>
-    </>
+    <FlatList
+      refreshing={refreshing}
+      onRefresh={() => {
+        setRefreshing(true),
+          fetchData(),
+          setTimeout(() => {
+            setRefreshing(false);
+          }, 1000);
+      }}
+      data={allPosts}
+      renderItem={renderItem}
+      numColumns={2}
+      ListHeaderComponent={renderHeader}
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={styles.mainContainer}
+    />
   );
 };

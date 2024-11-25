@@ -18,14 +18,16 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/iconeSM.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "usesCleartextTraffic": true
       }
     },
     "web": {
       "favicon": "./assets/iconeSM 2.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ]
   }
 }

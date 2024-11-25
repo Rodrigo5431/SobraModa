@@ -1,60 +1,134 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
-type PropsContext = {
+type PropriedadeIniciadaOuObrigatoria = {
+  checkAuthentication: (email: string, password: string) => void;
+  handleLogin: (resultado: any) => void;
+  isLoading: boolean;
+  handleLogOut: () => void;
+  fetchUserData: () => void;
+  userData: any;
   email: string;
   setEmail: (value: string) => void;
-  checkAuthentication: (email: string, password: string) => void;
-  isLoading: boolean;
+  password: string;
+  setPassword: (value: string) => void;
+  user: any;
+  setUser: (value: PropsUser[]) => void;
+  postagem: any;
+  setPostagem: (value: PropsPostagem[]) => void;
 };
 
-const AuthContext = createContext<PropsContext>({
+const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
+  checkAuthentication: () => {},
+
+  handleLogOut: () => {},
   email: "",
   setEmail: () => {},
-  checkAuthentication: () => {},
+  password: "",
+  setPassword: () => {},
   isLoading: false,
+  handleLogin: () => {},
+  fetchUserData: () => {},
+  userData: [],
+  user: [],
+  setUser: (value: PropsUser[]) => {},
+  postagem:[],
+  setPostagem: (value: PropsPostagem[]) => {},
+
 });
 
-export const AuthProvider = ({ children }: any) => {
-  const [email, setEmail] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+interface PropsUser {
+  id: number;
+  Foto: string;
+  nome: string;
+  email: string;
+  password: string;
+  mensagem: string;
+}
 
-  const checkAuthentication = (email: string, password: string) => {
-    setIsLoading(true);
-    storeData(email, password);
-    console.log("Pegou o email", email);
-    setIsLoading(false);
+interface PropsPostagem {
+  id: number;
+  id_usuario: number;
+  titulo: string;
+  descricao: string;
+  preco: number;
+  foto: string;
+  dataPostagem: Date;
+}
+
+export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
+  const [id, setId] = useState<number | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [tabChat, setTabChat] = useState<boolean>(false);
+  const [user, setUser] = useState<PropsUser[]>([]);
+  const [postagem, setPostagem] = useState<PropsPostagem[]>([]);
+
+  const navigation = useNavigation();
+
+  const handleLogin = async (resultado: PropsUser) => {
+    try {
+      await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
+      checkAuthentication(email, password);
+    } catch (error) {
+      console.error("Erro ao salvar os dados do usuário:", error);
+    }
   };
 
-  const storeData = async (email: string, password: string) => {
-    console.log("chamou a funcao");
-
+  const fetchUserData = async () => {
+    setIsLoading(true);
     try {
-      console.log("entrou no try");
+      const data = await AsyncStorage.getItem("@resultado");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setUserData(parsedData); // Atualiza o estado global com os dados recuperados
+        console.log("Dados recuperados:", parsedData);
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar informações do usuário:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      const jsonValue = JSON.stringify(email);
-      await AsyncStorage.setItem("@infoUser", jsonValue);
-      console.log("Dados salvos com sucesso");
+  const checkAuthentication = (email: string, password: string) => {
+    saveLogin(email, password);
+    navigation.navigate("Home");
+  };
+
+  const handleLogOut = () => {
+    AsyncStorage.removeItem("@infoUserEmail");
+    AsyncStorage.removeItem("@infoUserPassword");
+    navigation.navigate("Login");
+  };
+
+  const saveLogin = async (email: string, password: string) => {
+    try {
+      const jsonEmail = JSON.stringify(email);
+      const jsonPassword = JSON.stringify(password);
+      await AsyncStorage.setItem("@infoUserEmail", jsonEmail);
+      await AsyncStorage.setItem("@infoUserPassword", jsonPassword);
+      console.log("dados salvos com sucesso!", jsonEmail, jsonPassword);
     } catch (error) {
       console.log("Erro ao salvar dados!");
     }
   };
 
-  //     const handleLogOut = () => {
-  //     AsyncStorage.removeItem('@InfoUser');
-  //     navigation.navigate('StackLogin', {name: "Home"});
-  //   }
-
   const getData = async () => {
-    setIsLoading(true);
     try {
-      const value = await AsyncStorage.getItem("@infoUser");
-      if (value !== null) {
-        const jsonValue = JSON.parse(value);
-        console.log("pegou os dados", jsonValue);
+      const valueEmail = await AsyncStorage.getItem("@infoUserEmail");
+      const valuePassword = await AsyncStorage.getItem("@infoUserPassword");
+      if (valueEmail !== null && valuePassword !== null) {
+        const jsonEmail = JSON.parse(valueEmail);
+        const jsonPassword = JSON.parse(valuePassword);
+        navigation.navigate("Home");
+        console.log("Pegou os dados", jsonEmail, jsonPassword);
       }
     } catch (error) {
-      console.log("Erro ao buscr dados");
+      console.log("Erro ao buscar dados");
     }
     setIsLoading(false);
   };
@@ -64,12 +138,27 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ email, setEmail, checkAuthentication, isLoading }}
+    <Propriedade.Provider
+      value={{
+        checkAuthentication,
+        handleLogOut,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        isLoading,
+        handleLogin,
+        userData,
+        fetchUserData,
+        user,
+        setUser,
+        postagem,
+        setPostagem
+      }}
     >
       {children}
-    </AuthContext.Provider>
+    </Propriedade.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(Propriedade);

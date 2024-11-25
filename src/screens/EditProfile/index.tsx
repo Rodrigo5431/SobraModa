@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -10,9 +13,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
-import axios from "axios";
-import { KeyboardAvoidingView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 export const EditProfile = () => {
   const [showName, setShowName] = useState<boolean>(false);
@@ -22,23 +26,87 @@ export const EditProfile = () => {
   const [password, setPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const id = useState<string>("");
-  //const token = localStorage.getItem("token");
-  const handlesubmitPassword = async () => {
+  const [sucessPassword, setSucessPassword] = useState<boolean>(false);
+  const [differentPassword, setDifferentPassword] = useState<boolean>(false);
+  const [wrongPassword, setWrongPassword] = useState<boolean>(false);
+  const { userData, handleLogin } = useAuth();
+  const navigation = useNavigation();
+
+  const atualizaNome = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:8080/usuarios/${id}`,
-
-        { password, newPassword, confirmPassword },
-
+      axios.put(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
         {
-          headers: {
-            //   Authorization: `Bearer ${token}`,
-          },
+          nome: name,
         }
       );
-    } catch (error) {}
+      setName("");
+      atualizado();
+    } catch (error) {
+      console.log("nao foi possivel atualizar o nome");
+    }
   };
+
+  const atualizado = async () => {
+    try {
+      const response = await axios.get(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`
+      );
+
+      if (response.status === 200) {
+        handleLogin(response.data);
+
+      } else {
+        console.log("Não foi possivel alterar o nome");
+      }
+    } catch (error) {
+      console.log("erro ao conectar à api");
+    }
+  };
+
+  const atualizaSenha = async () => {
+    if (password === userData.password) {
+      if (newPassword == confirmPassword) {
+        try {
+          const response = await axios.put(
+            `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
+            {
+              password: newPassword,
+            }
+          );
+          if (response.status === 200) {
+            setPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+            setSucessPassword(true);
+            setDifferentPassword(false);
+            setWrongPassword(false);
+          } else {
+            console.log("nao foi possivel alterar a senha");
+          }
+        } catch (error) {
+          console.log("nao foi possivel atualizar o nome");
+        }
+      }else{
+        setDifferentPassword(true)
+      }
+    }else{
+      setWrongPassword(true)
+    }
+  };
+
+  const handleNavigation = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("UserConfig")}>
+          <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [handleNavigation]);
 
   return (
     <KeyboardAvoidingView
@@ -46,7 +114,7 @@ export const EditProfile = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <SafeAreaView style={{ flexGrow: 1 }}>
           <TouchableOpacity
             style={styles.container}
             activeOpacity={1}
@@ -55,12 +123,9 @@ export const EditProfile = () => {
               setShowPassword(false);
             }}
           >
-            <Text style={styles.title}>{savedName}</Text>
+            <Text style={styles.title}>{userData?.nome}</Text>
             <View style={styles.editItem}>
-              <Image
-                style={styles.userImg}
-                source={require("../../assets/configurationIcon.png")}
-              />
+              <Image style={styles.userImg} source={{ uri: userData?.Foto }} />
               <View style={styles.name}>
                 <TouchableOpacity
                   style={styles.buttonChange}
@@ -96,7 +161,7 @@ export const EditProfile = () => {
                     style={styles.saveButton}
                     onPress={() => {
                       setSavedName(name);
-                      setName("");
+                      atualizaNome();
                     }}
                   >
                     <Text style={styles.saveButtonText}>Salvar</Text>
@@ -104,11 +169,17 @@ export const EditProfile = () => {
                 </View>
               </View>
             )}
+
             {showPassword && (
               <View style={styles.changeInformation}>
                 <View style={styles.titleAreaPassword}>
                   <Text style={styles.nameofchange}>Alterar Senha</Text>
                 </View>
+                {sucessPassword && (
+                  <Text style={{ fontSize: 22, color: "green" }}>
+                    Senha alterada com sucesso!
+                  </Text>
+                )}
                 <TextInput
                   style={styles.input}
                   placeholder="Digite sua Senha"
@@ -116,13 +187,19 @@ export const EditProfile = () => {
                   onChangeText={(text) => setPassword(text)}
                   value={password}
                 />
+                {wrongPassword && (
+                  <Text style={{color:'red', fontSize:17}}>Senha incorreta</Text>
+                )}
                 <TextInput
                   style={styles.input}
                   placeholder="Digite sua nova Senha"
                   secureTextEntry
                   onChangeText={(text) => setNewPassword(text)}
                   value={newPassword}
-                />
+                  />
+                  {differentPassword && (
+                    <Text style={{color:'red', fontSize:17}}>Senhas não conferem!</Text>
+                  )}
                 <TextInput
                   style={styles.input}
                   placeholder="Confirme sua Senha"
@@ -132,18 +209,24 @@ export const EditProfile = () => {
                 />
                 <View>
                   <TouchableOpacity style={styles.saveButtonPassword}>
-                    <Text style={styles.saveButtonText}>Salvar</Text>
+                    <Text style={styles.saveButtonText} onPress={atualizaSenha}>
+                      Salvar
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
             )}
             <View style={styles.logoutArea}>
-              <TouchableOpacity activeOpacity={0.6} style={styles.logoutButton}>
-                <Text style={styles.alter}>Sair</Text>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.logoutButton}
+                onPress={handleNavigation}
+              >
+                <Text style={styles.alter}>Voltar</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
-        </ScrollView>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

@@ -1,82 +1,83 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Chat } from "../screens/Chat";
+import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
+import Cadastro from "../screens/Cadastro";
 import { EditProfile } from "../screens/EditProfile";
-import { NoImplements } from "../screens/NoImplements";
+import { Login } from "../screens/Login";
+import PrivateChat from "../screens/PrivateChat";
 import { colors } from "../styles/colors";
-import { MainTabNavigator } from "./MainTabNavigation";
+import { MyDrawer } from "./drawerNavigator";
+
+import { ProductAdd } from "@/screens/ProductAdd";
+import Profile from "@/screens/Profile";
+import Configuration from "@/screens/UserConfig";
 
 const Stack = createNativeStackNavigator();
 
-export const Navigator = () => {
+export function Navigator() {
+  return (
+    <NavigationContainer>
+      <ProvedorPropriedadeAplicacao>
+        <Stack.Navigator
+          initialRouteName="Login" //depois que terminar colocar a Login para ser a principal, teste Home
+          screenOptions={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: colors.purple.cor5,
+            },
+          }}
+        >
+          <Stack.Screen
+            name="Home"
+            component={MyDrawer}
+            options={{ title: "Mensagens Privadas", headerShown: false }}
+          />
 
-    // const navigation = useNavigation();
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: "Login", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cadastrar"
+            component={Cadastro}
+            options={{ title: "Cadastro", headerShown: false }}
+          />
 
-    // const handleChats = () => {
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ title: "Editar Perfil", headerShown: false }}
+          />
 
-    //   Alert.alert('Vamos para a Chats');
-    //   navigation.navigate('Chat');
-    // };
+          <Stack.Screen
+            name="PrivateChat"
+            component={PrivateChat}
+            options={{
+              title: "ConversaPrivada",
+              headerShown: true,
+              headerTitleAlign: "center",
+            }}
+          />
 
-
-    return (
-        <NavigationContainer>
-            <Stack.Navigator
-                initialRouteName="Home" //depois que terminar colocar a Login para ser a principal
-                screenOptions={{
-                    headerShown: false,
-                    headerStyle: {
-                        backgroundColor: colors.purple.cor5,
-                    },
-                }}>
-
-
-                <Stack.Screen
-                    name="Home"
-                    component={MainTabNavigator}
-                    options={{ headerShown: false }}
-                />
-                {/* <TouchableOpacity onPress={handleChats}> */}
-                <Stack.Screen
-                    name="Chat"
-                    // onPress={() => handleChats()}
-                    component={Chat}
-                    options={({ navigation }) => ({
-                        headerShown: false,
-                        headerTitle: "Mensagens",
-                        headerTitleAlign: "center",
-                    })}
-
-                />
-                {/* </TouchableOpacity> */}
-
-                <Stack.Screen
-                    name="Login"
-                    component={NoImplements}
-                    options={{ title: "Login", headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Cadastrar"
-                    component={NoImplements}
-                    options={{ title: "Cadastro", headerShown: false }}
-                />
-
-                <Stack.Screen
-                    name="EditProfile"
-                    component={EditProfile}
-                    options={{ title: "Editar Perfil", headerShown: false }}
-                />
-{/* 
-                <Stack.Screen
-                    name="PrivateChat"
-                    component={PrivateChat}
-                    options={{ title: "Conversa Privada", headerShown: false }}
-                /> */}
-
-
-
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+          <Stack.Screen
+            name="ProductAdd"
+            component={ProductAdd}
+            options={{ title: "Editar Perfil", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ title: "", headerShown: true }}
+          />
+          <Stack.Screen
+            name="UserConfig"
+            component={Configuration}
+            options={{ title: "Configurações de Usuário", headerShown: true }}
+          />
+        </Stack.Navigator>
+      </ProvedorPropriedadeAplicacao>
+    </NavigationContainer>
+  );
 }

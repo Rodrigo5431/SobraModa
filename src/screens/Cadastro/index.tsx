@@ -1,6 +1,8 @@
+import { Loading } from "@/components/Loading";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -15,57 +17,159 @@ import { ButtonMain } from "../../components/ButtonMain";
 import { TextInputField } from "../../components/TextInput";
 import { styles } from "./style";
 
-export const Cadastro = () => {
+interface PropsUser {
+  id: number;
+  nome: string;
+  email: string;
+  password: string;
+  Foto: string;
+}
+
+export default function Cadastro() {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [erro, setErro] = useState<string>("");
+  const [erroSenha, setErroSenha] = useState<string>("");
+  const [erroFoto, setErroFoto] = useState<string>("");
+  const [sucess, setSucess] = useState<string>("");
+  const [users, setUsers] = useState<PropsUser[]>([]);
 
-  const createUsers = async () => {
-    if (
-      !nome.trim() ||
-      !email.trim() ||
-      !password.trim() ||
-      !confirmPassword.trim() ||
-      !imageUri
-    ) {
-      Alert.alert(
-        "Campos obrigatórios",
-        "Por favor, preencha todos os campos."
-      );
-      return;
-    }
+  const navigation = useNavigation();
 
-    if (password === confirmPassword) {
+
+  const arrowBackToLogin = () => {
+    navigation.navigate("Login");
+  };
+
+  const UPLOAD_PRESET = "agoraVai";
+
+  const CLOUDINARY_URL =
+    "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
+
+    const createUsers = async (uploadedImageUrl: string) => {
+      if (
+        !nome.trim() ||
+        !email.trim() ||
+        !password.trim() ||
+        !confirmPassword.trim()
+      ) {
+        return false;
+      }
       try {
-        const newUsers = {
+        const newUser = {
           nome,
           email,
           password,
-          Foto: imageUri,
+          Foto: uploadedImageUrl,
         };
-
+    
         const response = await axios.post(
           "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
-          newUsers
+          newUser
         );
-
+        setIsLoading(false);
         if (response.status === 201) {
-          Alert.alert("Sucesso", "Cadastro realizado!");
           setNome("");
           setEmail("");
           setPassword("");
           setConfirmPassword("");
+          setErro("");
+          setErroFoto("");
+          setErroSenha("");
           setImageUri(null);
+          handleSearchUsers();
+          setSucess("Conta criada com sucesso");
+    
+          setTimeout(() => {
+            navigation.navigate("Login");
+          }, 3000);
+          return true;
         }
       } catch (error) {
-        Alert.alert("Erro", "Erro ao cadastrar usuario");
+        console.error("Erro no cadastro:", error);
+        Alert.alert(
+          "Erro",
+          "Erro ao cadastrar usuário. Tente novamente mais tarde."
+        );
       }
-    } else {
-      Alert.alert("As senhas não são iguais!");
-    }
-  };
+      return false;
+    };
+    
+
+    const handleEmailVerification = async () => {
+      if (!imageUri) {
+        setIsLoading(false);
+        setErroFoto("É necessário adicionar uma foto");
+        setErroSenha("");
+        setErro("");
+        return;
+      }
+    
+      const resultado = users.find(
+        (user) => user.email.toLowerCase() === email.toLowerCase()
+      );
+    
+      try {
+        if (!resultado) {
+          if (password === confirmPassword) {
+            setIsLoading(true);
+            try {
+              const formData = new FormData();
+              const file = {
+                uri: imageUri,
+                type: "image/jpeg",
+                name: "foto_usuario.jpg",
+              };
+              formData.append("file", file as any);
+              formData.append("upload_preset", UPLOAD_PRESET);
+    
+              const cloudinaryResponse = await axios.post(
+                CLOUDINARY_URL,
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+    
+              if (cloudinaryResponse.data.secure_url) {
+                const imageUrl = cloudinaryResponse.data.secure_url;
+                console.log("Imagem carregada com sucesso! URL:", imageUrl);
+    
+                await createUsers(imageUrl);
+              } else {
+                throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
+              }
+            } catch (error) {
+              console.log("Erro ao carregar a imagem: ", error);
+              setIsLoading(false);
+            }
+          } else {
+            setIsLoading(false);
+            setErroSenha("As senhas não coincidem");
+            setErro("");
+            setErroFoto("");
+          }
+        } else {
+          setIsLoading(false);
+          setErro("Este e-mail já existe em nossa base. Faça seu Login.");
+          setErroSenha("");
+          setErroFoto("");
+          setTimeout(() => {
+            navigation.navigate("Login");
+          }, 3000);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.log("Erro na verificação do email:", error);
+      }
+    };
+    
+  
+  
 
   const pickImage = async () => {
     const permissionResult =
@@ -89,9 +193,30 @@ export const Cadastro = () => {
     }
   };
 
+  const handleSearchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
+      );
+      setUsers(response.data);
+    } catch (error) {
+      console.log("nao foi possivel achar usuarios");
+    }
+  };
+  useEffect(() => {
+    handleSearchUsers();
+  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+
+        <View style={styles.arrowLogin}>
+          <TouchableOpacity onPress={arrowBackToLogin}>
+            <Icon name="arrow-back-outline" type="ionicon" color={"#342142"} />
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.tituloPrincipal}>Cadastro</Text>
 
         <TouchableOpacity
@@ -110,38 +235,45 @@ export const Cadastro = () => {
           )}
           <Text style={styles.msg}>Adicionar Foto</Text>
         </TouchableOpacity>
-
+        {erroFoto && <Text style={{ color: "red" }}>{erroFoto}</Text>}
+        {sucess && <Text style={{ color: "green", fontSize:20 }}>{sucess}</Text>}
         <View style={styles.inputBox}>
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Nome:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Nome:</Text>
             <TextInputField
               placeHolder="Digite seu nome"
               handleFunctionInput={setNome}
+              valueInput={nome}
             />
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Email:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Email:</Text>
             <TextInputField
               placeHolder="Digite seu email"
               handleFunctionInput={setEmail}
+              valueInput={email}
             />
+            {erro && <Text style={{ color: "red" }}>{erro}</Text>}
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Senha:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Senha:</Text>
             <TextInputField
               placeHolder="Digite sua senha"
               handleFunctionInput={setPassword}
+              valueInput={password}
             />
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Confirma a senha:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Confirmar senha:</Text>
             <TextInputField
               placeHolder="Confirme a senha"
               handleFunctionInput={setConfirmPassword}
+              valueInput={confirmPassword}
             />
+            {erroSenha && <Text style={{ color: "red" }}>{erroSenha}</Text>}
           </View>
         </View>
 
@@ -149,14 +281,13 @@ export const Cadastro = () => {
           <ButtonMain
             title="FINALIZAR"
             propsBackgroundColor="#342142"
-            handleFunction={createUsers}
+            handleFunction={() => {
+              handleEmailVerification();
+            }}
           />
         </View>
-
-        {/* <TouchableOpacity style={styles.button} onPress={postUsers}>
-          <Text style={styles.ButtonText}>FINALIZAR</Text>
-        </TouchableOpacity> */}
+        {isLoading && <Loading />}
       </View>
     </TouchableWithoutFeedback>
   );
-};
+}

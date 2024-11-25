@@ -1,48 +1,66 @@
-import React, { useState } from "react";
+
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
+  View,
 } from "react-native";
-import { RouteProp } from "@react-navigation/native";
-import {styles} from "./styles";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./styles";
+import { useAuth } from '@/hooks/useAuth';
 
-// Definição do tipo para os parâmetros da rota
-type PrivateChatRouteParams = {
-  Usuario: string;
-  Mensagem: string;
-};
 
-// Tipo para a propriedade de rota
-type PrivateChatProps = {
-  route: RouteProp<{ params: PrivateChatRouteParams }, "params">;
-};
 
-export const PrivateChat = ({ route }: PrivateChatProps) => {
-  const { Usuario, Mensagem } = route.params;
+export default function PrivateChat () {
+  
+  const navigation = useNavigation();
+  const [ nome, setNome ] = useState<string>("");  
+  const { user, postagem } = useAuth();  
+  const [ message, setMessage ] = useState<string>(`Oi, que bom ter você aqui! O produto selecionado: ${postagem.titulo} - R$ ${postagem} seria esse o seu interesse ?`);
 
-  // Estado para gerenciar a lista de mensagens e o campo de entrada
-  const [messages, setMessages] = useState([{ sender: Usuario, text: Mensagem }]);
+ const [messages, setMessages] = useState([{ sender: nome, text: message }]);
   const [newMessage, setNewMessage] = useState<string>("");
 
-  // Função para enviar mensagem
+  useEffect(()=>{
+    setNome(user.nome);
+  },[])
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: nome,
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('UserConfig')}>
+          <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, nome]); 
+
   const sendMessage = () => {
     if (newMessage.trim()) {
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: "Você", text: newMessage },
       ]);
-      setNewMessage(""); // Limpa o campo de entrada
+      setNewMessage(""); 
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Conversa Privada</Text>
-      
-      {/* Lista de mensagens */}
+    <SafeAreaView style={styles.container}>
+ 
       <FlatList
         data={messages}
         keyExtractor={(_, index) => index.toString()}
@@ -60,18 +78,19 @@ export const PrivateChat = ({ route }: PrivateChatProps) => {
         style={styles.messagesList}
       />
 
-      {/* Campo de entrada e botão de envio */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite sua mensagem"
-          value={newMessage}
-          onChangeText={setNewMessage}
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>Enviar</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua mensagem"
+            value={newMessage}
+            onChangeText={setNewMessage}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Text style={styles.sendButtonText}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

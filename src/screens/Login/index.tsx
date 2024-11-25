@@ -13,30 +13,29 @@ import logo from "../../../assets/iconeSM.png";
 import { ButtonMain } from "../../components/ButtonMain";
 import { ButtonSocial } from "../../components/ButtonSocial";
 import { TextInputField } from "../../components/TextInput";
+import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
+
 
 interface PropsInf {
   id: number;
+  Foto: string;
   nome: string;
   email: string;
   password: string;
 }
 
 export const Login = () => {
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-
-  const [users, setUsers] = useState<PropsInf[]>([]);
-  const [user, setUser] = useState<PropsInf>();
-  const [id, setId] = useState<number>();
-  const [email, setEmail] = useState<string>();
-
   const navigation = useNavigation();
 
-  const handleCadastro = () => {
-    navigation.navigate("Cadastrar");
-  };
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [users, setUsers] = useState<PropsInf[]>([]);
+
+
+  const { setEmail, email, setPassword, password, handleLogin } =
+    useAuth();
+
 
   const handleEmail = (value: string) => {
     setEmail(value);
@@ -46,40 +45,53 @@ export const Login = () => {
     setPassword(value);
   };
 
-  async function handleLogin() {
+  const handleVerifyLogin = () => {
     const resultado = users.find(
-      (user) => user.email === email && user.password === password
+      (user) =>
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.password === password
     );
-
+  
     if (resultado) {
-      setUser(resultado);
-      console.log("achei," + resultado.email);
+      handleLogin(resultado);
+      setSuccess(true);
+      setError("");
+
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+      setSuccess(true);
+      setError("");
+      navigation.navigate("Home");
     } else {
-      console.log("USUARIO NAO ENCONTRADO");
+      setError("Usuário ou senha inválidos!");
+      setSuccess(false);
     }
-  }
+  };
 
-  async function searchUser() {
-    // console.log("aquiiiiii");
-
+  const searchUser = async () => {
     try {
       const response = await axios.get(
         "https://673e81080118dbfe860b784d.mockapi.io/cadastrar"
       );
 
-      // console.log('aqui 2 vezes');
-
       if (response.status === 200) {
         setUsers(response.data);
         console.log(response.data);
+        
       }
     } catch (error) {
-      console.log("erro ");
+      console.error("Erro ao carregar usuários:", error);
     }
-  }
+  };
+
   useEffect(() => {
     searchUser();
   }, []);
+
+  const handleRegister = () => {
+    navigation.navigate("Cadastrar");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -99,13 +111,12 @@ export const Login = () => {
             placeHolder="Digite sua senha..."
             handleFunctionInput={handlePassword}
             valueInput={password}
-            typeInput={true}
             typeIcon="password"
           />
 
           <ButtonMain
             title="Entrar"
-            handleFunction={handleLogin}
+            handleFunction={handleVerifyLogin}
             propsBackgroundColor="#342142"
           />
 
@@ -118,7 +129,7 @@ export const Login = () => {
           />
 
           <ButtonSocial
-            title="Entrar com o google"
+            title="Entrar com o Google"
             icon="logo-google"
             propsType="ionicon"
           />
@@ -130,18 +141,22 @@ export const Login = () => {
           />
 
           <View style={styles.cadastro}>
-            <Text>Não tem conta?</Text>
-            <TouchableOpacity onPress={handleCadastro}>
+            <Text style={{fontSize: 16, fontFamily: "ComicNeue_700Bold"}}>Não tem conta?</Text>
+            <TouchableOpacity>
               <Text
-                style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
+                style={{ color: "#fff", marginLeft: 5, fontSize: 20, fontFamily: "ComicNeue_700Bold" }}
+                onPress={handleRegister}
               >
                 Cadastre-se
               </Text>
             </TouchableOpacity>
           </View>
-          {error && <Text style={{ fontSize: 35 }}>{error}</Text>}
+
+          {error && <Text style={{ fontSize: 18, color: "red" }}>{error}</Text>}
           {success && (
-            <Text style={{ fontSize: 35 }}>Login realizado com sucesso!</Text>
+            <Text style={{ fontSize: 18, color: "green", fontFamily: "ComicNeue_700Bold" }}>
+              Login realizado com sucesso!
+            </Text>
           )}
         </View>
       </View>

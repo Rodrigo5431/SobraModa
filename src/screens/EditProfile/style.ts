@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 3,
     borderColor: '#fff',
-    marginBottom:50
+    marginBottom:50,
   },
 
   name: {
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
 
   },
   logoutButton:{
-    backgroundColor: 'red',
+    backgroundColor: 'green',
     width: 100,
     borderRadius:50,
     paddingTop:5

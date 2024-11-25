@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -6,107 +8,146 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { styles } from "./style";
-import { HeaderConfiguration } from "../../components/HeaderConfiguration";
-import configurationIcon from "../../assets/configurationIcon.png";
 import whatsappIcon from "../../assets/whatsapp.png";
-import { useState } from "react";
-import apis from "../../services/apis";
-import { DataAPI } from "../../Mock/data";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { HeaderConfiguration } from "../../components/HeaderConfiguration";
+import { styles } from "./style";
 import React from "react";
+import { useAuth } from "../../hooks/useAuth";
+
+interface PropsPostagem {
+  id: number;
+  id_usuario: number;
+  titulo: string;
+  descricao: string;
+  preco: number;
+  foto: string;
+  dataPostagem: Date;
+}
 
 export default function Configuration() {
-  const [user, setUser] = useState<any>();
-  const [id, setId] = useState<number>();
-  const [nome, setNome] = useState<string>();
-  const [descricao, setDescricao] = useState<string>();
-  const [foto, setFoto] = useState<any>();
+  const [postagens, setPostagens] = useState<PropsPostagem[]>([]);
+  const [id, setId] = useState<number>(0);
+  const [error, setError] = useState<string>();
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [FilteredPosts, setFilteredPosts] = useState<PropsPostagem[]>([]);
+  const { fetchUserData, userData, postagem } = useAuth();
 
-  const decodeToken = (token: string): any => {
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (userData?.id) {
+      handlePostagem();
+    }
+  }, [userData]);
+
+  const handleDelete = async () => {
     try {
-      const base64Payload = token.split(".")[1]; // Pega a segunda parte do token
-      const decodedPayload = Buffer.from(base64Payload, "base64").toString(
-        "utf-8"
+      const response = await axios.delete(
+        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
       );
-      return JSON.parse(decodedPayload); 
+
+      if (response.status === 200) {
+        console.log("excluido com sucesso");
+      } else {
+        console.log("falha ao excluir ");
+      }
     } catch (error) {
-      console.error("Erro ao decodificar o token:", error);
-      return null;
+      console.log("Erro ao conectar a api");
     }
   };
 
-  async function searchUser() {
+  const handlePostagem = async () => {
     try {
-      const token = await AsyncStorage.getItem("userToken");
+      const response = await axios.get(
+        "https://673e81080118dbfe860b784d.mockapi.io/postagem"
+      );
+      if (response.status === 200) {
+        console.log("postagens: " + JSON.stringify(response.data));
+        const allPosts = response.data;
 
-      if (!token) {
-        console.error("Token não encontrado!");
-        return;
+        setFilteredPosts(
+          allPosts.filter(
+            (post: PropsPostagem) => post.id_usuario === userData?.id
+          )
+        );
+
+        if (FilteredPosts.length > 0) {
+          setPostagens(FilteredPosts);
+        } else {
+          setError("Nao há postagens disponiveis.");
+        }
       }
-
-      const decodedToken = decodeToken(token);
-
-      if (!decodedToken || !decodedToken.id) {
-        console.error("ID do usuário não encontrado no token!");
-        return;
-      }
-
-      const userId = decodedToken.id;
-      setId(userId);
-
-      const response = await apis.get(`/usuarios/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setUser(response.data);
-      setNome(response.data.nome);
-      setDescricao(response.data.descricao);
-      setFoto(response.data.foto);
     } catch (error) {
-      console.error("Erro ao buscar dados do usuário:", error);
+      console.error("Erro ao conectar a API:", error);
+      setError("Erro ao conectar. Verifique sua conexão.");
     }
-  }
+  };
+  console.log("posts filtrados : " + FilteredPosts);
 
-  useEffect(() => {
-    searchUser();
-  }, []);
+  const sortedPosts = FilteredPosts.sort(
+    (a, b) =>
+      new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
+  );
 
   return (
     <ScrollView style={styles.container}>
       <HeaderConfiguration />
+      {confirmDelete && (
+        <View style={styles.confirm}>
+          <Text style={styles.msgDelete}>Tem certeza que deseja Excluir?</Text>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                handleDelete(), setConfirmDelete(false);
+              }}
+            >
+              <Text style={styles.buttom}>Sim</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setConfirmDelete(false)}>
+              <Text style={styles.buttom}>Não</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <View style={styles.user}>
-        <Image source={configurationIcon} style={styles.userImage}></Image>
-        {/* <Image source={foto} style={styles.userImage}></Image> */}
-
-        <Text>Costureira em ascensão</Text>
-        {/* <Text>{descricao}</Text> */}
-      </View>
-      <View style={styles.talk}>
-        <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
-          <Image source={whatsappIcon} style={styles.talkImg} />
-          <Text style={styles.talkText}>Fale Comigo</Text>
-        </TouchableOpacity>
+        <Image
+          source={{ uri: userData?.Foto }}
+          style={styles.userImage}
+        ></Image>
+        <Text>{userData?.descricao}</Text>
       </View>
       <View style={styles.postsArea}>
+        {error && <View></View>}
         <FlatList
-          data={DataAPI}
-          keyExtractor={(dados) => dados.id.toString()}
-          numColumns={3}
+          data={sortedPosts}
+          keyExtractor={(dados) => dados.id_usuario.toString()}
+          numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.posts}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => {
+                  setConfirmDelete(true), setId(item.id);
+                }}
+              >
+                <Text style={styles.textDelete}>. . .</Text>
+              </TouchableOpacity>
               <Image
                 style={styles.postImg}
-                source={item.image}
+                source={{ uri: item.foto }}
                 alt="publicacao"
               />
+              <Text style={styles.postTitle}>{item.titulo}</Text>
+              <Text numberOfLines={1} style={styles.postDesc}>
+                {item.descricao}
+              </Text>
+              <Text style={styles.postPrice}>Preço: R${item.preco}</Text>
             </View>
           )}
         />
       </View>
     </ScrollView>
   );
-};
+}

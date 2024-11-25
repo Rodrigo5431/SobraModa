@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     height: 40,
     backgroundColor: "#fff",
-    marginTop: 175,
+    marginTop: 190,
     width: "80%",
     borderRadius: 50,
     paddingHorizontal: 15,
@@ -22,5 +22,6 @@ export const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    fontFamily: "ComicNeue_700Bold"
   },
 });
