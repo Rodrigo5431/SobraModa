@@ -238,7 +238,7 @@ export default function Cadastro() {
           <Text style={styles.msg}>Adicionar Foto</Text>
         </TouchableOpacity>
         {erroFoto && <Text style={{ color: "red" }}>{erroFoto}</Text>}
-        {sucess && <Text style={{ color: "green", fontSize: 15}}>{sucess}</Text>}
+        {sucess && <Text style={{ color: "green", fontSize:20 }}>{sucess}</Text>}
         <View style={styles.inputBox}>
           <View style={styles.input}>
             <Text style={{ left: 5, color: "#342142" }}>Nome:</Text>

@@ -2,23 +2,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, createContext, useState, useEffect } from "react";
 
-
 type PropriedadeIniciadaOuObrigatoria = {
   checkAuthentication: (email: string, password: string) => void;
   handleLogin: (resultado: any) => void;
   isLoading: boolean;
   handleLogOut: () => void;
-  fetchUserData:() => void;
+  fetchUserData: () => void;
   userData: any;
   email: string;
   setEmail: (value: string) => void;
   password: string;
   setPassword: (value: string) => void;
+  user: any;
+  setUser: (value: PropsUser[]) => void;
 };
 
 const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   checkAuthentication: () => {},
-
 
   handleLogOut: () => {},
   email: "",
@@ -29,7 +29,18 @@ const Propriedade = createContext<PropriedadeIniciadaOuObrigatoria>({
   handleLogin: () => {},
   fetchUserData: () => {},
   userData: [],
+  user: [],
+  setUser: (value: PropsUser[]) => {},
 });
+
+interface PropsUser {
+  id: number;
+  Foto: string;
+  nome: string;
+  email: string;
+  password: string;
+  mensagem: string;
+}
 
 export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [id, setId] = useState<number | null>(null);
@@ -39,6 +50,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>(null);
   const [tabChat, setTabChat] = useState<boolean>(false);
+  const [user, setUser] = useState<PropsUser[]>([]);
 
   const navigation = useNavigation();
 
@@ -46,7 +58,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
     try {
       await AsyncStorage.setItem("@resultado", JSON.stringify(resultado));
       console.log("Usuário autenticado:", resultado);
-      checkAuthentication(email, password)
+      checkAuthentication(email, password);
     } catch (error) {
       console.error("Erro ao salvar os dados do usuário:", error);
     }
@@ -63,33 +75,29 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
       }
     } catch (error) {
       console.error("Erro ao recuperar informações do usuário:", error);
-
     } finally {
       setIsLoading(false);
     }
   };
 
-
-
   const checkAuthentication = (email: string, password: string) => {
-    saveLogin(email, password)    
-    navigation.navigate("Home")
+    saveLogin(email, password);
+    navigation.navigate("Home");
   };
 
   const handleLogOut = () => {
     AsyncStorage.removeItem("@infoUserEmail");
     AsyncStorage.removeItem("@infoUserPassword");
-    navigation.navigate("Login")
-  }
+    navigation.navigate("Login");
+  };
 
-  const saveLogin = async (email: string, password:string) => {
+  const saveLogin = async (email: string, password: string) => {
     try {
-      const jsonEmail = JSON.stringify(email)
-      const jsonPassword = JSON.stringify(password)
+      const jsonEmail = JSON.stringify(email);
+      const jsonPassword = JSON.stringify(password);
       await AsyncStorage.setItem("@infoUserEmail", jsonEmail);
-      await AsyncStorage.setItem("@infoUserPassword", jsonPassword)
+      await AsyncStorage.setItem("@infoUserPassword", jsonPassword);
       console.log("dados salvos com sucesso!", jsonEmail, jsonPassword);
-      
     } catch (error) {
       console.log("Erro ao salvar dados!");
     }
@@ -100,11 +108,10 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
       const valueEmail = await AsyncStorage.getItem("@infoUserEmail");
       const valuePassword = await AsyncStorage.getItem("@infoUserPassword");
       if (valueEmail !== null && valuePassword !== null) {
-        const jsonEmail =JSON.parse(valueEmail)
-        const jsonPassword =JSON.parse(valuePassword)
-        navigation.navigate("Home")
+        const jsonEmail = JSON.parse(valueEmail);
+        const jsonPassword = JSON.parse(valuePassword);
+        navigation.navigate("Home");
         console.log("Pegou os dados", jsonEmail, jsonPassword);
-        
       }
     } catch (error) {
       console.log("Erro ao buscar dados");
@@ -118,7 +125,7 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
 
   return (
     <Propriedade.Provider
-     value={{
+      value={{
         checkAuthentication,
         handleLogOut,
         email,
@@ -129,6 +136,8 @@ export const ProvedorPropriedadeAplicacao = ({ children }: any) => {
         handleLogin,
         userData,
         fetchUserData,
+        user,
+        setUser,
       }}
     >
       {children}

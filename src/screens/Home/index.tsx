@@ -1,37 +1,38 @@
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ScrollView,
   Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-  Alert,
   TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./styles";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-
 
 interface Produto {
   id: number;
   foto: string;
   titulo: string;
   preco: string;
+  dataPostagem: Date;
 }
 
 export const Home = () => {
-  const [produtosVertical, setProdutosVertical] = useState<Produto[]>([]);
-  const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
+  const [allPosts, setAllPosts] = useState<Produto[]>([]);
+  // const [produtosHorizontal, setProdutosHorizontal] = useState<Produto[]>([]);
+  const [productId, setproductId] = useState<number>(0);
   const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
-  const { fetchUserData, userData } = useAuth();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [product, setProduct] = useState<Produto[]>([]);
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
+  const { fetchUserData, userData, user, setUser } = useAuth();
 
   const navigation = useNavigation();
 
@@ -43,8 +44,7 @@ export const Home = () => {
         );
         const data: Produto[] = response.data;
 
-        setProdutosVertical(data.slice(0, Math.ceil(data.length / 2)));
-        setProdutosHorizontal(data.slice(Math.ceil(data.length / 2)));
+        setAllPosts(data);
         setFilteredProdutos(data);
       } catch (error) {
         console.error("Erro ao buscar os dados da API:", error);
@@ -56,52 +56,41 @@ export const Home = () => {
   }, []);
 
   const handleSearch = () => {
-    const filtered = produtosVertical.concat(produtosVertical).filter(
-      (produto) =>
+    const filtered = allPosts
+      .concat(allPosts)
+      .filter((produto) =>
         produto.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+      );
     setFilteredProdutos(filtered);
   };
 
-  const navigateToChat = async (produto: Produto) => {
+  const navigateToChat = async (id: number) => {
     try {
-      // Suponha que cada produto tenha um 'userId' associado que identifique o vendedor
       const response = await axios.get(
-        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id}` // Suponha que 'userId' seja o ID do vendedor
+        `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
       );
-
       if (response.status === 200) {
-        const vendedor = response.data; // Dados do vendedor (usuário que fez a postagem)
-        
-        // Redirecionar para a tela de chat, passando o nome do vendedor e uma mensagem inicial
-       // navigation.navigate("PrivateChat", { Usuario: id.nome, Mensagem: "Oi, estou interessado no produto!" });
+        const produto = response.data;
+
+        try {
+          const resultado = await axios.get(
+            `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id_usuario}`
+          );
+          setUser(resultado.data);
+          navigation.navigate("Profile");
+        } catch (error) {
+          console.log("erro ao achar usuario da postagem");
+        }
       } else {
-        throw new Error("Erro ao buscar o vendedor: status diferente de 200");
+        console.log("vendedor não encontrado");
       }
     } catch (error) {
-      console.error("Erro ao buscar o vendedor:", error);
-      Alert.alert("Erro", "Não foi possível encontrar o vendedor.");
+      console.log("erro ao conectar a api");
     }
   };
 
-  const renderItem = ({ item }: { item: Produto }) => (
-    <View style={styles.produtoContainer}>
-      <TouchableOpacity onPress={() => handleProductClick(item)}>
-        <Image source={{ uri: item.foto }} style={styles.produtoImage} />
-        <Text style={styles.produtoTitle}>{item.titulo}</Text>
-        <Text style={styles.price}>R$ {item.preco}</Text> {/* Coloquei o preço abaixo da descrição */}
-      </TouchableOpacity>
-      <Text
-        style={styles.chatText}
-    //    onPress={() => navigateToChat(item.id)} 
-      >
-        Fale comigo
-      </Text>
-    </View>
-  );
-
   const handleProductClick = (product: Produto) => {
-    Alert.alert("Produto Selecionado", `Você selecionou: ${product.titulo}`);
+    navigateToChat(product.id);
   };
 
   if (loading) {
@@ -111,12 +100,26 @@ export const Home = () => {
       </View>
     );
   }
+  const sortedPosts = filteredProdutos.sort(
+    (a, b) =>
+      new Date(b.dataPostagem).getTime() - new Date(a.dataPostagem).getTime()
+  );
+
+  const renderItem = ({ item }: { item: Produto }) => (
+    <View style={styles.produtoContainer}>
+      <TouchableOpacity onPress={() => handleProductClick(item)}>
+        <Image source={{ uri: item.foto }} style={styles.produtoImage} />
+        <Text style={styles.produtoTitle}>{item.titulo}</Text>
+        <Text style={styles.price}>R$ {item.preco}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.containerPlusMaxAdvencedPower}>
-          {/* Contêiner com perfil e pesquisa lado a lado */}
-          <View style={styles.profileAndSearchContainer}>
+        {/* Contêiner com perfil e pesquisa lado a lado */}
+        <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
             <Image
               source={{ uri: userData?.Foto }}
@@ -143,19 +146,18 @@ export const Home = () => {
           Recentes
         </Text>
         <FlatList
-          data={expand ? filteredProdutos : produtosHorizontal}
+          data={sortedPosts}
           horizontal={expand}
           renderItem={renderItem}
-        //  keyExtractor={(item) => item.id}
+          //   keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
       <View style={styles.container3}>
-
         <FlatList
-          data={produtosVertical}
+          data={allPosts}
           renderItem={renderItem}
-        //  keyExtractor={(item) => item.id}
+          //keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           numColumns={2}
         />

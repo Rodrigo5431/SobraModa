@@ -1,22 +1,16 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ProvedorPropriedadeAplicacao } from "../hooks/useAuth";
-import { Chat } from "../screens/Chat";
-import { EditProfile } from "../screens/EditProfile";
-import Configuration from "../screens/UserConfig";
-import { colors } from "../styles/colors";
-import { MainTabNavigator } from "./MainTabNavigation";
-import { Login } from "../screens/Login";
 import Cadastro from "../screens/Cadastro";
+import { EditProfile } from "../screens/EditProfile";
+import { Login } from "../screens/Login";
 import PrivateChat from "../screens/PrivateChat";
-import { Alert } from "react-native";
-import { MainTabNavigatorChat } from "./MainTabNavigatorChat";
-import { Home } from "../screens/Home";
-import { useAuth } from "../hooks/useAuth";
+import { colors } from "../styles/colors";
 import { MyDrawer } from "./drawerNavigator";
 
 import { ProductAdd } from "@/screens/ProductAdd";
+import Profile from "@/screens/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +63,11 @@ export function Navigator() {
                         name="ProductAdd"
                         component={ProductAdd}
                         options={{ title: "Editar Perfil", headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Profile"
+                        component={Profile}
+                        options={{ title: "Profile usuario", headerShown: false }}
                     />
 
 
