@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { HeaderChat } from "../../components/HeaderChat";
 import { ProductInput } from "../../components/ProductInput";
-import { useAuth } from "../../hooks/useAuth"; 
+import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
 // Variáveis de configuração para o Cloudinary

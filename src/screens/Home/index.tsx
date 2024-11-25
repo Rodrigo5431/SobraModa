@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./styles";
@@ -30,9 +30,8 @@ export const Home = () => {
   const [expand, setExpand] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [product, setProduct] = useState<Produto[]>([]);
   const [filteredProdutos, setFilteredProdutos] = useState<Produto[]>([]);
-  const { fetchUserData, userData, user, setUser } = useAuth();
+  const { userData, user, setUser, postagem, setPostagem } = useAuth();
 
   const navigation = useNavigation();
 
@@ -71,7 +70,7 @@ export const Home = () => {
       );
       if (response.status === 200) {
         const produto = response.data;
-
+        setPostagem(response.data);
         try {
           const resultado = await axios.get(
             `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${produto.id_usuario}`
@@ -107,9 +106,14 @@ export const Home = () => {
 
   const renderItem = ({ item }: { item: Produto }) => (
     <View style={styles.produtoContainer}>
-      <TouchableOpacity onPress={() => handleProductClick(item)}>
+      <TouchableOpacity
+        onPress={() => handleProductClick(item)}
+        style={styles.product}
+      >
         <Image source={{ uri: item.foto }} style={styles.produtoImage} />
-        <Text style={styles.produtoTitle}>{item.titulo}</Text>
+        <Text numberOfLines={1} style={styles.produtoTitle}>
+          {item.titulo}
+        </Text>
         <Text style={styles.price}>R$ {item.preco}</Text>
       </TouchableOpacity>
     </View>
@@ -118,7 +122,6 @@ export const Home = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.containerPlusMaxAdvencedPower}>
-        {/* Contêiner com perfil e pesquisa lado a lado */}
         <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
             <Image
