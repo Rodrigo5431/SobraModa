@@ -5,6 +5,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -74,7 +75,7 @@ export const EditProfile = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <SafeAreaView style={{ flexGrow: 1 }}>
           <TouchableOpacity
             style={styles.container}
             activeOpacity={1}
@@ -176,7 +177,7 @@ export const EditProfile = () => {
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
-        </ScrollView>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

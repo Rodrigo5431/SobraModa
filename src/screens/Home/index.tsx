@@ -65,10 +65,21 @@ export const Home = () => {
 
   const navigateToChat = async (id: number) => {
     try {
+
       const response = await axios.get(
         `https://673e81080118dbfe860b784d.mockapi.io/postagem/${id}`
       );
       if (response.status === 200) {
+// <<<<<<< HEAD
+//         const vendedor = response.data; // Dados do vendedor (usuário que fez a postagem)
+
+//         const mensagem = `Oi, que bom ter você aqui! O produto selecionado: ${produto.titulo} - R$ ${produto.preco} seria esse o seu interesse ?`;
+        
+//           navigation.navigate("PrivateChat", {
+//           nome: vendedor.nome, 
+//           mensagem: mensagem,
+//         });
+// =======
         const produto = response.data;
         setPostagem(response.data);
         try {
@@ -120,7 +131,7 @@ export const Home = () => {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}> 
       <View style={styles.containerPlusMaxAdvencedPower}>
         <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
@@ -152,7 +163,6 @@ export const Home = () => {
           data={sortedPosts}
           horizontal={expand}
           renderItem={renderItem}
-          //   keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -160,7 +170,9 @@ export const Home = () => {
         <FlatList
           data={allPosts}
           renderItem={renderItem}
+
           //keyExtractor={(item) => item.id}
+
           showsHorizontalScrollIndicator={false}
           numColumns={2}
         />

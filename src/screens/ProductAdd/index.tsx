@@ -1,22 +1,22 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import axios from "axios";
-import * as ImagePicker from "expo-image-picker";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Alert,
   Dimensions,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
+  Image,
+  Alert,
 } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 import { HeaderChat } from "../../components/HeaderChat";
 import { ProductInput } from "../../components/ProductInput";
-import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
+import { useAuth } from "../../hooks/useAuth";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
@@ -24,8 +24,11 @@ const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 const { height } = Dimensions.get("window");
 
 export const ProductAdd = () => {
+  const { id: userId } = useAuth();
 
-  const { userData, fetchUserData } = useAuth();
+
+  console.log("ID do usuário:", userId);
+  
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
@@ -63,7 +66,7 @@ export const ProductAdd = () => {
       return;
     }
 
-    if (!userData.id) {
+    if (!userId) {
       Alert.alert("Erro", "ID do usuário não encontrado.");
       return;
     }
@@ -89,14 +92,13 @@ export const ProductAdd = () => {
       const newProduct = {
         titulo,
         descricao,
-        dataPostagem: Date.now(),
         preco: parseFloat(preco),
         foto: imageUrl,
-        id_usuario: userData.id, 
+        idUser: userId,
       };
 
       const response = await axios.post(
-        "https://673e81080118dbfe860b784d.mockapi.io/postagem",
+        "https://673cc81b96b8dcd5f3fba5e2.mockapi.io/postagm",
         newProduct
       );
 
@@ -121,17 +123,13 @@ export const ProductAdd = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, [])
-
   return (
     <View style={{ flex: 1 }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView
+        <ScrollView nestedScrollEnabled={true}
           contentContainerStyle={{
             paddingBottom: 58,
             backgroundColor: "#E3D5F6",
