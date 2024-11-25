@@ -115,7 +115,7 @@ export default function Profile() {
         <FlatList
           data={sortedPosts}
           keyExtractor={(dados) => dados.id_usuario.toString()}
-          numColumns={3}
+          numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.posts}>
               <Image
