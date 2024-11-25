@@ -119,12 +119,12 @@ export default function Configuration() {
 
         <Text>{userData?.descricao}</Text>
       </View>
-      <View style={styles.talk}>
+      {/* <View style={styles.talk}>
         <TouchableOpacity style={styles.talkButton} activeOpacity={0.7}>
           <Image source={whatsappIcon} style={styles.talkImg}></Image>
           <Text style={styles.talkText}>Fale Comigo</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.postsArea}>
         {error && <View></View>}
         <FlatList
