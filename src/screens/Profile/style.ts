@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         backgroundColor:"#fff"
       },
       userName:{
-
+        fontFamily: "ComicNeue_700Bold"
       },
       user:{
         marginTop:40,
@@ -71,6 +71,7 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         marginBottom: 5,
+        fontFamily: "ComicNeue_700Bold"
       },
       postDesc:{
         marginTop: 5,
@@ -81,5 +82,6 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#00b894',
+        fontFamily: "ComicNeue_700Bold"
       }
 });

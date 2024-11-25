@@ -17,11 +17,13 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     color: "#888",
+    fontFamily: "ComicNeue_700Bold"
   },
   chatContainer: {
     flexDirection: "row",
     marginBottom: 10,
     alignItems: "flex-start",
+    fontFamily: "ComicNeue_700Bold"
   },
   
   chatUser: {
@@ -29,10 +31,12 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 14,
     color: "#333",
+    fontFamily: "ComicNeue_700Bold"
   },
   chatMessage: {
     fontSize: 14,
     color: "#555",
+    fontFamily: "ComicNeue_700Bold"
   },
 
   chatBubble: {
@@ -41,6 +45,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginHorizontal: 10,
+    fontFamily: "ComicNeue_700Bold"
   },
   
   userImage: {

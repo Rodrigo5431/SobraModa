@@ -64,6 +64,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: "#342142",
     marginBottom: 10,
+    fontFamily: "ComicNeue_700Bold",
   },
 
   button: {
@@ -74,6 +75,7 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
+    fontFamily: "ComicNeue_700Bold",
   },
 
   arrowLogin:{

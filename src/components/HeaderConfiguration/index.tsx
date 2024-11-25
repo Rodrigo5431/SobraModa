@@ -38,7 +38,7 @@ export const HeaderConfiguration = () => {
             <Text style={styles.editProfile}>Editar Perfil</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogOut}>
-            <Text>Sair</Text>
+          <Text style={{ fontFamily: "ComicNeue_700Bold" }}>Sair</Text>
           </TouchableOpacity>
         </View>
       )}
