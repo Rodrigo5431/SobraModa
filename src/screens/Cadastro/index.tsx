@@ -239,7 +239,7 @@ export default function Cadastro() {
         {sucess && <Text style={{ color: "green", fontSize:20 }}>{sucess}</Text>}
         <View style={styles.inputBox}>
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Nome:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Nome:</Text>
             <TextInputField
               placeHolder="Digite seu nome"
               handleFunctionInput={setNome}
@@ -248,7 +248,7 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Email:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Email:</Text>
             <TextInputField
               placeHolder="Digite seu email"
               handleFunctionInput={setEmail}
@@ -258,7 +258,7 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Senha:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Senha:</Text>
             <TextInputField
               placeHolder="Digite sua senha"
               handleFunctionInput={setPassword}
@@ -267,7 +267,7 @@ export default function Cadastro() {
           </View>
 
           <View style={styles.input}>
-            <Text style={{ left: 5, color: "#342142" }}>Confirmar senha:</Text>
+            <Text style={{ left: 5, color: "#342142", fontFamily: "ComicNeue_700Bold" }}>Confirmar senha:</Text>
             <TextInputField
               placeHolder="Confirme a senha"
               handleFunctionInput={setConfirmPassword}

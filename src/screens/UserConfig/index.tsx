@@ -92,21 +92,21 @@ export default function Configuration() {
   );
 
   return (
-    <ScrollView nestedScrollEnabled={true} style={styles.container}>
+    <View style={styles.container}>     
       <HeaderConfiguration />
       {confirmDelete && (
         <View style={styles.confirm}>
-          <Text>Voce Tem certeza que deseja Excluir?</Text>
+          <Text style={styles.msgDelete}>Tem certeza que deseja Excluir?</Text>
           <View style={{ flexDirection: "row", gap: 10 }}>
             <TouchableOpacity
               onPress={() => {
                 handleDelete(), setConfirmDelete(false);
               }}
             >
-              <Text>Sim</Text>
+              <Text style={styles.buttom}>Sim</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setConfirmDelete(false)}>
-              <Text>Não</Text>
+              <Text style={styles.buttom}>Não</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -139,7 +139,7 @@ export default function Configuration() {
                   setConfirmDelete(true), setId(item.id);
                 }}
               >
-                <Text>. . .</Text>
+                <Text style={styles.textDelete}>. . .</Text>
               </TouchableOpacity>
               <Image
                 style={styles.postImg}
@@ -155,6 +155,6 @@ export default function Configuration() {
           )}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }

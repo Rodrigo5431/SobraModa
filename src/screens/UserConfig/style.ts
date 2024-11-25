@@ -75,20 +75,58 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#00b894",
   },
+
   deleteButton: {
     position: "relative",
-    top: 20,
-    backgroundColor: "#fff",
+    top: 15,
     width: 50,
-    height: 90,
+    height: 40,
+    borderRadius: 10,
   },
-  confirm: {
-    height: 300,
-    width: 200,
-    position: "absolute",
-    backgroundColor: "#fff",
-    top: 270,
-    left: 120,
-    zIndex: 1,
+  
+ confirm: {
+  height: 100,
+  width: 200,
+  position: "absolute",
+  backgroundColor: "#342142",
+  top: 350,
+  left: 95,
+  zIndex: 1,
+  borderRadius: 10,
+  alignItems: "center",
+  flexDirection: "column",
+  justifyContent: "space-around",
+  padding: 10,
+  shadowColor: "#000", 
+  shadowOpacity: 0.3,
+  shadowRadius: 4.65,
+  elevation: 8,
+},
+
+
+  buttom: {
+    backgroundColor: "#8B65BF",
+    borderRadius: 5,
+    padding: 2,
+    paddingLeft: 5,
+    paddingRight: 5,
+    color: "#fff",
+    marginLeft: 15,
+    marginRight: 15,
+    fontWeight: "bold"
+  },
+
+  msgDelete: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 15
+  },
+
+  textDelete: {
+    color: "#000",
+    left: 15,
+    fontWeight: "bold",
+    fontSize: 20,
+    bottom: 5
   },
 });
