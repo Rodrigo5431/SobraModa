@@ -46,7 +46,7 @@ export default function PrivateChat () {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, nome]); // Atualiza o título toda vez que o nome do usuário mudar
+  }, [navigation, nome]); 
 
   const sendMessage = () => {
     if (newMessage.trim()) {
@@ -54,13 +54,13 @@ export default function PrivateChat () {
         ...prevMessages,
         { sender: "Você", text: newMessage },
       ]);
-      setNewMessage(""); // Limpa o campo de mensagem após envio
+      setNewMessage(""); 
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Lista de mensagens */}
+ 
       <FlatList
         data={messages}
         keyExtractor={(_, index) => index.toString()}

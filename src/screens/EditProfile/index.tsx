@@ -16,8 +16,7 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons} from '@expo/vector-icons';
-
+import { Ionicons } from "@expo/vector-icons";
 
 export const EditProfile = () => {
   const [showName, setShowName] = useState<boolean>(false);
@@ -27,8 +26,10 @@ export const EditProfile = () => {
   const [password, setPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  // const [userData, setUserData] = useState<any>(null);
-  const { userData } = useAuth();
+  const [sucessPassword, setSucessPassword] = useState<boolean>(false);
+  const [differentPassword, setDifferentPassword] = useState<boolean>(false);
+  const [wrongPassword, setWrongPassword] = useState<boolean>(false);
+  const { userData, handleLogin } = useAuth();
   const navigation = useNavigation();
 
   const atualizaNome = async () => {
@@ -36,23 +37,61 @@ export const EditProfile = () => {
       axios.put(
         `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
         {
-          nome: savedName,
+          nome: name,
         }
       );
+      setName("");
+      atualizado();
     } catch (error) {
       console.log("nao foi possivel atualizar o nome");
     }
   };
-  const atualizaSenha = async () => {
+
+  const atualizado = async () => {
     try {
-      axios.put(
-        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
-        {
-          password: newPassword,
-        }
+      const response = await axios.get(
+        `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`
       );
+
+      if (response.status === 200) {
+        handleLogin(response.data);
+
+      } else {
+        console.log("Não foi possivel alterar o nome");
+      }
     } catch (error) {
-      console.log("nao foi possivel atualizar o nome");
+      console.log("erro ao conectar à api");
+    }
+  };
+
+  const atualizaSenha = async () => {
+    if (password === userData.password) {
+      if (newPassword == confirmPassword) {
+        try {
+          const response = await axios.put(
+            `https://673e81080118dbfe860b784d.mockapi.io/cadastrar/${userData?.id}`,
+            {
+              password: newPassword,
+            }
+          );
+          if (response.status === 200) {
+            setPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+            setSucessPassword(true);
+            setDifferentPassword(false);
+            setWrongPassword(false);
+          } else {
+            console.log("nao foi possivel alterar a senha");
+          }
+        } catch (error) {
+          console.log("nao foi possivel atualizar o nome");
+        }
+      }else{
+        setDifferentPassword(true)
+      }
+    }else{
+      setWrongPassword(true)
     }
   };
 
@@ -122,7 +161,6 @@ export const EditProfile = () => {
                     style={styles.saveButton}
                     onPress={() => {
                       setSavedName(name);
-                      setName("");
                       atualizaNome();
                     }}
                   >
@@ -137,6 +175,11 @@ export const EditProfile = () => {
                 <View style={styles.titleAreaPassword}>
                   <Text style={styles.nameofchange}>Alterar Senha</Text>
                 </View>
+                {sucessPassword && (
+                  <Text style={{ fontSize: 22, color: "green" }}>
+                    Senha alterada com sucesso!
+                  </Text>
+                )}
                 <TextInput
                   style={styles.input}
                   placeholder="Digite sua Senha"
@@ -144,13 +187,19 @@ export const EditProfile = () => {
                   onChangeText={(text) => setPassword(text)}
                   value={password}
                 />
+                {wrongPassword && (
+                  <Text style={{color:'red', fontSize:17}}>Senha incorreta</Text>
+                )}
                 <TextInput
                   style={styles.input}
                   placeholder="Digite sua nova Senha"
                   secureTextEntry
                   onChangeText={(text) => setNewPassword(text)}
                   value={newPassword}
-                />
+                  />
+                  {differentPassword && (
+                    <Text style={{color:'red', fontSize:17}}>Senhas não conferem!</Text>
+                  )}
                 <TextInput
                   style={styles.input}
                   placeholder="Confirme sua Senha"
