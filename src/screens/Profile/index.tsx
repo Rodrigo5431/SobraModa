@@ -90,7 +90,7 @@ export default function Profile() {
 }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.userName}>{user.nome}</Text>
       </View>

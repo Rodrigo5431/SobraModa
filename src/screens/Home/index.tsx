@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -130,7 +131,7 @@ export const Home = () => {
   );
 
   return (
-    <View style={styles.container}> 
+    <ScrollView nestedScrollEnabled={true} style={styles.container}> 
       <View style={styles.containerPlusMaxAdvencedPower}>
         <View style={styles.profileAndSearchContainer}>
           <View style={styles.profileContainer}>
@@ -176,6 +177,6 @@ export const Home = () => {
           numColumns={2}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
