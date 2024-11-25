@@ -12,16 +12,11 @@ export const styles = StyleSheet.create({
         backgroundColor:colors.purple.cor5,
       },
       userName:{
-<<<<<<< HEAD
-        fontFamily: "ComicNeue_700Bold"
-=======
+        fontFamily: "ComicNeue_700Bold",
         fontSize:30,
-        fontWeight:'bold', 
         justifyContent:"center", 
         alignSelf:"center",
         backgroundColor: colors.purple.cor5,
-
->>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
       },
       user:{
         marginTop:40,

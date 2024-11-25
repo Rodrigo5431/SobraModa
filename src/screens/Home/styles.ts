@@ -56,13 +56,7 @@ export const styles = StyleSheet.create({
     marginVertical: 5,
     // textAlign: "center",
     color: "#333",
-<<<<<<< HEAD
     fontFamily: "ComicNeue_700Bold"
-=======
-    fontFamily: "Comic Neue",
-
-
->>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
   },
 
   button: {
@@ -141,13 +135,8 @@ export const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     color: '#000',
-<<<<<<< HEAD
     marginBottom: 10, 
     fontFamily: "ComicNeue_400Regular"
-=======
-    marginBottom: 10, // Espaçamento abaixo do preço
-
->>>>>>> 20b3215c5820e47e06bc56b3914a28d6e93d4e3f
   },
   container2: {
     marginLeft: 20,
