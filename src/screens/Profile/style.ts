@@ -60,6 +60,8 @@ export const styles = StyleSheet.create({
         marginTop: 100,
       },
       posts:{
+        gap:5, 
+        padding:10, 
         justifyContent: 'center',
         alignItems: 'center',
       },
