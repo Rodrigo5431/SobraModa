@@ -11,68 +11,73 @@ import { MyDrawer } from "./drawerNavigator";
 
 import { ProductAdd } from "@/screens/ProductAdd";
 import Profile from "@/screens/Profile";
+import Configuration from "@/screens/UserConfig";
 
 const Stack = createNativeStackNavigator();
 
 export function Navigator() {
+  return (
+    <NavigationContainer>
+      <ProvedorPropriedadeAplicacao>
+        <Stack.Navigator
+          initialRouteName="Login" //depois que terminar colocar a Login para ser a principal, teste Home
+          screenOptions={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: colors.purple.cor5,
+            },
+          }}
+        >
+          <Stack.Screen
+            name="Home"
+            component={MyDrawer}
+            options={{ title: "Mensagens Privadas", headerShown: false }}
+          />
 
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: "Login", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cadastrar"
+            component={Cadastro}
+            options={{ title: "Cadastro", headerShown: false }}
+          />
 
-    return (
-        <NavigationContainer>
-            <ProvedorPropriedadeAplicacao>
-                <Stack.Navigator
-                    initialRouteName="Login" //depois que terminar colocar a Login para ser a principal, teste Home
-                    screenOptions={{
-                        headerShown: false,
-                        headerStyle: {
-                            backgroundColor: colors.purple.cor5,
-                        },
-                    }}>
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ title: "Editar Perfil", headerShown: false }}
+          />
 
+          <Stack.Screen
+            name="PrivateChat"
+            component={PrivateChat}
+            options={{
+              title: "ConversaPrivada",
+              headerShown: true,
+              headerTitleAlign: "center",
+            }}
+          />
 
-                    <Stack.Screen
-                        name="Home"
-                        component={MyDrawer}
-                        options={{ title: "Mensagens Privadas", headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                        name="Login"
-                        component={Login}
-                        options={{ title: "Login", headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Cadastrar"
-                        component={Cadastro}
-                        options={{ title: "Cadastro", headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                        name="EditProfile"
-                        component={EditProfile}
-                        options={{ title: "Editar Perfil", headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                        name="PrivateChat"
-                        component={PrivateChat}
-                        options={{ title: "ConversaPrivada", headerShown: true, headerTitleAlign: "center" }}
-                    />
-
-                    <Stack.Screen
-                        name="ProductAdd"
-                        component={ProductAdd}
-                        options={{ title: "Editar Perfil", headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="Profile"
-                        component={Profile}
-                        options={{ title: "Profile usuario", headerShown: false }}
-                    />
-
-
-                </Stack.Navigator>
-            </ProvedorPropriedadeAplicacao>
-        </NavigationContainer>
-    );
+          <Stack.Screen
+            name="ProductAdd"
+            component={ProductAdd}
+            options={{ title: "Editar Perfil", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ title: "Profile usuario", headerShown: false }}
+          />
+          <Stack.Screen
+            name="UserConfig"
+            component={Configuration}
+            options={{ title: "Profile usuario", headerShown: true }}
+          />
+        </Stack.Navigator>
+      </ProvedorPropriedadeAplicacao>
+    </NavigationContainer>
+  );
 }

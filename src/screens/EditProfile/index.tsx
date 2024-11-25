@@ -1,7 +1,9 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
@@ -10,16 +12,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { styles } from "./style";
-import axios from "axios";
-import { KeyboardAvoidingView } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { HeaderConfiguration } from "../../components/HeaderConfiguration";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./style";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons} from '@expo/vector-icons';
+
 
 export const EditProfile = () => {
-  const { email, setEmail } = useAuth();
-
   const [showName, setShowName] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [savedName, setSavedName] = useState<string>("");
@@ -27,8 +26,9 @@ export const EditProfile = () => {
   const [password, setPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const id = useState<string>("");
-  const [userData, setUserData] = useState<any>(null);
+  // const [userData, setUserData] = useState<any>(null);
+  const { userData } = useAuth();
+  const navigation = useNavigation();
 
   const atualizaNome = async () => {
     try {
@@ -55,20 +55,18 @@ export const EditProfile = () => {
     }
   };
 
+  const handleNavigation = () => {
+    navigation.goBack();
+  };
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const data = await AsyncStorage.getItem("resultado");
-        if (data) {
-          setUserData(JSON.parse(data));
-        }
-      } catch (error) {
-        console.error("Erro ao buscar dados do AsyncStorage:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("UserConfig")}>
+          <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [handleNavigation]);
 
   return (
     <KeyboardAvoidingView
@@ -124,7 +122,7 @@ export const EditProfile = () => {
                     onPress={() => {
                       setSavedName(name);
                       setName("");
-                      atualizaNome()
+                      atualizaNome();
                     }}
                   >
                     <Text style={styles.saveButtonText}>Salvar</Text>
@@ -161,15 +159,19 @@ export const EditProfile = () => {
                 />
                 <View>
                   <TouchableOpacity style={styles.saveButtonPassword}>
-                    <Text style={styles.saveButtonText}
-                    onPress={atualizaSenha}
-                    >Salvar</Text>
+                    <Text style={styles.saveButtonText} onPress={atualizaSenha}>
+                      Salvar
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
             )}
             <View style={styles.logoutArea}>
-              <TouchableOpacity activeOpacity={0.6} style={styles.logoutButton}>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.logoutButton}
+                onPress={handleNavigation}
+              >
                 <Text style={styles.alter}>Voltar</Text>
               </TouchableOpacity>
             </View>
