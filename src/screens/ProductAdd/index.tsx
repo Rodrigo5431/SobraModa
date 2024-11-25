@@ -18,7 +18,6 @@ import { ProductInput } from "../../components/ProductInput";
 import { useAuth } from "../../hooks/useAuth";
 import { styles } from "./style";
 
-// Variáveis de configuração para o Cloudinary
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "agoraVai";
 
@@ -26,7 +25,7 @@ const { height } = Dimensions.get("window");
 
 export const ProductAdd = () => {
 
-  const { userData, fetchUserData } = useAuth(); // Obtendo o ID do usuário do contexto
+  const { userData, fetchUserData } = useAuth();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
@@ -70,7 +69,6 @@ export const ProductAdd = () => {
     }
 
     try {
-      // Envia a imagem para o Cloudinary
       const formData = new FormData();
 
       const file = {

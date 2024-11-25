@@ -1,6 +1,6 @@
 import { Loading } from "@/components/Loading";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios"; // Importe o tipo AxiosError
+import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
@@ -50,128 +50,126 @@ export default function Cadastro() {
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/deb585wpe/image/upload";
 
-  const createUsers = async () => {
-    if (
-      !nome.trim() ||
-      !email.trim() ||
-      !password.trim() ||
-      !confirmPassword.trim()
-    ) {
-
-      return false;
-    }
-    try {
-      const newUser = {
-        nome,
-        email,
-        password,
-        Foto: imageUri,
-      };
-
-      const response = await axios.post(
-        "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
-        newUser
-      );
-      setIsLoading(false);
-      if (response.status === 201) {
-        setNome("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        setErro("");
-        setErroFoto("");
-        setErroSenha("");
-        setImageUri(null);
-        handleSearchUsers();
-        setSucess("Conta criada com sucesso");
-
-        setTimeout(() => {
-          navigation.navigate("Login");
-        }, 3000);
-        return true;
+    const createUsers = async (uploadedImageUrl: string) => {
+      if (
+        !nome.trim() ||
+        !email.trim() ||
+        !password.trim() ||
+        !confirmPassword.trim()
+      ) {
+        return false;
       }
-    } catch (error) {
-      console.error("Erro no cadastro:", error);
-      Alert.alert(
-        "Erro",
-        "Erro ao cadastrar usuário. Tente novamente mais tarde."
-      );
-    }
-    return false;
-  };
-
-  const handleEmailVerification = async () => {
-    if (!imageUri) {
-      setIsLoading(false); // Garantir que o loading seja parado imediatamente
-      setErroFoto("É necessário adicionar uma foto");
-      setErroSenha("");
-      setErro("");
-      return;
-    }
-
-    const resultado = users.find(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
-    );
-
-    try {
-      if (!resultado) {
-        if (password === confirmPassword) {
-          setIsLoading(true);
-          try {
-            // Primeiro, faça o upload da imagem para o Cloudinary
-            const formData = new FormData();
-            const file = {
-              uri: imageUri,
-              type: "image/jpeg", // Ajuste o tipo conforme o tipo da sua imagem
-              name: "foto_usuario.jpg",
-            };
-            formData.append("file", file as any);
-            formData.append("upload_preset", UPLOAD_PRESET);
-
-            // Envia a imagem para o Cloudinary
-            const cloudinaryResponse = await axios.post(
-              CLOUDINARY_URL,
-              formData,
-              {
-                headers: { "Content-Type": "multipart/form-data" },
-              }
-            );
-
-            if (cloudinaryResponse.data.secure_url) {
-              const imageUrl = cloudinaryResponse.data.secure_url;
-              console.log("Imagem carregada com sucesso! URL:", imageUrl);
-              await createUsers(); // Aguarda a criação do usuário
-            } else {
-              throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
-            }
-          } catch (error) {
-            console.log("Erro ao carregar a imagem: ", error);
-            setIsLoading(false); // Para o loading em caso de erro
-          }
-        } else {
-
-          setIsLoading(false);
-          setErroSenha("As senhas não coincidem");
+      try {
+        const newUser = {
+          nome,
+          email,
+          password,
+          Foto: uploadedImageUrl,
+        };
+    
+        const response = await axios.post(
+          "https://673e81080118dbfe860b784d.mockapi.io/cadastrar",
+          newUser
+        );
+        setIsLoading(false);
+        if (response.status === 201) {
+          setNome("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
           setErro("");
           setErroFoto("");
+          setErroSenha("");
+          setImageUri(null);
+          handleSearchUsers();
+          setSucess("Conta criada com sucesso");
+    
+          setTimeout(() => {
+            navigation.navigate("Login");
+          }, 3000);
+          return true;
         }
-      } else {
-        setIsLoading(false);
-        setErro("Este e-mail já existe em nossa base. Faça seu Login.");
-        setErroSenha("");
-        setErroFoto("");
-        // setEmailExistente(
-        //   "Este e-mail já existe em nossa base. Faça seu Login."
-        // );
-        setTimeout(() => {
-          navigation.navigate("Login");
-        }, 3000);
+      } catch (error) {
+        console.error("Erro no cadastro:", error);
+        Alert.alert(
+          "Erro",
+          "Erro ao cadastrar usuário. Tente novamente mais tarde."
+        );
       }
-    } catch (error) {
-      setIsLoading(false); // Para o loading em caso de erro
-      console.log("Erro na verificação do email:", error);
-    }
-  };
+      return false;
+    };
+    
+
+    const handleEmailVerification = async () => {
+      if (!imageUri) {
+        setIsLoading(false);
+        setErroFoto("É necessário adicionar uma foto");
+        setErroSenha("");
+        setErro("");
+        return;
+      }
+    
+      const resultado = users.find(
+        (user) => user.email.toLowerCase() === email.toLowerCase()
+      );
+    
+      try {
+        if (!resultado) {
+          if (password === confirmPassword) {
+            setIsLoading(true);
+            try {
+              const formData = new FormData();
+              const file = {
+                uri: imageUri,
+                type: "image/jpeg",
+                name: "foto_usuario.jpg",
+              };
+              formData.append("file", file as any);
+              formData.append("upload_preset", UPLOAD_PRESET);
+    
+              const cloudinaryResponse = await axios.post(
+                CLOUDINARY_URL,
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+    
+              if (cloudinaryResponse.data.secure_url) {
+                const imageUrl = cloudinaryResponse.data.secure_url;
+                console.log("Imagem carregada com sucesso! URL:", imageUrl);
+    
+                await createUsers(imageUrl);
+              } else {
+                throw new Error("Erro ao obter a URL da imagem do Cloudinary.");
+              }
+            } catch (error) {
+              console.log("Erro ao carregar a imagem: ", error);
+              setIsLoading(false);
+            }
+          } else {
+            setIsLoading(false);
+            setErroSenha("As senhas não coincidem");
+            setErro("");
+            setErroFoto("");
+          }
+        } else {
+          setIsLoading(false);
+          setErro("Este e-mail já existe em nossa base. Faça seu Login.");
+          setErroSenha("");
+          setErroFoto("");
+          setTimeout(() => {
+            navigation.navigate("Login");
+          }, 3000);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.log("Erro na verificação do email:", error);
+      }
+    };
+    
+  
+  
 
   const pickImage = async () => {
     const permissionResult =
